@@ -1,6 +1,6 @@
-# se_project
+# InvenTale
 
-A new Flutter project.
+An AI Based Storytelling app made with Flutter.
 
 ## Getting Started
 

@@ -2,30 +2,61 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'manualpage.dart'; // Import the file here
+import 'package:provider/provider.dart';
+
 
 
 void main() {
-  runApp(const GenerativeAISample());
+  runApp(ChangeNotifierProvider(
+    create: (_) => ThemeProvider(),
+    child: const GenerativeAISample(),
+  ));
 }
+
+
+class ThemeProvider extends ChangeNotifier {
+  ThemeMode _themeMode = ThemeMode.light;
+
+  ThemeMode get themeMode => _themeMode;
+
+  void toggleTheme() {
+    _themeMode = _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    notifyListeners();
+  }
+}
+
 
 class GenerativeAISample extends StatelessWidget {
   const GenerativeAISample({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'InvenTale',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 171, 222, 244),
-        ),
-        useMaterial3: true,
-      ),
-      home: const ChatScreen(title: ''),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'InvenTale',
+          themeMode: themeProvider.themeMode,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color.fromARGB(255, 171, 222, 244),
+            ),
+            useMaterial3: true,
+          ),
+          darkTheme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color.fromARGB(255, 171, 222, 244),
+              brightness: Brightness.dark,
+            ),
+            useMaterial3: true,
+          ),
+          home: const ChatScreen(title: ''),
+        );
+      },
     );
   }
 }
+
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key, required this.title}) : super(key: key);
@@ -62,7 +93,8 @@ class _ChatScreenState extends State<ChatScreen> {
             child: ImageWidget(),
           ),
           Expanded(
-            child: ChatWidget(apiKey: "AIzaSyAnhmR1EFQGoGR-IE0Iunh0VmX5q7Xjd0Q"),
+            child:
+            ChatWidget(apiKey: "AIzaSyAnhmR1EFQGoGR-IE0Iunh0VmX5q7Xjd0Q"),
           ),
         ],
       ),
@@ -114,8 +146,6 @@ class _OverlappingButtonsState extends State<OverlappingButtons> {
       ],
     );
   }
-
-
 }
 
 class MyButtonPainter extends CustomPainter {
@@ -389,23 +419,27 @@ class ImageWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset('assets/two.png'),
-                  TextButton.icon(
-                    onPressed: () {
-                      // Add your functionality here
+                  Consumer<ThemeProvider>(
+                    builder: (context, themeProvider, child) {
+                      return TextButton.icon(
+                        onPressed: () {
+                          themeProvider.toggleTheme();
+                        },
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            side: BorderSide(
+                                color: Theme.of(context).colorScheme.secondary,
+                                width: 2.0),
+                          ),
+                        ),
+                        label: Text('Change to the ${themeProvider.themeMode == ThemeMode.light ? 'dark' : 'light'} theme'),
+                        icon: Transform.rotate(
+                          angle: -1.0,
+                          child: Icon(Icons.arrow_forward),
+                        ),
+                      );
                     },
-                    style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        // Adjust as needed
-                        side: BorderSide(
-                            color: Colors.black, width: 2.0), // Bold border
-                      ),
-                    ),
-                    label: Text('Generate Anonymous Story'),
-                    icon: Transform.rotate(
-                      angle: -1.0, // Adjust the angle as needed
-                      child: Icon(Icons.arrow_forward), // Adjust size as needed
-                    ),
                   )
                 ],
               ),
@@ -416,6 +450,7 @@ class ImageWidget extends StatelessWidget {
     );
   }
 }
+
 
 InputDecoration textFieldDecoration(BuildContext context, String hintText) =>
     InputDecoration(

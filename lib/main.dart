@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'manualpage.dart'; // Import the file here
+
 
 void main() {
   runApp(const GenerativeAISample());
@@ -42,13 +44,15 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Column(
         children: [
           PreferredSize(
-            preferredSize: Size.fromHeight(100), // Adjust height as needed
+            preferredSize: Size.fromHeight(150), // Adjust height as needed
             child: AppBar(
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(widget.title),
-                  const SizedBox(width: 16), // Add spacing between title and buttons
+                  const SizedBox(width: 16),
+                  // Add spacing between title and buttons
+                  SizedBox(height: 50), // Adjust height as needed
                   OverlappingButtons(),
                 ],
               ),
@@ -66,15 +70,13 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
-
 class OverlappingButtons extends StatefulWidget {
   @override
   _OverlappingButtonsState createState() => _OverlappingButtonsState();
 }
 
 class _OverlappingButtonsState extends State<OverlappingButtons> {
-  bool _isSelected = false;
-  bool _isManualSelected = false; // Track which button is selected
+  bool _isSelected = true;
 
   @override
   Widget build(BuildContext context) {
@@ -82,28 +84,29 @@ class _OverlappingButtonsState extends State<OverlappingButtons> {
       children: [
         CustomPaint(
           size: Size(200.0, 50.0),
-          painter: MyButtonPainter(_isSelected, _isManualSelected),
+          //painter: MyButtonPainter(_isSelected, _isManualSelected),
         ),
         Row(
           children: [
             TextButton(
-              onPressed: () => setState(() {
-                _isSelected = true;
-                _isManualSelected = true;
-              }),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ManualPage()),
+                );
+              },
               child: Text('   Manual'),
               style: TextButton.styleFrom(
-                foregroundColor: _isSelected ? Color(0xFF1BBAA8) : Color(0xFF203D4F),
+                foregroundColor: Colors.grey,
               ),
             ),
             TextButton(
               onPressed: () => setState(() {
                 _isSelected = true;
-                _isManualSelected = false;
               }),
               child: Text('         With AI'),
               style: TextButton.styleFrom(
-                foregroundColor: _isSelected ? Color(0xFF203D4F) : Color(0xFF1BBAA8),
+                foregroundColor: _isSelected ? Colors.green : Colors.grey,
               ),
             ),
           ],
@@ -111,6 +114,8 @@ class _OverlappingButtonsState extends State<OverlappingButtons> {
       ],
     );
   }
+
+
 }
 
 class MyButtonPainter extends CustomPainter {
@@ -149,20 +154,16 @@ class MyButtonPainter extends CustomPainter {
     }
 
     final path = Path();
-    path.addRRect(RRect.fromLTRBR(0.0, 0.0, size.width, size.height, Radius.circular(10.0)));
+    path.addRRect(RRect.fromLTRBR(
+        0.0, 0.0, size.width, size.height, Radius.circular(10.0)));
     canvas.drawPath(path, paint);
   }
 
   @override
   bool shouldRepaint(MyButtonPainter oldDelegate) =>
-      _isSelected != oldDelegate._isSelected || _isManualSelected != oldDelegate._isManualSelected;
+      _isSelected != oldDelegate._isSelected ||
+          _isManualSelected != oldDelegate._isManualSelected;
 }
-
-
-
-
-
-
 
 class ChatWidget extends StatefulWidget {
   const ChatWidget({Key? key, required this.apiKey}) : super(key: key);
@@ -213,13 +214,15 @@ class _ChatWidgetState extends State<ChatWidget> {
           Expanded(
             child: GestureDetector(
               onVerticalDragUpdate: (details) {
-                _scrollController.jumpTo(_scrollController.offset - details.primaryDelta! / 3);
+                _scrollController.jumpTo(
+                    _scrollController.offset - details.primaryDelta! / 3);
               },
               child: ListView.builder(
                 controller: _scrollController,
                 reverse: true, // Reverse the list to start from the bottom
                 itemBuilder: (context, idx) {
-                  final content = history[history.length - 1 - idx]; // Reverse index
+                  final content =
+                  history[history.length - 1 - idx]; // Reverse index
                   final text = content.parts
                       .whereType<TextPart>()
                       .map<String>((e) => e.text)
@@ -378,39 +381,38 @@ class ImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Builder(
+      body: Builder(
         builder: (context) {
-      return Center(
-          child: SingleChildScrollView(
-          child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-          Image.asset('assets/two.png'),
-            TextButton.icon(
-              onPressed: () {
-                // Add your functionality here
-              },
-              style: TextButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0), // Adjust as needed
-                  side: BorderSide(color: Colors.black, width: 2.0), // Bold border
-                ),
+          return Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/two.png'),
+                  TextButton.icon(
+                    onPressed: () {
+                      // Add your functionality here
+                    },
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        // Adjust as needed
+                        side: BorderSide(
+                            color: Colors.black, width: 2.0), // Bold border
+                      ),
+                    ),
+                    label: Text('Generate Anonymous Story'),
+                    icon: Transform.rotate(
+                      angle: -1.0, // Adjust the angle as needed
+                      child: Icon(Icons.arrow_forward), // Adjust size as needed
+                    ),
+                  )
+                ],
               ),
-              label: Text('Generate Anonymous Story'),
-              icon: Transform.rotate(
-                angle: -1.0, // Adjust the angle as needed
-                child: Icon(Icons.arrow_forward), // Adjust size as needed
-              ),
-            )
-
-
-
-          ],
-          ),
-          ),
-      );
+            ),
+          );
         },
-        ),
+      ),
     );
   }
 }

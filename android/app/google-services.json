@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "276764865712",
+    "project_id": "inventale-bf5aa",
+    "storage_bucket": "inventale-bf5aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:276764865712:android:036af1a9418570c37d3775",
+        "android_client_info": {
+          "package_name": "com.example.se_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAogslYMQKnEPPHgsXmYR07YjHXyp_SycI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

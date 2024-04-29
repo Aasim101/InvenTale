@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
-import 'manualpage.dart'; // Import the file here
+import 'screens/manualpage.dart'; // Import the file here
 import 'package:provider/provider.dart';
-
+import 'screens/registration.dart';
+import 'screens/login.dart';
 
 
 void main() {
@@ -50,7 +51,11 @@ class GenerativeAISample extends StatelessWidget {
             ),
             useMaterial3: true,
           ),
-          home: const ChatScreen(title: ''),
+            initialRoute: LoginScreen.id,
+          routes: {
+            RegistrationScreen.id : (context) => RegistrationScreen(),
+            LoginScreen.id : (context) => LoginScreen(),
+          },
         );
       },
     );

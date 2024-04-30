@@ -1,4 +1,4 @@
-import 'package:InvenTale/screens.dart/bookloading.dart';
+import 'package:InvenTale/screens.dart/storyLoading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -45,7 +45,7 @@ class _romanceState extends State<romance> {
                       onTap: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                              return bookloading(
+                              return storyLoading(
                                   c: widget.c4["items"][index + 1]["volumeInfo"]
                                   ["industryIdentifiers"][0]["identifier"]);
                             }));

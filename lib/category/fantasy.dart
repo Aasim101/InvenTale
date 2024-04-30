@@ -1,5 +1,5 @@
 
-import 'package:InvenTale/screens.dart/bookloading.dart';
+import 'package:InvenTale/screens.dart/storyLoading.dart';
 import 'package:InvenTale/screens.dart/error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -47,7 +47,7 @@ class _fantasyState extends State<fantasy> {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                               try {
-                                return bookloading(
+                                return storyLoading(
                                     c: widget.c2["items"][index + 1]["volumeInfo"]
                                     ["industryIdentifiers"][0]["identifier"]);
                               } catch (e) {

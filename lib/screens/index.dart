@@ -6,6 +6,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  static String id = "main_page";
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

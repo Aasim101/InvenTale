@@ -27,27 +27,29 @@ class _CollaborativeStoryPageState extends State<CollaborativeStoryPage> {
 
   Future<void> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
-      final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
-      // Use googleSignInAuthentication.idToken to authenticate with your backend server.
-      // Once authenticated, you can proceed with fetching documents.
-      fetchDocuments();
+      final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication? googleSignInAuthentication = await googleSignInAccount?.authentication;
+      if (googleSignInAuthentication != null) {
+        // Use googleSignInAuthentication.idToken to authenticate with your backend server.
+        // Once authenticated, you can proceed with fetching documents.
+        fetchDocuments();
+      }
     } catch (error) {
       print('Error signing in with Google: $error');
     }
   }
 
   Future<void> fetchDocuments() async {
-    final client = await _googleSignIn.authenticatedClient();
+    final client = await _googleSignIn.authenticatedClient;
     final api = docs.DocsApi(client);
     final response = await api.documents.get('documentId');
-    print(response.body.content);
+    print(response.body?.content);
     // Once you have fetched documents, you can share the document or listen for changes.
     // For simplicity, let's just print the document content for now.
   }
 
   Future<void> shareDocument(String documentId, String userEmail) async {
-    final client = await _googleSignIn.authenticatedClient();
+    final client = await _googleSignIn.authenticatedClient;
     final api = docs.PermissionsResourceApi(client);
     final permission = docs.Permission();
     permission.role = 'writer'; // or 'reader'

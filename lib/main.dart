@@ -1,3 +1,4 @@
+import 'package:dum/screens/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -51,10 +52,11 @@ class GenerativeAISample extends StatelessWidget {
             ),
             useMaterial3: true,
           ),
-            initialRoute: LoginScreen.id,
+            initialRoute: MyApp.id,
           routes: {
             RegistrationScreen.id : (context) => RegistrationScreen(),
             LoginScreen.id : (context) => LoginScreen(),
+            MyApp.id : (context) => MyApp(),
           },
         );
       },

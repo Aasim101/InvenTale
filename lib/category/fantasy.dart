@@ -1,9 +1,10 @@
 
-import 'package:InvenTale/screens.dart/bookloading.dart';
-import 'package:InvenTale/screens.dart/error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+
+import '../screens/bookloading.dart';
+import '../screens/error.dart';
 
 class fantasy extends StatefulWidget {
   var c2;

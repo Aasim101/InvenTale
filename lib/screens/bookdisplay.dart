@@ -2,7 +2,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, deprecated_member_use, use_full_hex_values_for_flutter_colors
 
 import 'dart:io' as i;
-import 'package:InvenTale/screens.dart/homescreen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -12,6 +11,8 @@ import 'package:http/http.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import './homescreen.dart';
 
 class bookdisplay extends StatefulWidget {
   var d;

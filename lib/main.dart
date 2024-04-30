@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -5,15 +6,22 @@ import 'screens/manualpage.dart'; // Import the file here
 import 'package:provider/provider.dart';
 import 'screens/registration.dart';
 import 'screens/login.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'screens/index.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(ChangeNotifierProvider(
     create: (_) => ThemeProvider(),
     child: const GenerativeAISample(),
   ));
 }
-
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.light;
@@ -21,11 +29,11 @@ class ThemeProvider extends ChangeNotifier {
   ThemeMode get themeMode => _themeMode;
 
   void toggleTheme() {
-    _themeMode = _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    _themeMode =
+        _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
 }
-
 
 class GenerativeAISample extends StatelessWidget {
   const GenerativeAISample({Key? key}) : super(key: key);
@@ -51,10 +59,12 @@ class GenerativeAISample extends StatelessWidget {
             ),
             useMaterial3: true,
           ),
-            initialRoute: LoginScreen.id,
+          initialRoute: LoginScreen.id ,
           routes: {
-            RegistrationScreen.id : (context) => RegistrationScreen(),
-            LoginScreen.id : (context) => LoginScreen(),
+            RegistrationScreen.id: (context) => RegistrationScreen(),
+            LoginScreen.id: (context) => LoginScreen(),
+            ChatScreen.id: (context) => ChatScreen(title: 'InvenTale'),
+            MyApp.id : (context) => MyApp(),
           },
         );
       },
@@ -63,7 +73,9 @@ class GenerativeAISample extends StatelessWidget {
 }
 
 
+
 class ChatScreen extends StatefulWidget {
+  static String id = 'ai_chatscreen';
   const ChatScreen({Key? key, required this.title}) : super(key: key);
   final String title;
 
@@ -72,23 +84,40 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  String? apiKey;
+  late User? loggedInUser; // Make loggedInUser nullable
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() async {
+    try {
+      final user = await FirebaseAuth.instance.currentUser;
+      setState(() {
+        loggedInUser = user;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loggedInUser != null
+        ? Scaffold(
       body: Column(
         children: [
           PreferredSize(
-            preferredSize: Size.fromHeight(150), // Adjust height as needed
+            preferredSize: Size.fromHeight(150),
             child: AppBar(
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(widget.title),
                   const SizedBox(width: 16),
-                  // Add spacing between title and buttons
-                  SizedBox(height: 50), // Adjust height as needed
+                  SizedBox(height: 50),
                   OverlappingButtons(),
                 ],
               ),
@@ -98,12 +127,15 @@ class _ChatScreenState extends State<ChatScreen> {
             child: ImageWidget(),
           ),
           Expanded(
-            child:
-            ChatWidget(apiKey: "AIzaSyAnhmR1EFQGoGR-IE0Iunh0VmX5q7Xjd0Q"),
+            child: ChatWidget(
+              apiKey: "AIzaSyAnhmR1EFQGoGR-IE0Iunh0VmX5q7Xjd0Q",
+              loggedInUser: loggedInUser,
+            ),
           ),
         ],
       ),
-    );
+    )
+        : CircularProgressIndicator(); // Show loading indicator while user is being fetched
   }
 }
 
@@ -201,15 +233,22 @@ class MyButtonPainter extends CustomPainter {
 }
 
 class ChatWidget extends StatefulWidget {
-  const ChatWidget({Key? key, required this.apiKey}) : super(key: key);
+  const ChatWidget({
+    Key? key,
+    required this.apiKey,
+    required this.loggedInUser,
+  }) : super(key: key);
 
   final String apiKey;
+  final User? loggedInUser;
 
   @override
   State<ChatWidget> createState() => _ChatWidgetState();
 }
 
+
 class _ChatWidgetState extends State<ChatWidget> {
+  late String messageText;
   late final GenerativeModel _model;
   late final ChatSession _chat;
   final ScrollController _scrollController = ScrollController();
@@ -250,14 +289,15 @@ class _ChatWidgetState extends State<ChatWidget> {
             child: GestureDetector(
               onVerticalDragUpdate: (details) {
                 _scrollController.jumpTo(
-                    _scrollController.offset - details.primaryDelta! / 3);
+                  _scrollController.offset - details.primaryDelta! / 3,
+                );
               },
               child: ListView.builder(
                 controller: _scrollController,
-                reverse: true, // Reverse the list to start from the bottom
+                reverse: true,
                 itemBuilder: (context, idx) {
                   final content =
-                  history[history.length - 1 - idx]; // Reverse index
+                  history[history.length - 1 - idx];
                   final text = content.parts
                       .whereType<TextPart>()
                       .map<String>((e) => e.text)
@@ -281,18 +321,22 @@ class _ChatWidgetState extends State<ChatWidget> {
                 Expanded(
                   child: Container(
                     constraints: BoxConstraints(
-                      maxWidth: MediaQuery.of(context)
-                          .size
-                          .width, // Adjust the percentage as needed
+                      maxWidth:
+                      MediaQuery.of(context).size.width,
                     ),
                     child: TextField(
+                      onChanged: (value) {
+                        messageText = value;
+                      },
                       autofocus: true,
                       focusNode: _textFieldFocus,
-                      decoration:
-                      textFieldDecoration(context, 'Enter a prompt...'),
+                      decoration: textFieldDecoration(
+                        context,
+                        'Enter a prompt...',
+                      ),
                       controller: _textController,
                       onSubmitted: (String value) {
-                        _sendChatMessage(value);
+                        _sendChatMessage(value, widget.loggedInUser);
                       },
                     ),
                   ),
@@ -301,11 +345,16 @@ class _ChatWidgetState extends State<ChatWidget> {
                 if (!_loading)
                   IconButton(
                     onPressed: () async {
-                      _sendChatMessage(_textController.text);
+                      _sendChatMessage(
+                        _textController.text,
+                        widget.loggedInUser,
+                      );
                     },
                     icon: Icon(
                       Icons.send,
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary,
                     ),
                   )
                 else
@@ -318,7 +367,13 @@ class _ChatWidgetState extends State<ChatWidget> {
     );
   }
 
-  Future<void> _sendChatMessage(String message) async {
+  Future<void> _sendChatMessage(
+      String message, User? loggedInUser) async {
+    if (loggedInUser == null) {
+      return; // Do nothing if user is null
+    }
+
+    final _firestore = FirebaseFirestore.instance;
     setState(() {
       _loading = true;
     });
@@ -328,6 +383,13 @@ class _ChatWidgetState extends State<ChatWidget> {
         Content.text(message),
       );
       final text = response.text;
+      _firestore.collection('chats').add(
+        {
+          'message': messageText,
+          'response': text,
+          'sender': loggedInUser.email,
+        },
+      );
       if (text == null) {
         _showError('Empty response.');
         return;
@@ -366,13 +428,14 @@ class _ChatWidgetState extends State<ChatWidget> {
                 Navigator.of(context).pop();
               },
               child: const Text('OK'),
-            )
+            ),
           ],
         );
       },
     );
   }
 }
+
 
 class MessageWidget extends StatelessWidget {
   const MessageWidget({
@@ -434,18 +497,23 @@ class ImageWidget extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             side: BorderSide(
-                                color: Theme.of(context).colorScheme.secondary,
-                                width: 2.0),
+                              color: themeProvider.themeMode == ThemeMode.light
+                                  ? Theme.of(context).colorScheme.secondary
+                                  : Theme.of(context).colorScheme.primary,
+                              width: 2.0,
+                            ),
                           ),
                         ),
-                        label: Text('Change to the ${themeProvider.themeMode == ThemeMode.light ? 'dark' : 'light'} theme'),
+                        label: Text(
+                          'Change to the ${themeProvider.themeMode == ThemeMode.light ? 'dark' : 'light'} theme',
+                        ),
                         icon: Transform.rotate(
                           angle: -1.0,
                           child: Icon(Icons.arrow_forward),
                         ),
                       );
                     },
-                  )
+                  ),
                 ],
               ),
             ),
@@ -478,3 +546,4 @@ InputDecoration textFieldDecoration(BuildContext context, String hintText) =>
         ),
       ),
     );
+

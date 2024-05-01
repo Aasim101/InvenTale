@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings
 
-import 'package:InvenTale/screens.dart/bookloading.dart';
-import 'package:InvenTale/screens.dart/error.dart';
+import 'package:inventale/screens/bookloading.dart';
+import 'package:inventale/screens/error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -216,7 +216,7 @@ class _searchfilterState extends State<searchfilter> {
                                 SizedBox(
                                   height: 30,
                                 ),
-                                RaisedButton(
+                                ElevatedButton(
                                   onPressed: () {
                                     getisbn(index);
                                     Navigator.push(context,
@@ -224,12 +224,15 @@ class _searchfilterState extends State<searchfilter> {
                                           return bookloading(c: isbn);
                                         }));
                                   },
-                                  color: Colors.black,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.black, // Background color
+                                  ),
                                   child: Text(
                                     "DETAILS",
                                     style: TextStyle(color: Colors.white),
                                   ),
-                                )
+                                ),
+
                               ],
                             )
                           ],

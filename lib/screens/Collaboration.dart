@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/docs/v1.dart' as docs;
+import 'package:http/http.dart' as http;
+import 'package:googleapis_auth/auth_io.dart' as auth;
 
 class CollaborativeStoryPage extends StatefulWidget {
   @override
@@ -17,7 +19,7 @@ class _CollaborativeStoryPageState extends State<CollaborativeStoryPage> {
         title: Text('Collaborative Story'),
       ),
       body: Center(
-        child: RaisedButton(
+        child: ElevatedButton(
           onPressed: signInWithGoogle,
           child: Text('Sign In with Google'),
         ),
@@ -28,39 +30,37 @@ class _CollaborativeStoryPageState extends State<CollaborativeStoryPage> {
   Future<void> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
-      final GoogleSignInAuthentication? googleSignInAuthentication = await googleSignInAccount?.authentication;
-      if (googleSignInAuthentication != null) {
-        // Use googleSignInAuthentication.idToken to authenticate with your backend server.
-        // Once authenticated, you can proceed with fetching documents.
-        fetchDocuments();
+      if (googleSignInAccount != null) {
+        final auth.AccessCredentials credentials = await _getCredentials(googleSignInAccount);
+        await fetchDocuments(credentials);
       }
     } catch (error) {
       print('Error signing in with Google: $error');
     }
   }
 
-  Future<void> fetchDocuments() async {
-    final client = await _googleSignIn.authenticatedClient;
-    final api = docs.DocsApi(client);
-    final response = await api.documents.get('documentId');
-    print(response.body?.content);
-    // Once you have fetched documents, you can share the document or listen for changes.
-    // For simplicity, let's just print the document content for now.
+  Future<auth.AccessCredentials> _getCredentials(GoogleSignInAccount googleSignInAccount) async {
+    final auth.GoogleSignInAuthentication googleAuth = await googleSignInAccount.authentication;
+    return auth.AccessCredentials(
+      auth.AccessToken(googleAuth.accessToken, ['https://www.googleapis.com/auth/documents'] as String, DateTime.now().add(Duration(hours: 1))),
+      googleAuth.idToken ?? '', // ID Token, can be empty string if not available
+      [],
+    );
   }
 
-  Future<void> shareDocument(String documentId, String userEmail) async {
-    final client = await _googleSignIn.authenticatedClient;
-    final api = docs.PermissionsResourceApi(client);
-    final permission = docs.Permission();
-    permission.role = 'writer'; // or 'reader'
-    permission.emailAddress = userEmail;
-    await api.create(permission, documentId);
-    // This function shares the document with the specified user.
-  }
-
-  void listenForDocumentChanges(String documentId) {
-    // Use Google Docs API to listen for changes in the document.
-    // Update your app UI accordingly.
+  Future<void> fetchDocuments(auth.AccessCredentials credentials) async {
+    try {
+      final http.Client client = http.Client();
+      final auth.AuthClient authenticatedClient = auth.authenticatedClient(
+        client,
+        credentials,
+      );
+      final api = docs.DocsApi(authenticatedClient);
+      final response = await api.documents.get('documentId');
+      print(response.body?.content);
+    } catch (error) {
+      print('Error fetching documents: $error');
+    }
   }
 }
 

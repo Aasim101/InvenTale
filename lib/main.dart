@@ -1,4 +1,4 @@
-import 'package:dum/screens/index.dart';
+import 'package:inventale/screens/index.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -12,6 +12,8 @@ import 'firebase_options.dart';
 import 'screens/index.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'screens/profile.dart';
 
 
 void main() async {
@@ -65,6 +67,7 @@ class GenerativeAISample extends StatelessWidget {
           routes: {
             RegistrationScreen.id: (context) => RegistrationScreen(),
             LoginScreen.id: (context) => LoginScreen(),
+            ProfilePage.id : (context) => ProfilePage(),
             ChatScreen.id: (context) => ChatScreen(),
             MyApp.id: (context) => MyApp(),
           },

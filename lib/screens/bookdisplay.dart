@@ -11,8 +11,7 @@ import 'package:http/http.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import './homescreen.dart';
+import 'package:inventale/screens/homescreen.dart';
 
 class bookdisplay extends StatefulWidget {
   var d;
@@ -125,13 +124,14 @@ class _bookdisplayState extends State<bookdisplay> {
   Future<i.File?> downloadfile(var url, var filename) async {
     try {
       var appstorage = await getApplicationDocumentsDirectory();
+      Duration myDuration = Duration(seconds: 0);
       // ignore: unused_local_variable
       final file = i.File('${appstorage.path}/filename');
       final Response = await Dio().get(url,
           options: Options(
             responseType: ResponseType.bytes,
             followRedirects: false,
-            receiveTimeout: 0,
+            receiveTimeout: myDuration,
           ));
       final raf = file.openSync(mode: i.FileMode.write);
       raf.writeFromSync(Response.data);
@@ -149,18 +149,21 @@ class _bookdisplayState extends State<bookdisplay> {
       backgroundColor: Color(0xfff012ac0),
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(vertical: 25.0),
-        child: RaisedButton(
+        child: ElevatedButton(
           onPressed: () async {
             await launchUrl(
-                Uri.parse(widget.d["items"][0]["accessInfo"]["webReaderLink"]));
+                Uri.parse(widget.d["items"][0]["accessInfo"]["webReaderLink"])
+            );
           },
-          splashColor: Colors.grey,
-          color: Colors.black,
+          style: ElevatedButton.styleFrom(
+            splashFactory: InkRipple.splashFactory, backgroundColor: Colors.black,
+          ),
           child: Text(
             "READ BOOK",
             style: TextStyle(color: Colors.white),
           ),
         ),
+
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SafeArea(

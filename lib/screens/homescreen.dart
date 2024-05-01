@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last
 
-import 'package:InvenTale/category/fantasy.dart'
-import 'package:InvenTale/category/horror.dart';
-import 'package:InvenTale/category/health.dart';
-import 'package:InvenTale/category/adventure.dart';
-import 'package:InvenTale/screens.dart/bookloading.dart';
-import 'package:InvenTale/screens.dart/search_loading.dart';
+import 'package:inventale/category/fantasy.dart';
+import 'package:inventale/category/horror.dart';
+import 'package:inventale/category/health.dart';
+import 'package:inventale/category/adventure.dart';
+import 'package:inventale/screens/bookloading.dart';
+import 'package:inventale/screens/search_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -119,20 +119,22 @@ class _homescreenState extends State<homescreen> {
                         SizedBox(
                           height: 30,
                         ),
-                        RaisedButton(
+                        ElevatedButton(
                           onPressed: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
                                   return searchloading(text: t.text);
                                 }));
                           },
-                          splashColor: Color(0xfff012AC0),
-                          color: Colors.white,
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Color(0xfff012AC0), backgroundColor: Colors.white, // Splash color
+                          ),
                           child: Text(
                             "SEARCH",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
+
                         SizedBox(
                           height: 20,
                         ),

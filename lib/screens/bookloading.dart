@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart';
-
-import './bookdisplay.dart';
+import 'package:inventale/screens/bookdisplay.dart';
 
 class bookloading extends StatefulWidget {
   var c;
@@ -34,7 +33,7 @@ class _bookloadingState extends State<bookloading> {
           "https://www.googleapis.com/books/v1/volumes?q=isbn:${widget.c}&key=AIzaSyAqxw3nnCxwNQXRmXb-ZFi8FTNyhz6kwGA"));
       c2 = jsonDecode(r.body);
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return display(d: c2);
+        return bookdisplay(d: c2);
       }));
     } catch (e) {
       print("error");

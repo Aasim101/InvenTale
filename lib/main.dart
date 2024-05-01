@@ -1,4 +1,3 @@
-import 'package:dum/screens/index.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -12,7 +11,7 @@ import 'firebase_options.dart';
 import 'screens/index.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'screens/history_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,12 +60,13 @@ class GenerativeAISample extends StatelessWidget {
             ),
             useMaterial3: true,
           ),
-          initialRoute: LoginScreen.id,
+          initialRoute: LoginScreen.id ,
           routes: {
             RegistrationScreen.id: (context) => RegistrationScreen(),
             LoginScreen.id: (context) => LoginScreen(),
-            ChatScreen.id: (context) => ChatScreen(),
-            MyApp.id: (context) => MyApp(),
+            ChatScreen.id: (context) => ChatScreen(title: 'InvenTale'),
+            MyApp.id : (context) => MyApp(),
+            HistoryScreen.id: (context) => HistoryScreen(),
           },
         );
       },
@@ -74,18 +74,19 @@ class GenerativeAISample extends StatelessWidget {
   }
 }
 
+
+
 class ChatScreen extends StatefulWidget {
   static String id = 'ai_chatscreen';
-
-  const ChatScreen({Key? key}) : super(key: key);
+  const ChatScreen({Key? key, required this.title}) : super(key: key);
+  final String title;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  late User? loggedInUser;
-  bool _isManualSelected = false;
+  late User? loggedInUser; // Make loggedInUser nullable
 
   @override
   void initState() {
@@ -108,89 +109,87 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return loggedInUser != null
         ? Scaffold(
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(widget.title),
+            const SizedBox(width: 16),
+            OverlappingButtons(),
+          ],
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HistoryScreen(
+                    loggedInUser: loggedInUser!,
+                  ),
+                ),
+              );
+            },
+            icon: Icon(Icons.history),
+          ),
+        ],
+      ),
       body: Column(
         children: [
-          PreferredSize(
-            preferredSize: const Size.fromHeight(150),
-            child: AppBar(
-              title: const Text('InvenTale'),
-              actions: [
-                OverlappingButtons(
-                  isManualSelected: _isManualSelected,
-                  onPressedManual: () {
-                    setState(() {
-                      _isManualSelected = true;
-                    });
-                  },
-                  onPressedAI: () {
-                    setState(() {
-                      _isManualSelected = false;
-                    });
-                  },
-                ),
-                IconButton(
-                  onPressed: () {
-                    Provider.of<ThemeProvider>(context, listen: false)
-                        .toggleTheme();
-                  },
-                  icon: Icon(Icons.lightbulb),
-                ),
-              ],
-            ),
-          ),
           Expanded(
             child: ImageWidget(),
           ),
           Expanded(
-            child: _isManualSelected
-                ? ManualPage()
-                : ChatWidget(
-              loggedInUser: loggedInUser!,
+            child: ChatWidget(
+              apiKey: "AIzaSyAnhmR1EFQGoGR-IE0Iunh0VmX5q7Xjd0Q",
+              loggedInUser: loggedInUser,
             ),
           ),
         ],
       ),
     )
-        : const CircularProgressIndicator();
+        : CircularProgressIndicator(); // Show loading indicator while user is being fetched
   }
 }
 
-class OverlappingButtons extends StatelessWidget {
-  final bool isManualSelected;
-  final VoidCallback onPressedManual;
-  final VoidCallback onPressedAI;
 
-  const OverlappingButtons({
-    Key? key,
-    required this.isManualSelected,
-    required this.onPressedManual,
-    required this.onPressedAI,
-  }) : super(key: key);
+class OverlappingButtons extends StatefulWidget {
+  @override
+  _OverlappingButtonsState createState() => _OverlappingButtonsState();
+}
+
+class _OverlappingButtonsState extends State<OverlappingButtons> {
+  bool _isSelected = true;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         CustomPaint(
-          size: const Size(200.0, 50.0),
-          painter: MyButtonPainter(
-            isManualSelected: isManualSelected,
-          ),
+          size: Size(200.0, 50.0),
+          //painter: MyButtonPainter(_isSelected, _isManualSelected),
         ),
         Row(
           children: [
             TextButton(
-              onPressed: onPressedManual,
-              child: const Text('   Manual'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ManualPage()),
+                );
+              },
+              child: Text('   Manual'),
               style: TextButton.styleFrom(
-                foregroundColor: isManualSelected ? Colors.green : Colors.grey,
+                foregroundColor: Colors.grey,
               ),
             ),
             TextButton(
-              onPressed: onPressedAI,
-              child: const Text('         With AI'),
+              onPressed: () => setState(() {
+                _isSelected = true;
+              }),
+              child: Text('         With AI'),
               style: TextButton.styleFrom(
-                foregroundColor: isManualSelected ? Colors.grey : Colors.green,
+                foregroundColor: _isSelected ? Colors.green : Colors.grey,
               ),
             ),
           ],
@@ -201,11 +200,10 @@ class OverlappingButtons extends StatelessWidget {
 }
 
 class MyButtonPainter extends CustomPainter {
-  final bool isManualSelected;
+  final bool _isSelected;
+  final bool _isManualSelected;
 
-  MyButtonPainter({
-    required this.isManualSelected,
-  });
+  MyButtonPainter(this._isSelected, this._isManualSelected);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -213,24 +211,28 @@ class MyButtonPainter extends CustomPainter {
 
     final paint = Paint();
 
-    // Define the gradient colors
-    final colors = [Color(0xFF1BBAA8), Color(0xFF203D4F)];
+    if (_isSelected) {
+      // Define the gradient colors
+      final colors = [Color(0xFF1BBAA8), Color(0xFF203D4F)];
 
-    // Create separate gradients for each half based on selection
-    final leftGradient = LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      colors: isManualSelected ? colors : [Colors.white, Colors.white],
-    ).createShader(Rect.fromLTWH(0.0, 0.0, halfWidth, size.height));
+      // Create separate gradients for each half based on selection
+      final leftGradient = LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: _isManualSelected ? colors : [Colors.white, Colors.white],
+      ).createShader(Rect.fromLTWH(0.0, 0.0, halfWidth, size.height));
 
-    final rightGradient = LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      colors: isManualSelected ? [Colors.white, Colors.white] : colors,
-    ).createShader(Rect.fromLTWH(halfWidth, 0.0, halfWidth, size.height));
+      final rightGradient = LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: _isManualSelected ? [Colors.white, Colors.white] : colors,
+      ).createShader(Rect.fromLTWH(halfWidth, 0.0, halfWidth, size.height));
 
-    // Set paint shader based on selection
-    paint.shader = isManualSelected ? leftGradient : rightGradient;
+      // Set paint shader based on selection
+      paint.shader = _isManualSelected ? leftGradient : rightGradient;
+    } else {
+      paint.color = Colors.white; // Default white for unselected state
+    }
 
     final path = Path();
     path.addRRect(RRect.fromLTRBR(
@@ -240,28 +242,24 @@ class MyButtonPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(MyButtonPainter oldDelegate) =>
-      isManualSelected != oldDelegate.isManualSelected;
-}
-
-class ImageWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Image.asset('assets/two.png'),
-      ),
-    );
-  }
+      _isSelected != oldDelegate._isSelected ||
+          _isManualSelected != oldDelegate._isManualSelected;
 }
 
 class ChatWidget extends StatefulWidget {
-  const ChatWidget({Key? key, required this.loggedInUser}) : super(key: key);
+  const ChatWidget({
+    Key? key,
+    required this.apiKey,
+    required this.loggedInUser,
+  }) : super(key: key);
 
-  final User loggedInUser;
+  final String apiKey;
+  final User? loggedInUser;
 
   @override
   State<ChatWidget> createState() => _ChatWidgetState();
 }
+
 
 class _ChatWidgetState extends State<ChatWidget> {
   late String messageText;
@@ -277,15 +275,14 @@ class _ChatWidgetState extends State<ChatWidget> {
     super.initState();
     _model = GenerativeModel(
       model: 'gemini-pro',
-      apiKey:
-          'AIzaSyAnhmR1EFQGoGR-IE0Iunh0VmX5q7Xjd0Q', // Replace 'YOUR_API_KEY' with your actual API key
+      apiKey: widget.apiKey,
     );
     _chat = _model.startChat();
   }
 
   void _scrollDown() {
     WidgetsBinding.instance!.addPostFrameCallback(
-      (_) => _scrollController.animateTo(
+          (_) => _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
         duration: const Duration(milliseconds: 750),
         curve: Curves.easeOutCirc,
@@ -295,12 +292,7 @@ class _ChatWidgetState extends State<ChatWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final userId = widget.loggedInUser.uid;
-    final userChatsCollection = FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .collection('chats');
-
+    final history = _chat.history.toList();
     return Padding(
       padding: const EdgeInsets.all(0.0),
       child: Column(
@@ -314,27 +306,22 @@ class _ChatWidgetState extends State<ChatWidget> {
                   _scrollController.offset - details.primaryDelta! / 3,
                 );
               },
-              child: StreamBuilder<QuerySnapshot>(
-                stream: userChatsCollection.orderBy('timestamp').snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-                  final history = snapshot.data?.docs ?? [];
-                  return ListView.builder(
-                    controller: _scrollController,
-                    reverse: true,
-                    itemBuilder: (context, idx) {
-                      final text = history[idx]['text'] as String;
-                      final isFromUser = history[idx]['isFromUser'] as bool;
-                      return MessageWidget(
-                        text: text,
-                        isFromUser: isFromUser,
-                      );
-                    },
-                    itemCount: history.length,
+              child: ListView.builder(
+                controller: _scrollController,
+                reverse: true,
+                itemBuilder: (context, idx) {
+                  final content =
+                  history[history.length - 1 - idx];
+                  final text = content.parts
+                      .whereType<TextPart>()
+                      .map<String>((e) => e.text)
+                      .join('');
+                  return MessageWidget(
+                    text: text,
+                    isFromUser: content.role == 'user',
                   );
                 },
+                itemCount: history.length,
               ),
             ),
           ),
@@ -347,8 +334,9 @@ class _ChatWidgetState extends State<ChatWidget> {
               children: [
                 Expanded(
                   child: Container(
-                    constraints: const BoxConstraints(
-                      maxWidth: double.infinity,
+                    constraints: BoxConstraints(
+                      maxWidth:
+                      MediaQuery.of(context).size.width,
                     ),
                     child: TextField(
                       onChanged: (value) {
@@ -356,22 +344,13 @@ class _ChatWidgetState extends State<ChatWidget> {
                       },
                       autofocus: true,
                       focusNode: _textFieldFocus,
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.all(15),
-                        hintText: 'Enter a prompt...',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(14),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(14),
-                          ),
-                        ),
+                      decoration: textFieldDecoration(
+                        context,
+                        'Enter a prompt...',
                       ),
                       controller: _textController,
                       onSubmitted: (String value) {
+
                         _sendChatMessage(value, widget.loggedInUser);
                       },
                     ),
@@ -386,8 +365,11 @@ class _ChatWidgetState extends State<ChatWidget> {
                         widget.loggedInUser,
                       );
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.send,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary,
                     ),
                   )
                 else
@@ -399,31 +381,37 @@ class _ChatWidgetState extends State<ChatWidget> {
       ),
     );
   }
+  Future<void> _sendChatMessage(String message, User? loggedInUser) async {
+    if (loggedInUser == null) {
+      return; // Do nothing if user is null
+    }
 
-  Future<void> _sendChatMessage(String message, User loggedInUser) async {
     final _firestore = FirebaseFirestore.instance;
     setState(() {
       _loading = true;
     });
 
     try {
-      final response = await _chat.sendMessage(
-        Content.text(message),
-      );
+      final response = await _chat.sendMessage(Content.text(message));
       final text = response.text;
-      final userId = loggedInUser.uid;
-      final userChatsCollection =
-          _firestore.collection('users').doc(userId).collection('chats');
-      await userChatsCollection.add({
-        'text': message,
-        'response': text,
-        'isFromUser': true, // Indicate that this message is from the user
-        'timestamp': Timestamp.now(), // Store the timestamp
-      });
       if (text == null) {
         _showError('Empty response.');
         return;
       } else {
+        // Get the user's document reference
+        final userRef = _firestore.collection('users').doc(loggedInUser.uid);
+
+        // Create a new chat document
+        final chatRef = userRef.collection('chats').doc();
+
+        // Set chat data
+        await chatRef.set({
+          'message': message,
+          'response': text,
+          'sender': loggedInUser.email,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+
         setState(() {
           _loading = false;
           _scrollDown();
@@ -442,6 +430,7 @@ class _ChatWidgetState extends State<ChatWidget> {
       _textFieldFocus.requestFocus();
     }
   }
+
 
   void _showError(String message) {
     showDialog(
@@ -466,6 +455,7 @@ class _ChatWidgetState extends State<ChatWidget> {
   }
 }
 
+
 class MessageWidget extends StatelessWidget {
   const MessageWidget({
     Key? key,
@@ -480,13 +470,15 @@ class MessageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment:
-          isFromUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+      isFromUser ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Flexible(
           child: Container(
             constraints: const BoxConstraints(maxWidth: 400),
             decoration: BoxDecoration(
-              color: isFromUser ? Colors.blue : Colors.grey,
+              color: isFromUser
+                  ? Theme.of(context).colorScheme.primaryContainer
+                  : Theme.of(context).colorScheme.surfaceVariant,
               borderRadius: BorderRadius.circular(18),
             ),
             padding: const EdgeInsets.symmetric(
@@ -502,13 +494,74 @@ class MessageWidget extends StatelessWidget {
   }
 }
 
-// class ImageWidget extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: Image.asset('assets/two.png'),
-//       ),
-//     );
-//   }
-// }
+class ImageWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Builder(
+        builder: (context) {
+          return Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/two.png'),
+                  Consumer<ThemeProvider>(
+                    builder: (context, themeProvider, child) {
+                      return TextButton.icon(
+                        onPressed: () {
+                          themeProvider.toggleTheme();
+                        },
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            side: BorderSide(
+                              color: themeProvider.themeMode == ThemeMode.light
+                                  ? Theme.of(context).colorScheme.secondary
+                                  : Theme.of(context).colorScheme.primary,
+                              width: 2.0,
+                            ),
+                          ),
+                        ),
+                        label: Text(
+                          'Change to the ${themeProvider.themeMode == ThemeMode.light ? 'dark' : 'light'} theme',
+                        ),
+                        icon: Transform.rotate(
+                          angle: -1.0,
+                          child: Icon(Icons.arrow_forward),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+
+InputDecoration textFieldDecoration(BuildContext context, String hintText) =>
+    InputDecoration(
+      contentPadding: const EdgeInsets.all(15),
+      hintText: hintText,
+      border: OutlineInputBorder(
+        borderRadius: const BorderRadius.all(
+          Radius.circular(14),
+        ),
+        borderSide: BorderSide(
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: const BorderRadius.all(
+          Radius.circular(14),
+        ),
+        borderSide: BorderSide(
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
+    );

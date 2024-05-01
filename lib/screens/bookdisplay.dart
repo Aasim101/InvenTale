@@ -11,8 +11,7 @@ import 'package:http/http.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import './homescreen.dart';
+import 'package:inventale/screens/homescreen.dart';
 
 class bookdisplay extends StatefulWidget {
   var d;
@@ -153,17 +152,15 @@ class _bookdisplayState extends State<bookdisplay> {
         child: ElevatedButton(
           onPressed: () async {
             await launchUrl(
-            Uri.parse(widget.d["items"][0]["accessInfo"]["webReaderLink"])
+                Uri.parse(widget.d["items"][0]["accessInfo"]["webReaderLink"])
             );
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
+            splashFactory: InkRipple.splashFactory, backgroundColor: Colors.black,
           ),
-        child: Text(
-          "READ BOOK",
-          style: TextStyle(color: Colors.white),
-        ),
-        ),
+          child: Text(
+            "READ BOOK",
+            style: TextStyle(color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SafeArea(

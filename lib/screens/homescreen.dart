@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last
 
-import 'package:InvenTale/category/fantasy.dart'
-import 'package:InvenTale/category/horror.dart';
-import 'package:InvenTale/category/health.dart';
-import 'package:InvenTale/category/adventure.dart';
-import 'package:InvenTale/screens.dart/bookloading.dart';
-import 'package:InvenTale/screens.dart/search_loading.dart';
+import 'package:inventale/category/fantasy.dart';
+import 'package:inventale/category/horror.dart';
+import 'package:inventale/category/health.dart';
+import 'package:inventale/category/adventure.dart';
+import 'package:inventale/screens/bookloading.dart';
+import 'package:inventale/screens/search_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';

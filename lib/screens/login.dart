@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
+import 'package:inventale/components/rounded_button';
+import 'package:inventale/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../main.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:inventale/components/rounded_button';
-import 'package:inventale/constants.dart';
+import './profile.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = 'login_screen';
@@ -17,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _auth = FirebaseAuth.instance;
   late String email;
   late String password;
+  Color customColor = Color.fromRGBO(32, 61, 79, 1.0);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 tag: 'logo',
                 child: Container(
                   height: 200.0,
-                  child: Image.asset('images/logo.png'),
+                  child: Image.asset('../assets/InvenTale.png'),
                 ),
               ),
               SizedBox(
@@ -65,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               RoundedButton(
                   title: 'Log In',
-                  colour: Colors.lightBlueAccent,
+                  colour: customColor,
                   onPressed: () async {
                     setState(() {
                       showSpinner = true;
@@ -74,7 +75,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       final user = await _auth.signInWithEmailAndPassword(
                           email: email, password: password);
                       if (user != null) {
-                        Navigator.pushNamed(context, ChatScreen.id);
+                        //Navigator.pushNamed(context, ChatScreen.id);
+                        Navigator.pushNamed(context, ProfilePage.id);
                       }
                       setState(() {
                         showSpinner = false;

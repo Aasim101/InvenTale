@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings
 
-import 'package:InvenTale/screens.dart/bookloading.dart';
-import 'package:InvenTale/screens.dart/error.dart';
+import 'package:inventale/screens/bookloading.dart';
+import 'package:inventale/screens/error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';

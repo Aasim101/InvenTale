@@ -1,7 +1,7 @@
 
 import 'dart:convert';
 
-import 'package:InvenTale/screens.dart/search_filter.dart';
+import 'package:inventale/screens/search_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';

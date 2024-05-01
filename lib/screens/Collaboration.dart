@@ -31,6 +31,7 @@ class _CollaborativeStoryPageState extends State<CollaborativeStoryPage> {
     try {
       final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
       if (googleSignInAccount != null) {
+        
         final auth.AccessCredentials credentials = await _getCredentials(googleSignInAccount as String);
         await fetchDocuments(credentials);
       }
@@ -39,10 +40,13 @@ class _CollaborativeStoryPageState extends State<CollaborativeStoryPage> {
     }
   }
 
-  Future<auth.AccessCredentials> _getCredentials(String accessToken, String? idToken) async {
+
+  Future<auth.AccessCredentials> _getCredentials(GoogleSignInAccount googleSignInAccount) async {
+    final auth.GoogleSignInAuthentication googleAuth = await googleSignInAccount.authentication;
     return auth.AccessCredentials(
-      auth.AccessToken(accessToken,['https://www.googleapis.com/auth/documents'] as String, DateTime.now().add(Duration(hours: 1))),
-      idToken ?? '', // ID Token, can be empty string if not available
+      auth.AccessToken(googleAuth.accessToken, ['https://www.googleapis.com/auth/documents'] as String, DateTime.now().add(Duration(hours: 1))),
+      googleAuth.idToken ?? '', // ID Token, can be empty string if not available
+
       [],
     );
   }

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../main.dart';
-import 'login.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:inventale/components/rounded_button';
 import 'package:inventale/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../main.dart';
+import './login.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
 class RegistrationScreen extends StatefulWidget {
   static String id = 'registration_screen';
   @override
@@ -32,7 +33,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 tag: 'logo',
                 child: Container(
                   height: 200.0,
-                  child: Image.asset('images/logo.png'),
+                  child: Image.asset('../assets/InvenTale.png'),
                 ),
               ),
               SizedBox(

@@ -13,6 +13,7 @@ import 'screens/index.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -31,7 +32,7 @@ class ThemeProvider extends ChangeNotifier {
 
   void toggleTheme() {
     _themeMode =
-        _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
 }
@@ -84,6 +85,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   late User? loggedInUser;
+  bool _isManualSelected = false;
 
   @override
   void initState() {
@@ -106,26 +108,149 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return loggedInUser != null
         ? Scaffold(
-            body: Column(
-              children: [
-                PreferredSize(
-                  preferredSize: const Size.fromHeight(150),
-                  child: AppBar(
-                    title: const Text('InvenTale'),
-                  ),
+      body: Column(
+        children: [
+          PreferredSize(
+            preferredSize: const Size.fromHeight(150),
+            child: AppBar(
+              title: const Text('InvenTale'),
+              actions: [
+                OverlappingButtons(
+                  isManualSelected: _isManualSelected,
+                  onPressedManual: () {
+                    setState(() {
+                      _isManualSelected = true;
+                    });
+                  },
+                  onPressedAI: () {
+                    setState(() {
+                      _isManualSelected = false;
+                    });
+                  },
                 ),
-                Expanded(
-                  child: ImageWidget(),
-                ),
-                Expanded(
-                  child: ChatWidget(
-                    loggedInUser: loggedInUser!,
-                  ),
+                IconButton(
+                  onPressed: () {
+                    Provider.of<ThemeProvider>(context, listen: false)
+                        .toggleTheme();
+                  },
+                  icon: Icon(Icons.lightbulb),
                 ),
               ],
             ),
-          )
+          ),
+          Expanded(
+            child: ImageWidget(),
+          ),
+          Expanded(
+            child: _isManualSelected
+                ? ManualPage()
+                : ChatWidget(
+              loggedInUser: loggedInUser!,
+            ),
+          ),
+        ],
+      ),
+    )
         : const CircularProgressIndicator();
+  }
+}
+
+class OverlappingButtons extends StatelessWidget {
+  final bool isManualSelected;
+  final VoidCallback onPressedManual;
+  final VoidCallback onPressedAI;
+
+  const OverlappingButtons({
+    Key? key,
+    required this.isManualSelected,
+    required this.onPressedManual,
+    required this.onPressedAI,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        CustomPaint(
+          size: const Size(200.0, 50.0),
+          painter: MyButtonPainter(
+            isManualSelected: isManualSelected,
+          ),
+        ),
+        Row(
+          children: [
+            TextButton(
+              onPressed: onPressedManual,
+              child: const Text('   Manual'),
+              style: TextButton.styleFrom(
+                foregroundColor: isManualSelected ? Colors.green : Colors.grey,
+              ),
+            ),
+            TextButton(
+              onPressed: onPressedAI,
+              child: const Text('         With AI'),
+              style: TextButton.styleFrom(
+                foregroundColor: isManualSelected ? Colors.grey : Colors.green,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class MyButtonPainter extends CustomPainter {
+  final bool isManualSelected;
+
+  MyButtonPainter({
+    required this.isManualSelected,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final halfWidth = size.width / 2;
+
+    final paint = Paint();
+
+    // Define the gradient colors
+    final colors = [Color(0xFF1BBAA8), Color(0xFF203D4F)];
+
+    // Create separate gradients for each half based on selection
+    final leftGradient = LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: isManualSelected ? colors : [Colors.white, Colors.white],
+    ).createShader(Rect.fromLTWH(0.0, 0.0, halfWidth, size.height));
+
+    final rightGradient = LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: isManualSelected ? [Colors.white, Colors.white] : colors,
+    ).createShader(Rect.fromLTWH(halfWidth, 0.0, halfWidth, size.height));
+
+    // Set paint shader based on selection
+    paint.shader = isManualSelected ? leftGradient : rightGradient;
+
+    final path = Path();
+    path.addRRect(RRect.fromLTRBR(
+        0.0, 0.0, size.width, size.height, Radius.circular(10.0)));
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(MyButtonPainter oldDelegate) =>
+      isManualSelected != oldDelegate.isManualSelected;
+}
+
+class ImageWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Image.asset('assets/two.png'),
+      ),
+    );
   }
 }
 
@@ -377,13 +502,13 @@ class MessageWidget extends StatelessWidget {
   }
 }
 
-class ImageWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Image.asset('assets/two.png'),
-      ),
-    );
-  }
-}
+// class ImageWidget extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Center(
+//         child: Image.asset('assets/two.png'),
+//       ),
+//     );
+//   }
+// }

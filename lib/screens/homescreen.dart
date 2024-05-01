@@ -12,6 +12,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class homescreen extends StatefulWidget {
+  static String id = 'home_screen';
   var c1;
   var c2;
   var c3;
@@ -64,7 +65,7 @@ class _homescreenState extends State<homescreen> {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         opacity: 0.4,
-                        image: AssetImage("assets/overlay.png"),
+                        image: AssetImage("../assets/overlay.png"),
                         fit: BoxFit.cover
 
                     )
@@ -91,7 +92,7 @@ class _homescreenState extends State<homescreen> {
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage(
-                            "assets/back.png",
+                            "../assets/back.png",
                           ),
                           fit: BoxFit.cover)),
                   child: Center(

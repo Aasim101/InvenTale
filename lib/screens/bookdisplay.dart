@@ -12,6 +12,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:inventale/screens/homescreen.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class bookdisplay extends StatefulWidget {
   var d;
@@ -29,7 +30,6 @@ class _bookdisplayState extends State<bookdisplay> {
   var rating = "Not available";
   var url =
       "https://www.bing.com/images/search?view=detailV2&ccid=vx9%2fIUj5&id=3B7650A146D55682645F765E60E786419299154C&thid=OIP.vx9_IUj50utS7cbaiRtoZAHaE8&mediaurl=https%3a%2f%2fst3.depositphotos.com%2f1186248%2f14351%2fi%2f950%2fdepositphotos_143511907-stock-photo-not-available-rubber-stamp.jpg&exph=682&expw=1023&q=not+available&simid=608054098357136066&FORM=IRPRST&ck=BADF0353AC59677CCFAA67227357E3CB&selectedIndex=1&ajaxhist=0&ajaxserp=0";
-
   @override
   void initState() {
     // TODO: implement initState
@@ -45,7 +45,6 @@ class _bookdisplayState extends State<bookdisplay> {
       url = widget.d["items"][0]["volumeInfo"]["imageLinks"]["thumbnail"];
     } catch (e) {
       url = widget.d["items"][1]["volumeInfo"]["imageLinks"]["thumbnail"];
-      ;
     }
   }
 
@@ -174,7 +173,7 @@ class _bookdisplayState extends State<bookdisplay> {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         opacity: 0.4,
-                        image: AssetImage("assets/overlay.png"),
+                        image: AssetImage("../assets/overlay.png"),
                         fit: BoxFit.cover)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -227,7 +226,7 @@ class _bookdisplayState extends State<bookdisplay> {
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           opacity: 0.4,
-                          image: AssetImage("assets/overlay.png"),
+                          image: AssetImage("../assets/overlay.png"),
                           fit: BoxFit.cover)),
                   child: Center(
                     child: Column(

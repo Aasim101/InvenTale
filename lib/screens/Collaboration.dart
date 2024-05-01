@@ -32,7 +32,7 @@ class _CollaborativeStoryPageState extends State<CollaborativeStoryPage> {
       final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
       if (googleSignInAccount != null) {
         
-        final auth.AccessCredentials credentials = await _getCredentials(googleSignInAccount as String);
+        final auth.AccessCredentials credentials = await _getCredentials(googleSignInAccount as GoogleSignInAccount);
         await fetchDocuments(credentials);
       }
     } catch (error) {

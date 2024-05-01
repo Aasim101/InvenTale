@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:inventale/screens/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -11,6 +12,9 @@ import 'firebase_options.dart';
 import 'screens/index.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'screens/homescreen.dart';
+import 'screens/profile.dart';
+import 'screens/loadingscreen.dart';
 import 'screens/history_screen.dart';
 
 void main() async {
@@ -31,7 +35,7 @@ class ThemeProvider extends ChangeNotifier {
 
   void toggleTheme() {
     _themeMode =
-    _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+        _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
 }
@@ -41,6 +45,7 @@ class GenerativeAISample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var l = ["mystery", "fantasy", "horror", "romance"];
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
         return MaterialApp(
@@ -60,21 +65,20 @@ class GenerativeAISample extends StatelessWidget {
             ),
             useMaterial3: true,
           ),
-          initialRoute: LoginScreen.id ,
+          initialRoute: loadingscreen.id,
           routes: {
             RegistrationScreen.id: (context) => RegistrationScreen(),
             LoginScreen.id: (context) => LoginScreen(),
+            ProfilePage.id: (context) => ProfilePage(),
+            loadingscreen.id: (context) => loadingscreen(l: l),
             ChatScreen.id: (context) => ChatScreen(title: 'InvenTale'),
-            MyApp.id : (context) => MyApp(),
-            HistoryScreen.id: (context) => HistoryScreen(),
+            MyApp.id: (context) => MyApp(),
           },
         );
       },
     );
   }
 }
-
-
 
 class ChatScreen extends StatefulWidget {
   static String id = 'ai_chatscreen';
@@ -109,49 +113,48 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return loggedInUser != null
         ? Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(widget.title),
-            const SizedBox(width: 16),
-            OverlappingButtons(),
-          ],
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HistoryScreen(
-                    loggedInUser: loggedInUser!,
+            appBar: AppBar(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(widget.title),
+                  const SizedBox(width: 16),
+                  OverlappingButtons(),
+                ],
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HistoryScreen(
+                          loggedInUser: loggedInUser!,
+                        ),
+                      ),
+                    );
+                  },
+                  icon: Icon(Icons.history),
+                ),
+              ],
+            ),
+            body: Column(
+              children: [
+                Expanded(
+                  child: ImageWidget(),
+                ),
+                Expanded(
+                  child: ChatWidget(
+                    apiKey: "AIzaSyAnhmR1EFQGoGR-IE0Iunh0VmX5q7Xjd0Q",
+                    loggedInUser: loggedInUser,
                   ),
                 ),
-              );
-            },
-            icon: Icon(Icons.history),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ImageWidget(),
-          ),
-          Expanded(
-            child: ChatWidget(
-              apiKey: "AIzaSyAnhmR1EFQGoGR-IE0Iunh0VmX5q7Xjd0Q",
-              loggedInUser: loggedInUser,
+              ],
             ),
-          ),
-        ],
-      ),
-    )
+          )
         : CircularProgressIndicator(); // Show loading indicator while user is being fetched
   }
 }
-
 
 class OverlappingButtons extends StatefulWidget {
   @override
@@ -243,7 +246,7 @@ class MyButtonPainter extends CustomPainter {
   @override
   bool shouldRepaint(MyButtonPainter oldDelegate) =>
       _isSelected != oldDelegate._isSelected ||
-          _isManualSelected != oldDelegate._isManualSelected;
+      _isManualSelected != oldDelegate._isManualSelected;
 }
 
 class ChatWidget extends StatefulWidget {
@@ -259,7 +262,6 @@ class ChatWidget extends StatefulWidget {
   @override
   State<ChatWidget> createState() => _ChatWidgetState();
 }
-
 
 class _ChatWidgetState extends State<ChatWidget> {
   late String messageText;
@@ -282,7 +284,7 @@ class _ChatWidgetState extends State<ChatWidget> {
 
   void _scrollDown() {
     WidgetsBinding.instance!.addPostFrameCallback(
-          (_) => _scrollController.animateTo(
+      (_) => _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
         duration: const Duration(milliseconds: 750),
         curve: Curves.easeOutCirc,
@@ -310,8 +312,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                 controller: _scrollController,
                 reverse: true,
                 itemBuilder: (context, idx) {
-                  final content =
-                  history[history.length - 1 - idx];
+                  final content = history[history.length - 1 - idx];
                   final text = content.parts
                       .whereType<TextPart>()
                       .map<String>((e) => e.text)
@@ -335,8 +336,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                 Expanded(
                   child: Container(
                     constraints: BoxConstraints(
-                      maxWidth:
-                      MediaQuery.of(context).size.width,
+                      maxWidth: MediaQuery.of(context).size.width,
                     ),
                     child: TextField(
                       onChanged: (value) {
@@ -350,7 +350,6 @@ class _ChatWidgetState extends State<ChatWidget> {
                       ),
                       controller: _textController,
                       onSubmitted: (String value) {
-
                         _sendChatMessage(value, widget.loggedInUser);
                       },
                     ),
@@ -367,9 +366,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                     },
                     icon: Icon(
                       Icons.send,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   )
                 else
@@ -381,6 +378,7 @@ class _ChatWidgetState extends State<ChatWidget> {
       ),
     );
   }
+
   Future<void> _sendChatMessage(String message, User? loggedInUser) async {
     if (loggedInUser == null) {
       return; // Do nothing if user is null
@@ -431,7 +429,6 @@ class _ChatWidgetState extends State<ChatWidget> {
     }
   }
 
-
   void _showError(String message) {
     showDialog(
       context: context,
@@ -455,7 +452,6 @@ class _ChatWidgetState extends State<ChatWidget> {
   }
 }
 
-
 class MessageWidget extends StatelessWidget {
   const MessageWidget({
     Key? key,
@@ -470,7 +466,7 @@ class MessageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment:
-      isFromUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+          isFromUser ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Flexible(
           child: Container(
@@ -542,7 +538,6 @@ class ImageWidget extends StatelessWidget {
     );
   }
 }
-
 
 InputDecoration textFieldDecoration(BuildContext context, String hintText) =>
     InputDecoration(

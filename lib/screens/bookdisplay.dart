@@ -11,8 +11,8 @@ import 'package:http/http.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import './homescreen.dart';
+import 'package:inventale/screens/homescreen.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class bookdisplay extends StatefulWidget {
   var d;
@@ -45,7 +45,6 @@ class _bookdisplayState extends State<bookdisplay> {
       url = widget.d["items"][0]["volumeInfo"]["imageLinks"]["thumbnail"];
     } catch (e) {
       url = widget.d["items"][1]["volumeInfo"]["imageLinks"]["thumbnail"];
-      ;
     }
   }
 
@@ -125,13 +124,14 @@ class _bookdisplayState extends State<bookdisplay> {
   Future<i.File?> downloadfile(var url, var filename) async {
     try {
       var appstorage = await getApplicationDocumentsDirectory();
+      Duration myDuration = Duration(seconds: 0);
       // ignore: unused_local_variable
       final file = i.File('${appstorage.path}/filename');
       final Response = await Dio().get(url,
           options: Options(
             responseType: ResponseType.bytes,
             followRedirects: false,
-            receiveTimeout: 0,
+            receiveTimeout: myDuration,
           ));
       final raf = file.openSync(mode: i.FileMode.write);
       raf.writeFromSync(Response.data);
@@ -142,25 +142,25 @@ class _bookdisplayState extends State<bookdisplay> {
       return null;
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return (Scaffold(
       backgroundColor: Color(0xfff012ac0),
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(vertical: 25.0),
-        child: RaisedButton(
+        child: ElevatedButton(
           onPressed: () async {
             await launchUrl(
-                Uri.parse(widget.d["items"][0]["accessInfo"]["webReaderLink"]));
+              Uri.parse(widget.d["items"][0]["accessInfo"]["webReaderLink"]),
+            );
           },
-          splashColor: Colors.grey,
-          color: Colors.black,
-          child: Text(
-            "READ BOOK",
-            style: TextStyle(color: Colors.white),
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Colors.white, backgroundColor: Colors.black, // Text color
+            splashFactory: InkRipple.splashFactory, // Optional, adds splash effect
           ),
+          child: Text("READ BOOK"),
         ),
+
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SafeArea(
@@ -173,7 +173,7 @@ class _bookdisplayState extends State<bookdisplay> {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         opacity: 0.4,
-                        image: AssetImage("assets/overlay.png"),
+                        image: AssetImage("../assets/overlay.png"),
                         fit: BoxFit.cover)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -226,7 +226,7 @@ class _bookdisplayState extends State<bookdisplay> {
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           opacity: 0.4,
-                          image: AssetImage("assets/overlay.png"),
+                          image: AssetImage("../assets/overlay.png"),
                           fit: BoxFit.cover)),
                   child: Center(
                     child: Column(
@@ -404,3 +404,4 @@ class _bookdisplayState extends State<bookdisplay> {
     ));
   }
 }
+

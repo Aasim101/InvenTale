@@ -1,17 +1,18 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last
 
-import 'package:InvenTale/category/fantasy.dart'
-import 'package:InvenTale/category/horror.dart';
-import 'package:InvenTale/category/health.dart';
-import 'package:InvenTale/category/adventure.dart';
-import 'package:InvenTale/screens.dart/bookloading.dart';
-import 'package:InvenTale/screens.dart/search_loading.dart';
+import 'package:inventale/category/fantasy.dart';
+import 'package:inventale/category/horror.dart';
+import 'package:inventale/category/health.dart';
+import 'package:inventale/category/adventure.dart';
+import 'package:inventale/screens/bookloading.dart';
+import 'package:inventale/screens/search_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class homescreen extends StatefulWidget {
+  static String id = 'home_screen';
   var c1;
   var c2;
   var c3;
@@ -64,7 +65,7 @@ class _homescreenState extends State<homescreen> {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         opacity: 0.4,
-                        image: AssetImage("assets/overlay.png"),
+                        image: AssetImage("../assets/overlay.png"),
                         fit: BoxFit.cover
 
                     )
@@ -91,7 +92,7 @@ class _homescreenState extends State<homescreen> {
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage(
-                            "assets/back.png",
+                            "../assets/back.png",
                           ),
                           fit: BoxFit.cover)),
                   child: Center(
@@ -119,20 +120,22 @@ class _homescreenState extends State<homescreen> {
                         SizedBox(
                           height: 30,
                         ),
-                        RaisedButton(
+                        ElevatedButton(
                           onPressed: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
                                   return searchloading(text: t.text);
                                 }));
                           },
-                          splashColor: Color(0xfff012AC0),
-                          color: Colors.white,
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Color(0xfff012AC0), backgroundColor: Colors.white, // Splash color
+                          ),
                           child: Text(
                             "SEARCH",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
+
                         SizedBox(
                           height: 20,
                         ),

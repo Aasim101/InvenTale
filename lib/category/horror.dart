@@ -4,8 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-
-import '../screens/bookloading.dart';
+import 'package:inventale/screens/bookloading.dart';
 
 class horror extends StatefulWidget {
   var c3;

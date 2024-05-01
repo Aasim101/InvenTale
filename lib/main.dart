@@ -30,7 +30,7 @@ class ThemeProvider extends ChangeNotifier {
 
   void toggleTheme() {
     _themeMode =
-        _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
 }
@@ -59,12 +59,12 @@ class GenerativeAISample extends StatelessWidget {
             ),
             useMaterial3: true,
           ),
-          initialRoute: LoginScreen.id ,
+          initialRoute: LoginScreen.id,
           routes: {
             RegistrationScreen.id: (context) => RegistrationScreen(),
             LoginScreen.id: (context) => LoginScreen(),
-            ChatScreen.id: (context) => ChatScreen(title: 'InvenTale'),
-            MyApp.id : (context) => MyApp(),
+            ChatScreen.id: (context) => ChatScreen(),
+            MyApp.id: (context) => MyApp(),
           },
         );
       },
@@ -72,19 +72,17 @@ class GenerativeAISample extends StatelessWidget {
   }
 }
 
-
-
 class ChatScreen extends StatefulWidget {
   static String id = 'ai_chatscreen';
-  const ChatScreen({Key? key, required this.title}) : super(key: key);
-  final String title;
+
+  const ChatScreen({Key? key}) : super(key: key);
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  late User? loggedInUser; // Make loggedInUser nullable
+  late User? loggedInUser;
 
   @override
   void initState() {
@@ -110,17 +108,9 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Column(
         children: [
           PreferredSize(
-            preferredSize: Size.fromHeight(150),
+            preferredSize: const Size.fromHeight(150),
             child: AppBar(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(widget.title),
-                  const SizedBox(width: 16),
-                  SizedBox(height: 50),
-                  OverlappingButtons(),
-                ],
-              ),
+              title: const Text('InvenTale'),
             ),
           ),
           Expanded(
@@ -128,124 +118,24 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           Expanded(
             child: ChatWidget(
-              apiKey: "AIzaSyAnhmR1EFQGoGR-IE0Iunh0VmX5q7Xjd0Q",
-              loggedInUser: loggedInUser,
+              loggedInUser: loggedInUser!,
             ),
           ),
         ],
       ),
     )
-        : CircularProgressIndicator(); // Show loading indicator while user is being fetched
+        : const CircularProgressIndicator();
   }
-}
-
-class OverlappingButtons extends StatefulWidget {
-  @override
-  _OverlappingButtonsState createState() => _OverlappingButtonsState();
-}
-
-class _OverlappingButtonsState extends State<OverlappingButtons> {
-  bool _isSelected = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        CustomPaint(
-          size: Size(200.0, 50.0),
-          //painter: MyButtonPainter(_isSelected, _isManualSelected),
-        ),
-        Row(
-          children: [
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ManualPage()),
-                );
-              },
-              child: Text('   Manual'),
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.grey,
-              ),
-            ),
-            TextButton(
-              onPressed: () => setState(() {
-                _isSelected = true;
-              }),
-              child: Text('         With AI'),
-              style: TextButton.styleFrom(
-                foregroundColor: _isSelected ? Colors.green : Colors.grey,
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class MyButtonPainter extends CustomPainter {
-  final bool _isSelected;
-  final bool _isManualSelected;
-
-  MyButtonPainter(this._isSelected, this._isManualSelected);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final halfWidth = size.width / 2;
-
-    final paint = Paint();
-
-    if (_isSelected) {
-      // Define the gradient colors
-      final colors = [Color(0xFF1BBAA8), Color(0xFF203D4F)];
-
-      // Create separate gradients for each half based on selection
-      final leftGradient = LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: _isManualSelected ? colors : [Colors.white, Colors.white],
-      ).createShader(Rect.fromLTWH(0.0, 0.0, halfWidth, size.height));
-
-      final rightGradient = LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: _isManualSelected ? [Colors.white, Colors.white] : colors,
-      ).createShader(Rect.fromLTWH(halfWidth, 0.0, halfWidth, size.height));
-
-      // Set paint shader based on selection
-      paint.shader = _isManualSelected ? leftGradient : rightGradient;
-    } else {
-      paint.color = Colors.white; // Default white for unselected state
-    }
-
-    final path = Path();
-    path.addRRect(RRect.fromLTRBR(
-        0.0, 0.0, size.width, size.height, Radius.circular(10.0)));
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(MyButtonPainter oldDelegate) =>
-      _isSelected != oldDelegate._isSelected ||
-          _isManualSelected != oldDelegate._isManualSelected;
 }
 
 class ChatWidget extends StatefulWidget {
-  const ChatWidget({
-    Key? key,
-    required this.apiKey,
-    required this.loggedInUser,
-  }) : super(key: key);
+  const ChatWidget({Key? key, required this.loggedInUser}) : super(key: key);
 
-  final String apiKey;
-  final User? loggedInUser;
+  final User loggedInUser;
 
   @override
   State<ChatWidget> createState() => _ChatWidgetState();
 }
-
 
 class _ChatWidgetState extends State<ChatWidget> {
   late String messageText;
@@ -261,7 +151,7 @@ class _ChatWidgetState extends State<ChatWidget> {
     super.initState();
     _model = GenerativeModel(
       model: 'gemini-pro',
-      apiKey: widget.apiKey,
+      apiKey: 'AIzaSyAnhmR1EFQGoGR-IE0Iunh0VmX5q7Xjd0Q', // Replace 'YOUR_API_KEY' with your actual API key
     );
     _chat = _model.startChat();
   }
@@ -278,7 +168,10 @@ class _ChatWidgetState extends State<ChatWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final history = _chat.history.toList();
+    final userId = widget.loggedInUser.uid;
+    final userChatsCollection =
+    FirebaseFirestore.instance.collection('users').doc(userId).collection('chats');
+
     return Padding(
       padding: const EdgeInsets.all(0.0),
       child: Column(
@@ -292,22 +185,27 @@ class _ChatWidgetState extends State<ChatWidget> {
                   _scrollController.offset - details.primaryDelta! / 3,
                 );
               },
-              child: ListView.builder(
-                controller: _scrollController,
-                reverse: true,
-                itemBuilder: (context, idx) {
-                  final content =
-                  history[history.length - 1 - idx];
-                  final text = content.parts
-                      .whereType<TextPart>()
-                      .map<String>((e) => e.text)
-                      .join('');
-                  return MessageWidget(
-                    text: text,
-                    isFromUser: content.role == 'user',
+              child: StreamBuilder<QuerySnapshot>(
+                stream: userChatsCollection.orderBy('timestamp').snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  }
+                  final history = snapshot.data?.docs ?? [];
+                  return ListView.builder(
+                    controller: _scrollController,
+                    reverse: true,
+                    itemBuilder: (context, idx) {
+                      final text = history[idx]['text'] as String;
+                      final isFromUser = history[idx]['isFromUser'] as bool;
+                      return MessageWidget(
+                        text: text,
+                        isFromUser: isFromUser,
+                      );
+                    },
+                    itemCount: history.length,
                   );
                 },
-                itemCount: history.length,
               ),
             ),
           ),
@@ -320,9 +218,8 @@ class _ChatWidgetState extends State<ChatWidget> {
               children: [
                 Expanded(
                   child: Container(
-                    constraints: BoxConstraints(
-                      maxWidth:
-                      MediaQuery.of(context).size.width,
+                    constraints: const BoxConstraints(
+                      maxWidth: double.infinity,
                     ),
                     child: TextField(
                       onChanged: (value) {
@@ -330,9 +227,19 @@ class _ChatWidgetState extends State<ChatWidget> {
                       },
                       autofocus: true,
                       focusNode: _textFieldFocus,
-                      decoration: textFieldDecoration(
-                        context,
-                        'Enter a prompt...',
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.all(15),
+                        hintText: 'Enter a prompt...',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(14),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(14),
+                          ),
+                        ),
                       ),
                       controller: _textController,
                       onSubmitted: (String value) {
@@ -350,11 +257,8 @@ class _ChatWidgetState extends State<ChatWidget> {
                         widget.loggedInUser,
                       );
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.send,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary,
                     ),
                   )
                 else
@@ -367,12 +271,7 @@ class _ChatWidgetState extends State<ChatWidget> {
     );
   }
 
-  Future<void> _sendChatMessage(
-      String message, User? loggedInUser) async {
-    if (loggedInUser == null) {
-      return; // Do nothing if user is null
-    }
-
+  Future<void> _sendChatMessage(String message, User loggedInUser) async {
     final _firestore = FirebaseFirestore.instance;
     setState(() {
       _loading = true;
@@ -383,13 +282,15 @@ class _ChatWidgetState extends State<ChatWidget> {
         Content.text(message),
       );
       final text = response.text;
-      _firestore.collection('chats').add(
-        {
-          'message': messageText,
-          'response': text,
-          'sender': loggedInUser.email,
-        },
-      );
+      final userId = loggedInUser.uid;
+      final userChatsCollection =
+      _firestore.collection('users').doc(userId).collection('chats');
+      await userChatsCollection.add({
+        'text': message,
+        'response': text,
+        'isFromUser': true, // Indicate that this message is from the user
+        'timestamp': Timestamp.now(), // Store the timestamp
+      });
       if (text == null) {
         _showError('Empty response.');
         return;
@@ -436,7 +337,6 @@ class _ChatWidgetState extends State<ChatWidget> {
   }
 }
 
-
 class MessageWidget extends StatelessWidget {
   const MessageWidget({
     Key? key,
@@ -450,16 +350,13 @@ class MessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment:
-      isFromUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment: isFromUser ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Flexible(
           child: Container(
             constraints: const BoxConstraints(maxWidth: 400),
             decoration: BoxDecoration(
-              color: isFromUser
-                  ? Theme.of(context).colorScheme.primaryContainer
-                  : Theme.of(context).colorScheme.surfaceVariant,
+              color: isFromUser ? Colors.blue : Colors.grey,
               borderRadius: BorderRadius.circular(18),
             ),
             padding: const EdgeInsets.symmetric(
@@ -479,71 +376,9 @@ class ImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Builder(
-        builder: (context) {
-          return Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/two.png'),
-                  Consumer<ThemeProvider>(
-                    builder: (context, themeProvider, child) {
-                      return TextButton.icon(
-                        onPressed: () {
-                          themeProvider.toggleTheme();
-                        },
-                        style: TextButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            side: BorderSide(
-                              color: themeProvider.themeMode == ThemeMode.light
-                                  ? Theme.of(context).colorScheme.secondary
-                                  : Theme.of(context).colorScheme.primary,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                        label: Text(
-                          'Change to the ${themeProvider.themeMode == ThemeMode.light ? 'dark' : 'light'} theme',
-                        ),
-                        icon: Transform.rotate(
-                          angle: -1.0,
-                          child: Icon(Icons.arrow_forward),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
+      body: Center(
+        child: Image.asset('assets/two.png'),
       ),
     );
   }
 }
-
-
-InputDecoration textFieldDecoration(BuildContext context, String hintText) =>
-    InputDecoration(
-      contentPadding: const EdgeInsets.all(15),
-      hintText: hintText,
-      border: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(14),
-        ),
-        borderSide: BorderSide(
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(14),
-        ),
-        borderSide: BorderSide(
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
-    );
-

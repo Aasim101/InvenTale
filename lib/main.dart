@@ -1,3 +1,4 @@
+import 'package:dum/screens/index.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -30,7 +31,7 @@ class ThemeProvider extends ChangeNotifier {
 
   void toggleTheme() {
     _themeMode =
-    _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+        _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
 }
@@ -105,25 +106,25 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return loggedInUser != null
         ? Scaffold(
-      body: Column(
-        children: [
-          PreferredSize(
-            preferredSize: const Size.fromHeight(150),
-            child: AppBar(
-              title: const Text('InvenTale'),
+            body: Column(
+              children: [
+                PreferredSize(
+                  preferredSize: const Size.fromHeight(150),
+                  child: AppBar(
+                    title: const Text('InvenTale'),
+                  ),
+                ),
+                Expanded(
+                  child: ImageWidget(),
+                ),
+                Expanded(
+                  child: ChatWidget(
+                    loggedInUser: loggedInUser!,
+                  ),
+                ),
+              ],
             ),
-          ),
-          Expanded(
-            child: ImageWidget(),
-          ),
-          Expanded(
-            child: ChatWidget(
-              loggedInUser: loggedInUser!,
-            ),
-          ),
-        ],
-      ),
-    )
+          )
         : const CircularProgressIndicator();
   }
 }
@@ -151,14 +152,15 @@ class _ChatWidgetState extends State<ChatWidget> {
     super.initState();
     _model = GenerativeModel(
       model: 'gemini-pro',
-      apiKey: 'AIzaSyAnhmR1EFQGoGR-IE0Iunh0VmX5q7Xjd0Q', // Replace 'YOUR_API_KEY' with your actual API key
+      apiKey:
+          'AIzaSyAnhmR1EFQGoGR-IE0Iunh0VmX5q7Xjd0Q', // Replace 'YOUR_API_KEY' with your actual API key
     );
     _chat = _model.startChat();
   }
 
   void _scrollDown() {
     WidgetsBinding.instance!.addPostFrameCallback(
-          (_) => _scrollController.animateTo(
+      (_) => _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
         duration: const Duration(milliseconds: 750),
         curve: Curves.easeOutCirc,
@@ -169,8 +171,10 @@ class _ChatWidgetState extends State<ChatWidget> {
   @override
   Widget build(BuildContext context) {
     final userId = widget.loggedInUser.uid;
-    final userChatsCollection =
-    FirebaseFirestore.instance.collection('users').doc(userId).collection('chats');
+    final userChatsCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('chats');
 
     return Padding(
       padding: const EdgeInsets.all(0.0),
@@ -284,7 +288,7 @@ class _ChatWidgetState extends State<ChatWidget> {
       final text = response.text;
       final userId = loggedInUser.uid;
       final userChatsCollection =
-      _firestore.collection('users').doc(userId).collection('chats');
+          _firestore.collection('users').doc(userId).collection('chats');
       await userChatsCollection.add({
         'text': message,
         'response': text,
@@ -350,7 +354,8 @@ class MessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: isFromUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment:
+          isFromUser ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Flexible(
           child: Container(

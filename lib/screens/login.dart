@@ -4,6 +4,7 @@ import 'package:dum/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../main.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
 class LoginScreen extends StatefulWidget {
   static String id = 'login_screen';
   @override
@@ -28,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Hero(
-                tag : 'logo',
+                tag: 'logo',
                 child: Container(
                   height: 200.0,
                   child: Image.asset('images/logo.png'),
@@ -43,7 +44,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 onChanged: (value) {
                   email = value;
                 },
-                decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your Email'),
+                decoration:
+                    kTextFieldDecoration.copyWith(hintText: 'Enter your Email'),
               ),
               SizedBox(
                 height: 8.0,
@@ -54,31 +56,31 @@ class _LoginScreenState extends State<LoginScreen> {
                 onChanged: (value) {
                   password = value;
                 },
-                decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your Password'),
+                decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Enter your Password'),
               ),
               SizedBox(
                 height: 24.0,
               ),
-              RoundedButton(title: 'Log In'
-                  ,
+              RoundedButton(
+                  title: 'Log In',
                   colour: Colors.lightBlueAccent,
-                  onPressed: ()async{
-                setState(() {
-                  showSpinner = true;
-                });
-                try{
-                  final user = await _auth.signInWithEmailAndPassword(email: email, password: password);
-                  if(user != null){
-                    Navigator.pushNamed(context, ChatScreen.id);
-                  }
-                  setState(() {
-                    showSpinner = false;
-                  });
-                }
-                catch(e){
-                  print(e);
-                }
-
+                  onPressed: () async {
+                    setState(() {
+                      showSpinner = true;
+                    });
+                    try {
+                      final user = await _auth.signInWithEmailAndPassword(
+                          email: email, password: password);
+                      if (user != null) {
+                        Navigator.pushNamed(context, ChatScreen.id);
+                      }
+                      setState(() {
+                        showSpinner = false;
+                      });
+                    } catch (e) {
+                      print(e);
+                    }
                   }),
             ],
           ),

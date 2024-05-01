@@ -118,11 +118,13 @@ class MyApp extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => LoginScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()),
                         );
                       },
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.teal),
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.teal),
                       ),
                       child: Text(
                         'Login',

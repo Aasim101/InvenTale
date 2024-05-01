@@ -119,20 +119,22 @@ class _homescreenState extends State<homescreen> {
                         SizedBox(
                           height: 30,
                         ),
-                        RaisedButton(
+                        ElevatedButton(
                           onPressed: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
                                   return searchloading(text: t.text);
                                 }));
                           },
-                          splashColor: Color(0xfff012AC0),
-                          color: Colors.white,
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Color(0xfff012AC0), backgroundColor: Colors.white, // Splash color
+                          ),
                           child: Text(
                             "SEARCH",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
+
                         SizedBox(
                           height: 20,
                         ),

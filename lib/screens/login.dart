@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:dum/components/rounded_button';
-import 'package:dum/constants.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import '../main.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:inventale/components/rounded_button';
+import 'package:inventale/constants.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = 'login_screen';

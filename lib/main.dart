@@ -1,5 +1,6 @@
-import 'package:dum/screens/index.dart';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:inventale/screens/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';

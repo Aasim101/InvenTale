@@ -7,6 +7,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart';
 
+import './search_filter.dart';
+
 class searchloading extends StatefulWidget {
   var text;
   searchloading({@required this.text});

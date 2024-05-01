@@ -34,7 +34,7 @@ class _bookloadingState extends State<bookloading> {
           "https://www.googleapis.com/books/v1/volumes?q=isbn:${widget.c}&key=AIzaSyAqxw3nnCxwNQXRmXb-ZFi8FTNyhz6kwGA"));
       c2 = jsonDecode(r.body);
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return display(d: c2);
+        return bookdisplay(d: c2);
       }));
     } catch (e) {
       print("error");

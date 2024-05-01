@@ -216,7 +216,7 @@ class _searchfilterState extends State<searchfilter> {
                                 SizedBox(
                                   height: 30,
                                 ),
-                                RaisedButton(
+                                ElevatedButton(
                                   onPressed: () {
                                     getisbn(index);
                                     Navigator.push(context,
@@ -224,12 +224,15 @@ class _searchfilterState extends State<searchfilter> {
                                           return bookloading(c: isbn);
                                         }));
                                   },
-                                  color: Colors.black,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.black, // Background color
+                                  ),
                                   child: Text(
                                     "DETAILS",
                                     style: TextStyle(color: Colors.white),
                                   ),
-                                )
+                                ),
+
                               ],
                             )
                           ],

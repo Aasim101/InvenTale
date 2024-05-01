@@ -161,9 +161,6 @@ class _bookdisplayState extends State<bookdisplay> {
           child: Text(
             "READ BOOK",
             style: TextStyle(color: Colors.white),
-          ),
-        ),
-
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SafeArea(

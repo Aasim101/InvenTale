@@ -29,6 +29,7 @@ class _bookdisplayState extends State<bookdisplay> {
   var rating = "Not available";
   var url =
       "https://www.bing.com/images/search?view=detailV2&ccid=vx9%2fIUj5&id=3B7650A146D55682645F765E60E786419299154C&thid=OIP.vx9_IUj50utS7cbaiRtoZAHaE8&mediaurl=https%3a%2f%2fst3.depositphotos.com%2f1186248%2f14351%2fi%2f950%2fdepositphotos_143511907-stock-photo-not-available-rubber-stamp.jpg&exph=682&expw=1023&q=not+available&simid=608054098357136066&FORM=IRPRST&ck=BADF0353AC59677CCFAA67227357E3CB&selectedIndex=1&ajaxhist=0&ajaxserp=0";
+
   @override
   void initState() {
     // TODO: implement initState
@@ -142,7 +143,6 @@ class _bookdisplayState extends State<bookdisplay> {
       return null;
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return (Scaffold(
@@ -152,15 +152,16 @@ class _bookdisplayState extends State<bookdisplay> {
         child: ElevatedButton(
           onPressed: () async {
             await launchUrl(
-                Uri.parse(widget.d["items"][0]["accessInfo"]["webReaderLink"])
+              Uri.parse(widget.d["items"][0]["accessInfo"]["webReaderLink"]),
             );
           },
           style: ElevatedButton.styleFrom(
-            splashFactory: InkRipple.splashFactory, backgroundColor: Colors.black,
+            foregroundColor: Colors.white, backgroundColor: Colors.black, // Text color
+            splashFactory: InkRipple.splashFactory, // Optional, adds splash effect
           ),
-          child: Text(
-            "READ BOOK",
-            style: TextStyle(color: Colors.white),
+          child: Text("READ BOOK"),
+        ),
+
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SafeArea(
@@ -404,3 +405,4 @@ class _bookdisplayState extends State<bookdisplay> {
     ));
   }
 }
+

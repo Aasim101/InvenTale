@@ -16,6 +16,7 @@ import 'screens/homescreen.dart';
 import 'screens/profile.dart';
 import 'screens/loadingscreen.dart';
 import 'screens/history_screen.dart';
+import 'screens/MakeProfileScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,7 +66,7 @@ class GenerativeAISample extends StatelessWidget {
             ),
             useMaterial3: true,
           ),
-          initialRoute: LoginScreen.id,
+          initialRoute: RegistrationScreen.id,
           routes: {
             RegistrationScreen.id: (context) => RegistrationScreen(),
             LoginScreen.id: (context) => LoginScreen(),
@@ -73,6 +74,7 @@ class GenerativeAISample extends StatelessWidget {
             loadingscreen.id: (context) => loadingscreen(l: l),
             ChatScreen.id: (context) => ChatScreen(title: 'InvenTale'),
             MyApp.id: (context) => MyApp(),
+            MakeProfileScreen.id : (context) => MakeProfileScreen(),
           },
         );
       },

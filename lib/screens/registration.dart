@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../main.dart';
 import './login.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'MakeProfileScreen.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static String id = 'registration_screen';
@@ -45,7 +46,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 onChanged: (value) {
                   email = value;
                 },
-                decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your password'),
+                decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
               ),
               SizedBox(
                 height: 8.0,
@@ -72,7 +73,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     try{
                       final newUser = await _auth.createUserWithEmailAndPassword(email: email, password: password);
                       if(newUser != null){
-                        Navigator.pushNamed(context, ChatScreen.id);
+                        Navigator.pushNamed(context, MakeProfileScreen.id);
                       }
                       setState(() {
                         showSpinner = false;

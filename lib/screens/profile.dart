@@ -11,6 +11,10 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late User loggedInUser;
+  Color customColor = Color.fromRGBO(32, 61, 79, 1.0);
+  Color customColor2 = Color.fromRGBO(28, 183, 167, 1.0);
+  Color customColor3 = Color.fromRGBO(219, 225, 227, 1.0);
+
 
   @override
   void initState() {
@@ -63,7 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [Colors.blue, Color.fromRGBO(28, 183, 167, 1.0)],
+                          colors: [customColor, customColor2],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
@@ -77,13 +81,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         radius: 60,
                         backgroundImage: profilePictureUrl != null
                             ? NetworkImage(profilePictureUrl)
-                            : AssetImage('assets/profile.png') as ImageProvider,
+                            : AssetImage('../assets/profile.png') as ImageProvider,
                         backgroundColor: Colors.transparent,
                       ),
                     ),
                     Positioned(
                       top: 20,
-                      left: 110,
+                      left: 130,
                       right: 0,
                       child: Column(
                         children: [

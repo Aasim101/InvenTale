@@ -1,8 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:inventale/components/feature_list.dart';
-//import 'package:voice_assistant/imagetextinput_page.dart';
+import 'package:inventale/screens/image_input_page.dart';
 import 'package:lottie/lottie.dart';
 import 'package:inventale/main.dart';
+import 'package:provider/provider.dart';
+
+
+class inventa extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'InvenTale',
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
+      ),
+      home: Homepage(),
+    );
+  }
+}
+
+
+
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});

@@ -33,7 +33,6 @@ class _LoginScreenState extends State<LoginScreen> {
               Color(0x801DB8A6), // 50% transparent green
               Color(0x801EA9D2), // 50% transparent blue
               Color(0x803D4F4F), // 50% transparent dark blue
-
             ],
             stops: [0.1, 0.4, 0.7, 0.9],
           ),
@@ -53,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         tag: 'logo',
                         child: Container(
                           height: 200.0,
-                          child: Image.asset('../../assets/InvenTale.png'),
+                          // child: Image.asset('../../assets/InvenTale.png'),
                         ),
                       ),
                     ),
@@ -113,15 +112,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              Positioned(
-                top: 10.0, // Adjust the position as needed
-                right: 10.0,
-                child: Image.asset(
-                  '../assets/Ellipse.png',
-                  width: 90.0,
-                  height: 90.0,
-                ),
-              ),
+              // Positioned(
+              //   top: 10.0, // Adjust the position as needed
+              //   right: 10.0,
+              //   child: Image.asset(
+              //     '../assets/Ellipse.png',
+              //     width: 90.0,
+              //     height: 90.0,
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -129,5 +128,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
-

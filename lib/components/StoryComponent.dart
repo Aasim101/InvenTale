@@ -15,6 +15,11 @@ class StoryComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(profilePictureUrl);
+    print(userName);
+    print(title);
+    print(story);
+    print("I am in Component");
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(

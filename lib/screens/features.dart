@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:voice_assistant/feature_list.dart';
+import 'package:inventale/components/feature_list.dart';
 //import 'package:voice_assistant/imagetextinput_page.dart';
 import 'package:lottie/lottie.dart';
 import 'package:inventale/main.dart';

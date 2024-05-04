@@ -175,8 +175,6 @@ class _ImageTextInputPageState extends State<ImageTextInputPage> {
                           style: TextStyle(color: Colors.black),
                           controller: _textController,
                           keyboardType: TextInputType.multiline,
-                          maxLines: 5,
-                          minLines: 1,
                           decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText:

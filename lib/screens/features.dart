@@ -89,7 +89,6 @@ class _HomepageState extends State<Homepage> {
                   ),
                 ),
 
-                //Image with text feature
                 GestureDetector(
                   onTap: () {
                     Navigator.push(

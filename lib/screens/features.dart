@@ -19,9 +19,6 @@ class inventa extends StatelessWidget {
   }
 }
 
-
-
-
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
@@ -44,7 +41,8 @@ class _HomepageState extends State<Homepage> {
               fontSize: 20,
               fontWeight: FontWeight.bold,
               letterSpacing: 4,
-              fontFamily: "Cera Pro"),
+              fontFamily: "Cera Pro"
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -102,9 +100,9 @@ class _HomepageState extends State<Homepage> {
                   child: const FeaturelistBox(
                     textcolor: Colors.black,
                     color: Color.fromRGBO(51, 187, 187, 100),
-                    headertext: "Get your images turn into a story!",
+                    headertext: "Get your images turn into a story's context!",
                     descriptiontext:
-                    "Helps you to turn your favourite images the into a story.",
+                    "Helps you to turn your favourite images the into a story's theme.",
                   ),
                 ),
               ],

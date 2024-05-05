@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/services.dart'; // Import this to use the Clipboard
 
 class ImageTextInputPage extends StatefulWidget {
   const ImageTextInputPage({super.key});
@@ -102,6 +103,16 @@ class _ImageTextInputPageState extends State<ImageTextInputPage> {
     }
   }
 
+  void _copyToClipboard() {
+    Clipboard.setData(ClipboardData(text: _generatedText));
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Copied to clipboard!'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,13 +132,10 @@ class _ImageTextInputPageState extends State<ImageTextInputPage> {
           width: MediaQuery.of(context).size.width,
           decoration: const BoxDecoration(
               gradient: LinearGradient(
-                end: Alignment.bottomCenter,
-                begin: Alignment.topCenter,
-                colors: [
-                  Colors.white,
-                  Colors.teal
-                ],
-              )),
+            end: Alignment.bottomCenter,
+            begin: Alignment.topCenter,
+            colors: [Colors.white, Colors.teal],
+          )),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -138,8 +146,7 @@ class _ImageTextInputPageState extends State<ImageTextInputPage> {
                       padding: MaterialStateProperty.all(
                           EdgeInsets.symmetric(vertical: 15)),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          side: const BorderSide(
-                              color: Colors.black),
+                          side: const BorderSide(color: Colors.black),
                           borderRadius: BorderRadius.circular(13))),
                       backgroundColor: MaterialStateProperty.all(Colors.white)),
                   onPressed: () async {
@@ -154,12 +161,12 @@ class _ImageTextInputPageState extends State<ImageTextInputPage> {
                 const SizedBox(height: 10),
                 _image != null
                     ? Expanded(
-                  child: Image.file(_image!),
-                )
+                        child: Image.file(_image!),
+                      )
                     : const Text(
-                  'No image selected yet!',
-                  style: TextStyle(color: Colors.black),
-                ),
+                        'No image selected yet!',
+                        style: TextStyle(color: Colors.black),
+                      ),
                 const SizedBox(height: 30),
                 Expanded(
                   child: Container(
@@ -177,8 +184,7 @@ class _ImageTextInputPageState extends State<ImageTextInputPage> {
                           keyboardType: TextInputType.multiline,
                           decoration: const InputDecoration(
                               border: InputBorder.none,
-                              hintText:
-                              'Enter your story...',
+                              hintText: 'Enter your story...',
                               hintStyle: TextStyle(
                                 color: Colors.black,
                               )),
@@ -215,21 +221,56 @@ class _ImageTextInputPageState extends State<ImageTextInputPage> {
                 const SizedBox(height: 20),
                 isloading
                     ? const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                  ),
-                )
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      )
                     : _generatedText.isNotEmpty
-                    ? Expanded(
-                  child: SingleChildScrollView(
-                    child: Text(_generatedText,
-                        style: const TextStyle(
-                            fontSize: 18,
-                            fontFamily: "Cera Pro",
-                            color: Colors.black)),
-                  ),
-                )
-                    : Container(),
+                        ? Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: Text(_generatedText,
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontFamily: "Cera Pro",
+                                            color: Colors.black)),
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    ElevatedButton(
+                                      style: ButtonStyle(
+                                        padding: MaterialStateProperty.all(
+                                            EdgeInsets.all(8)),
+                                        shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                        ),
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.white),
+                                      ),
+                                      onPressed: _copyToClipboard,
+                                      child: const Text(
+                                        'Copy',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: "Cera Pro",
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                        : Container(),
               ],
             ),
           ),

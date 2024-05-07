@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inventale/components/rounded_button';
 import 'package:inventale/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:inventale/screens/manualpage.dart';
 import '../main.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'feed.dart';
@@ -98,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           final user = await _auth.signInWithEmailAndPassword(
                               email: email, password: password);
                           if (user != null) {
-                            Navigator.pushNamed(context, FeedPage.id);
+                            Navigator.pushNamed(context, ChatScreen.id);
                             // Navigator.pushNamed(context, ProfilePage.id);
                           }
                           setState(() {

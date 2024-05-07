@@ -67,7 +67,7 @@ class GenerativeAISample extends StatelessWidget {
             ),
             useMaterial3: true,
           ),
-          initialRoute: LoginScreen.id,
+          initialRoute: RegistrationScreen.id,
           routes: {
             RegistrationScreen.id: (context) => RegistrationScreen(),
             LoginScreen.id: (context) => LoginScreen(),

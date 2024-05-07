@@ -18,6 +18,7 @@ import 'screens/loadingscreen.dart';
 import 'screens/history_screen.dart';
 import 'screens/MakeProfileScreen.dart';
 import 'screens/feed.dart';
+import 'screens/features.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +27,7 @@ void main() async {
   );
   runApp(ChangeNotifierProvider(
     create: (_) => ThemeProvider(),
-    child: const GenerativeAISample(),
+    child: inventa(),
   ));
 }
 

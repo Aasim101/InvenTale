@@ -56,6 +56,7 @@ dependencies:
   webview_flutter: ^4.7.0
   firebase_storage: ^11.7.4
   image_picker: ^1.1.1
+  carousel_slider: ^4.2.1
 
 
 
@@ -86,6 +87,7 @@ flutter:
   assets:
     - assets/
     - assets/Animations/
+    - assets/InvenTale.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

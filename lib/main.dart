@@ -27,7 +27,7 @@ void main() async {
   );
   runApp(ChangeNotifierProvider(
     create: (_) => ThemeProvider(),
-    child: inventa(),
+    child: GenerativeAISample(),
   ));
 }
 
@@ -68,7 +68,7 @@ class GenerativeAISample extends StatelessWidget {
             ),
             useMaterial3: true,
           ),
-          initialRoute: RegistrationScreen.id,
+          initialRoute: LoginScreen.id,
           routes: {
             RegistrationScreen.id: (context) => RegistrationScreen(),
             LoginScreen.id: (context) => LoginScreen(),

@@ -1,55 +1,92 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'StoryPreviewCard.dart'; // New component for story preview card
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:carousel_slider/carousel_slider.dart'; // Import CarouselSlider
+import 'StoryPreviewCard.dart';
 
 class StoryCarousel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Sample list of stories, replace with actual data from Firestore
-    List<Map<String, String>> stories = [
-      {'title': 'Story 1', 'content': 'Once upon a time in a faraway kingdom...'},
-      {'title': 'Story 2', 'content': 'In a distant galaxy, there lived a brave warrior...'},
-      {'title': 'Story 3', 'content': 'Long ago, in a mystical forest, there was a magical creature...'},
-      {'title': 'Story 4', 'content': 'In the depths of the ocean, hidden from human sight, lies a hidden treasure...'},
-      {'title': 'Story 5', 'content': 'In the heart of the jungle, amidst towering trees, there lives a tribe of peaceful creatures... In the heart of the jungle, amidst towering trees, there lives a tribe of peaceful creatures... In the heart of the jungle, amidst towering trees, there lives a tribe of peaceful creatures... In the heart of the jungle, amidst towering trees, there lives a tribe of peaceful creatures... In the heart of the jungle, amidst towering trees, there lives a tribe of peaceful creatures... In the heart of the jungle, amidst towering trees, there lives a tribe of peaceful creatures... In the heart of the jungle, amidst towering trees, there lives a tribe of peaceful creatures... In the heart of the jungle, amidst towering trees, there lives a tribe of peaceful creatures... In the heart of the jungle, amidst towering trees, there lives a tribe of peaceful creatures... In the heart of the jungle, amidst towering trees, there lives a tribe of peaceful creatures... In the heart of the jungle, amidst towering trees, there lives a tribe of peaceful creatures... In the heart of the jungle, amidst towering trees, there lives a tribe of peaceful creatures... In the heart of the jungle, amidst towering trees, there lives a tribe of peaceful creatures...'},
-    ];
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('stories').snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return Center(child: Text('No stories available'));
+        }
 
-    return CarouselSlider(
-      options: CarouselOptions(
-        height: 200,
-        enlargeCenterPage: true,
-      ),
-      items: stories.map((story) {
-        return Builder(
-          builder: (BuildContext context) {
-            String title = story['title'] ?? '';
-            String content = story['content'] ?? '';
-            String preview = _getStoryPreview(content); // Get the first 5 words as preview
-            return GestureDetector(
-              onTap: () {
-                _showStoryModal(context, title, content); // Show modal with full story
+        // Extract story data from snapshot
+        final List<DocumentSnapshot> stories = snapshot.data!.docs;
+
+        return CarouselSlider.builder(
+          itemCount: stories.length,
+          itemBuilder: (BuildContext context, int index, int realIndex) {
+            final story = stories[index];
+            final userId = story['user_id'];
+            final title = story['title'];
+            final storyContent = story['content'];
+
+            return StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(userId)
+                  .collection('user_info')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return SizedBox.shrink(); // Return an empty widget while fetching user data
+                }
+                if (snapshot.hasError) {
+                  return SizedBox.shrink(); // Return an empty widget if there's an error fetching user data
+                }
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return SizedBox.shrink(); // Return an empty widget if user data doesn't exist
+                }
+
+                // Extract user's profile data from the snapshot
+                final userInfo = snapshot.data!.docs.first;
+                final userProfileData = userInfo.data() as Map<String, dynamic>;
+                final firstName = userProfileData?['first_name'] ?? '';
+                final lastName = userProfileData?['last_name'] ?? '';
+                final profilePictureUrl = userProfileData?['profile_picture'] ?? '';
+                final userName = '$firstName $lastName';
+
+                return GestureDetector(
+                  onTap: () {
+                    _showStoryModal(context, title, storyContent);
+                  },
+                  child: AbsorbPointer(
+                    child: StoryPreviewCard(
+                      firstName: firstName,
+                      lastName: lastName,
+                      profilePictureUrl: profilePictureUrl,
+                      title: title,
+                      content: _getStoryPreview(storyContent),
+                    ),
+                  ),
+                );
               },
-              child: AbsorbPointer(
-                child: StoryPreviewCard(
-                  title: title,
-                  content: preview,
-                ),
-              ),
             );
           },
+          options: CarouselOptions(
+            height: 300, // Set the height of the carousel
+            viewportFraction: 0.8, // Set the portion of the viewport occupied by each item
+            enableInfiniteScroll: true, // Enable infinite scrolling
+            autoPlay: true, // Enable auto play
+            autoPlayInterval: Duration(seconds: 3), // Set auto play interval
+            autoPlayAnimationDuration: Duration(milliseconds: 800), // Set auto play animation duration
+            autoPlayCurve: Curves.fastOutSlowIn, // Set auto play curve
+            enlargeCenterPage: true, // Enlarge the center item
+          ),
         );
-      }).toList(),
+      },
     );
   }
 
-  // Function to get the first 5 words of a story as a preview
-  String _getStoryPreview(String content) {
-    List<String> words = content.split(' ');
-    int length = words.length > 5 ? 5 : words.length; // Get up to first 5 words
-    return words.sublist(0, length).join(' ');
-  }
-
-  // Function to show the modal with full story
   void _showStoryModal(BuildContext context, String title, String content) {
     showDialog(
       context: context,
@@ -64,7 +101,7 @@ class StoryCarousel extends StatelessWidget {
             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
           content: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.6, // Adjust height as needed
+            height: MediaQuery.of(context).size.height * 0.6,
             child: SingleChildScrollView(
               child: Text(
                 content,
@@ -77,5 +114,9 @@ class StoryCarousel extends StatelessWidget {
     );
   }
 
-
+  String _getStoryPreview(String content) {
+    List<String> words = content.split(' ');
+    int length = words.length > 5 ? 5 : words.length;
+    return words.sublist(0, length).join(' ');
+  }
 }

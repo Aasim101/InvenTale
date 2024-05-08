@@ -3,8 +3,17 @@ import 'package:flutter/material.dart';
 class StoryPreviewCard extends StatelessWidget {
   final String title;
   final String content;
+  final String firstName;
+  final String lastName;
+  final String profilePictureUrl;
 
-  StoryPreviewCard({required this.title, required this.content});
+  StoryPreviewCard({
+    required this.title,
+    required this.content,
+    required this.firstName,
+    required this.lastName,
+    required this.profilePictureUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +31,22 @@ class StoryPreviewCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(profilePictureUrl),
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    '$firstName $lastName',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
               Text(
                 title,
                 style: TextStyle(
@@ -42,3 +67,4 @@ class StoryPreviewCard extends StatelessWidget {
     );
   }
 }
+

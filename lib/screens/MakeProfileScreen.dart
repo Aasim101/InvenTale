@@ -161,7 +161,10 @@ class _MakeProfileScreenState extends State<MakeProfileScreen> {
                   final imageUrl = await _uploadImage();
                   if (imageUrl != null) {
                     // Create a subcollection for user data within the user's document
+                    _firestore.collection('user').doc(loggedInUser!.uid).set({});
+
                     final userRef = _firestore.collection('users').doc(loggedInUser!.uid);
+
                     final userInfoRef = userRef.collection('user_info');
 
                     await userInfoRef.add({

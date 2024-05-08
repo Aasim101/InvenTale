@@ -81,7 +81,7 @@ class _FeedPageState extends State<FeedPage> {
               ),
             ),
             // Replace AuthorComponent with your implementation
-            AuthorComponent(),
+            AuthorComponent(currentUserId: FirebaseAuth.instance.currentUser?.uid ?? ''),
           ],
         ),
       ),

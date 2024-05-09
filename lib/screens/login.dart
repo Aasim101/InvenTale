@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:inventale/components/rounded_button';
 import 'package:inventale/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:inventale/screens/manualpage.dart';
 import '../main.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'feed.dart';
 import './profile.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -31,7 +33,6 @@ class _LoginScreenState extends State<LoginScreen> {
               Color(0x803D4F4F), // 50% transparent dark blue
               Color(0x801DB8A6), // 50% transparent green
               Color(0x803D4F4F), // 50% transparent dark blue
-
             ],
             stops: [0.1, 0.5, 0.9],
           ),
@@ -51,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         tag: 'logo',
                         child: Container(
                           height: 200.0,
-                          child: Image.asset('../assets/InvenTale.png'),
+                          child: Image.asset('assets/InvenTale.png'),
                         ),
                       ),
                     ),
@@ -97,8 +98,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           final user = await _auth.signInWithEmailAndPassword(
                               email: email, password: password);
                           if (user != null) {
-                            //Navigator.pushNamed(context, ChatScreen.id);
-                            Navigator.pushNamed(context, ProfilePage.id);
+                            Navigator.pushNamed(context, FeedPage.id);
+                            // Navigator.pushNamed(context, ProfilePage.id);
                           }
                           setState(() {
                             showSpinner = false;
@@ -111,15 +112,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              Positioned(
-                top: 10.0, // Adjust the position as needed
-                right: 10.0,
-                child: Image.asset(
-                  '../assets/Ellipse.png',
-                  width: 90.0,
-                  height: 90.0,
-                ),
-              ),
+              // Positioned(
+              //   top: 10.0, // Adjust the position as needed
+              //   right: 10.0,
+              //   child: Image.asset(
+              //     '../assets/Ellipse.png',
+              //     width: 90.0,
+              //     height: 90.0,
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -127,5 +128,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
-

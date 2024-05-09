@@ -17,6 +17,8 @@ import 'screens/profile.dart';
 import 'screens/loadingscreen.dart';
 import 'screens/history_screen.dart';
 import 'screens/MakeProfileScreen.dart';
+import 'screens/feed.dart';
+import 'screens/features.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +27,7 @@ void main() async {
   );
   runApp(ChangeNotifierProvider(
     create: (_) => ThemeProvider(),
-    child: const GenerativeAISample(),
+    child: GenerativeAISample(),
   ));
 }
 
@@ -66,7 +68,7 @@ class GenerativeAISample extends StatelessWidget {
             ),
             useMaterial3: true,
           ),
-          initialRoute: RegistrationScreen.id,
+          initialRoute: LoginScreen.id,
           routes: {
             RegistrationScreen.id: (context) => RegistrationScreen(),
             LoginScreen.id: (context) => LoginScreen(),
@@ -75,6 +77,7 @@ class GenerativeAISample extends StatelessWidget {
             ChatScreen.id: (context) => ChatScreen(title: 'InvenTale'),
             MyApp.id: (context) => MyApp(),
             MakeProfileScreen.id : (context) => MakeProfileScreen(),
+            FeedPage.id : (context) => FeedPage(),
           },
         );
       },

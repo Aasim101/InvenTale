@@ -71,7 +71,7 @@ class _FeedPageState extends State<FeedPage> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
-            StoryCarousel(), // Display the StoryCarousel component
+            StoryCarousel(currentUserId: FirebaseAuth.instance.currentUser?.uid ?? ''), // Display the StoryCarousel component
             // Best Authors section
             Padding(
               padding: const EdgeInsets.all(8.0),

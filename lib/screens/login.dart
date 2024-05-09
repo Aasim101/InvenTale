@@ -32,10 +32,9 @@ class _LoginScreenState extends State<LoginScreen> {
             colors: [
               Color(0x803D4F4F), // 50% transparent dark blue
               Color(0x801DB8A6), // 50% transparent green
-              Color(0x801EA9D2), // 50% transparent blue
               Color(0x803D4F4F), // 50% transparent dark blue
             ],
-            stops: [0.1, 0.4, 0.7, 0.9],
+            stops: [0.1, 0.5, 0.9],
           ),
         ),
         child: ModalProgressHUD(

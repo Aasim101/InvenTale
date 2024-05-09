@@ -18,13 +18,29 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   bool showSpinner = false;
   late String email;
   late String password;
+  Color customColor = Color.fromRGBO(32, 61, 79, 1.0);
+  Color customColor2 = Color.fromRGBO(28, 183, 167, 1.0);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: ModalProgressHUD(
+        body: Container(
+        decoration: BoxDecoration(
+        gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+        Color(0x803D4F4F), // 50% transparent dark blue
+        Color(0x801DB8A6), // 50% transparent green
+        Color(0x803D4F4F), // 50% transparent dark blue
+
+    ],
+    stops: [0.1, 0.5, 0.9],
+    ),
+    ),
+      child: ModalProgressHUD(
         inAsyncCall: showSpinner,
-        child: Padding(
+        child: Stack(
+        children: [ Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -46,7 +62,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 onChanged: (value) {
                   email = value;
                 },
-                decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
+                decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your email',
+                  prefixIcon: Icon(Icons.email, color: customColor),),
               ),
               SizedBox(
                 height: 8.0,
@@ -58,14 +75,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 onChanged: (value) {
                   password = value;
                 },
-                decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your password'),
+                decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your password',
+                  prefixIcon: Icon(Icons.lock, color: customColor),),
               ),
               SizedBox(
                 height: 24.0,
               ),
               RoundedButton(
                   title: 'Register',
-                  colour: Colors.blueAccent,
+                  colour: customColor2,
                   onPressed: () async {
                     setState(() {
                       showSpinner = true;
@@ -86,7 +104,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ],
           ),
         ),
+          Positioned(
+            top: 10.0, // Adjust the position as needed
+            right: 10.0,
+            child: Image.asset(
+              '../assets/Ellipse2.png',
+              width: 100.0,
+              height: 100.0,
+            ),
+          ),
+
+        ],
       ),
+        ),
+        )
     );
   }
 }

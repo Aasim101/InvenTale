@@ -11,8 +11,8 @@ class AuthorComponent extends StatefulWidget {
 }
 
 class _AuthorComponentState extends State<AuthorComponent> {
-  late List<Map<String, dynamic>> _userInfoList;
-  late List<String> _userIds;
+  List<Map<String, dynamic>> _userInfoList = [];
+  List<String> _userIds = [];
 
   @override
   void initState() {
@@ -35,6 +35,7 @@ class _AuthorComponentState extends State<AuthorComponent> {
 
       if (userInfoSnapshot.docs.isNotEmpty) {
         final userInfo = userInfoSnapshot.docs.first.data() as Map<String, dynamic>;
+        userInfo['userId'] = userId; // Add user ID to userInfo
         userInfoList.add(userInfo);
       }
     }
@@ -44,88 +45,102 @@ class _AuthorComponentState extends State<AuthorComponent> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
-    if (_userInfoList == null) {
-      return Center(child: CircularProgressIndicator());
-    }
-
     return SingleChildScrollView(
-      child: ListView.separated(
-        shrinkWrap: true,
-        itemCount: _userInfoList.length,
-        separatorBuilder: (context, index) => Divider(),
-        itemBuilder: (context, index) {
-          final userInfo = _userInfoList[index];
-          final firstName = userInfo['first_name'] ?? '';
-          final lastName = userInfo['last_name'] ?? '';
-          final profilePictureUrl = userInfo['profile_picture'] ?? '';
+      child: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(widget.currentUserId)
+            .collection('following')
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-          return ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(profilePictureUrl),
-            ),
-            title: Text(firstName),
-            subtitle: Text(lastName),
-            trailing: ElevatedButton(
-              onPressed: () async {
-                String followedUserId = _userIds[index];
+          final Set<String> followedUserIds = snapshot.data!.docs.map((doc) => doc.id).toSet();
 
-                await FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(widget.currentUserId)
-                    .collection('user_info')
-                    .get()
-                    .then((snapshot) {
-                  if (snapshot.docs.isNotEmpty) {
-                    String userInfoId = snapshot.docs.first.id;
-                    FirebaseFirestore.instance
+          final List<Map<String, dynamic>> filteredUserInfoList = _userInfoList
+              .where((userInfo) => !followedUserIds.contains(userInfo['userId']))
+              .toList();
+
+          return ListView.separated(
+            shrinkWrap: true,
+            itemCount: filteredUserInfoList.length,
+            separatorBuilder: (context, index) => Divider(),
+            itemBuilder: (context, index) {
+              final userInfo = filteredUserInfoList[index];
+              final firstName = userInfo['first_name'] ?? '';
+              final lastName = userInfo['last_name'] ?? '';
+              final profilePictureUrl = userInfo['profile_picture'] ?? '';
+              final followedUserId = _userIds[index];
+
+              return ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(profilePictureUrl),
+                ),
+                title: Text(firstName),
+                subtitle: Text(lastName),
+                trailing: ElevatedButton(
+                  onPressed: () async {
+                    await FirebaseFirestore.instance
                         .collection('users')
                         .doc(widget.currentUserId)
                         .collection('user_info')
-                        .doc(userInfoId)
-                        .update({'following': FieldValue.increment(1)});
-                  }
-                });
+                        .get()
+                        .then((snapshot) {
+                      if (snapshot.docs.isNotEmpty) {
+                        String userInfoId = snapshot.docs.first.id;
+                        FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(widget.currentUserId)
+                            .collection('user_info')
+                            .doc(userInfoId)
+                            .update({'following': FieldValue.increment(1)});
+                      }
+                    });
 
-                await FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(followedUserId)
-                    .collection('user_info')
-                    .get()
-                    .then((snapshot) {
-                  if (snapshot.docs.isNotEmpty) {
-                    String userInfoId = snapshot.docs.first.id;
-                    FirebaseFirestore.instance
+                    await FirebaseFirestore.instance
                         .collection('users')
                         .doc(followedUserId)
                         .collection('user_info')
-                        .doc(userInfoId)
-                        .update({'followers': FieldValue.increment(1)});
-                  }
-                });
+                        .get()
+                        .then((snapshot) {
+                      if (snapshot.docs.isNotEmpty) {
+                        String userInfoId = snapshot.docs.first.id;
+                        FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(followedUserId)
+                            .collection('user_info')
+                            .doc(userInfoId)
+                            .update({'followers': FieldValue.increment(1)});
+                      }
+                    });
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(widget.currentUserId)
+                        .collection('following')
+                        .doc(followedUserId)
+                        .set({});
 
-                await FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(widget.currentUserId)
-                    .collection('following')
-                    .doc(followedUserId)
-                    .set({});
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(followedUserId)
+                        .collection('followers')
+                        .doc(widget.currentUserId)
+                        .set({});
 
-                await FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(followedUserId)
-                    .collection('followers')
-                    .doc(widget.currentUserId)
-                    .set({});
-
-                setState(() {
-                  _userInfoList.removeAt(index);
-                  _userIds.removeAt(index);
-                });
-              },
-              child: Text('Follow'),
-            ),
+                    setState(() {
+                      _userInfoList.removeAt(index);
+                      _userIds.removeAt(index);
+                    });
+                  },
+                  child: Text('Follow'),
+                ),
+              );
+            },
           );
         },
       ),

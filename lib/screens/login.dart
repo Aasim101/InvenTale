@@ -5,7 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:inventale/screens/manualpage.dart';
 import '../main.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'feed.dart';
+import './feed.dart';
+import './registration.dart';
 import './profile.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -19,7 +20,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final _auth = FirebaseAuth.instance;
   late String email;
   late String password;
-  Color customColor = Color.fromRGBO(32, 61, 79, 1.0);
+  Color MycustomColor = Color.fromRGBO(32, 61, 79, 1.0);
+  Color customColor =  Color.fromRGBO(32, 61, 79, 1.0);
+  Color customColor2 = Color.fromRGBO(28, 183, 167, 1.0);
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       decoration: kTextFieldDecoration.copyWith(
                         hintText: 'Enter your Email',
-                        prefixIcon: Icon(Icons.email, color: customColor),
+                        prefixIcon: Icon(Icons.email, color: MycustomColor),
                       ),
                     ),
                     SizedBox(
@@ -81,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       decoration: kTextFieldDecoration.copyWith(
                         hintText: 'Enter your Password',
-                        prefixIcon: Icon(Icons.lock, color: customColor),
+                        prefixIcon: Icon(Icons.lock, color: MycustomColor),
                       ),
                     ),
                     SizedBox(
@@ -89,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     RoundedButton(
                       title: 'Log In',
-                      colour: customColor,
+                      colour: MycustomColor,
                       onPressed: () async {
                         setState(() {
                           showSpinner = true;
@@ -109,7 +112,33 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       },
                     ),
-                  ],
+                    SizedBox(height: 12),
+                      MouseRegion(
+                        onEnter: (_) {
+                        setState(() {
+                        customColor = Color.fromRGBO(63, 120, 156, 1.0);
+                      });
+                    },
+                      onExit: (_) {
+                        setState(() {
+                        customColor = Color.fromRGBO(35, 61, 79, 1.0);
+                     });
+                      },
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, RegistrationScreen.id);
+                        },
+                            child: Text(
+                               "Don't Have an Account? Register",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                color: customColor,
+                                fontSize: 16.0,
+                          ),
+                        ),
+                      ),
+                      ),
+                      ],
                 ),
               ),
               // Positioned(

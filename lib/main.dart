@@ -78,6 +78,7 @@ class GenerativeAISample extends StatelessWidget {
             MyApp.id: (context) => MyApp(),
             MakeProfileScreen.id : (context) => MakeProfileScreen(),
             FeedPage.id : (context) => FeedPage(),
+            Homepage.id : (context) => Homepage(),
           },
         );
       },

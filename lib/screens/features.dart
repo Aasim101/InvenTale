@@ -21,6 +21,7 @@ class inventa extends StatelessWidget {
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
+  static String id = 'feature_screen';
 
   @override
   State<Homepage> createState() => _HomepageState();

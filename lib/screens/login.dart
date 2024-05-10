@@ -8,6 +8,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import './feed.dart';
 import './registration.dart';
 import './profile.dart';
+import 'dart:async';
 
 class LoginScreen extends StatefulWidget {
   static String id = 'login_screen';
@@ -27,20 +28,20 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0x803D4F4F), // 50% transparent dark blue
-              Color(0x801DB8A6), // 50% transparent green
-              Color(0x803D4F4F), // 50% transparent dark blue
-            ],
-            stops: [0.1, 0.5, 0.9],
-          ),
-        ),
-        child: ModalProgressHUD(
+      // body: Container(
+      //   decoration: BoxDecoration(
+      //     gradient: LinearGradient(
+      //       begin: Alignment.topCenter,
+      //       end: Alignment.bottomCenter,
+      //       colors: [
+      //         Color(0x803D4F4F), // 50% transparent dark blue
+      //         Color(0x801DB8A6), // 50% transparent green
+      //         Color(0x803D4F4F), // 50% transparent dark blue
+      //       ],
+      //       stops: [0.1, 0.5, 0.9],
+      //     ),
+      //   ),
+         body: ModalProgressHUD(
           inAsyncCall: showSpinner,
           child: Stack(
             children: [
@@ -70,7 +71,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       decoration: kTextFieldDecoration.copyWith(
                         hintText: 'Enter your Email',
-                        prefixIcon: Icon(Icons.email, color: MycustomColor),
+                        prefixIcon: Icon(Icons.email, color: MycustomColor), border: OutlineInputBorder(
+                      borderSide: BorderSide(color: customColor),
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                        enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: customColor),
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                        focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: customColor),
+                        borderRadius: BorderRadius.circular(30.0),
+                      )
                       ),
                     ),
                     SizedBox(
@@ -85,6 +97,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: kTextFieldDecoration.copyWith(
                         hintText: 'Enter your Password',
                         prefixIcon: Icon(Icons.lock, color: MycustomColor),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: customColor),
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: customColor),
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: customColor),
+                            borderRadius: BorderRadius.circular(30.0),
+                          )
                       ),
                     ),
                     SizedBox(
@@ -98,6 +122,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           showSpinner = true;
                         });
                         try {
+
+                          // Check if password length is at least 6 characters
+                          if (password.length < 6) {
+                            // Show error message if password is too short
+                            throw FirebaseAuthException(
+                              code: 'weak-password',
+                              message: 'The password must be at least 6 characters long.',
+                            );
+                          }
+
                           final user = await _auth.signInWithEmailAndPassword(
                               email: email, password: password);
                           if (user != null) {
@@ -107,6 +141,53 @@ class _LoginScreenState extends State<LoginScreen> {
                           setState(() {
                             showSpinner = false;
                           });
+                        }on FirebaseAuthException catch (e) {
+                          setState(() {
+                            showSpinner = false;
+                          });
+                          // Check if the error is due to wrong password
+                          if (e.code == 'invalid-credential') {
+                            Future.delayed(Duration.zero, () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Login Error"),
+                                    content: Text("The Email/Password you entered is incorrect."),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text("OK"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            });
+                          } else if (e.code == 'weak-password') {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Login Error"),
+                                  content: Text(e.message ?? "Invalid password."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text("OK"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }  else {
+                            // For other errors, just print the error
+                            print(e);
+                          }
                         } catch (e) {
                           print(e);
                         }
@@ -116,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       MouseRegion(
                         onEnter: (_) {
                         setState(() {
-                        customColor = Color.fromRGBO(63, 120, 156, 1.0);
+                        customColor = Color.fromRGBO(28, 183, 167, 1.0);
                       });
                     },
                       onExit: (_) {
@@ -141,19 +222,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                 ),
               ),
-              // Positioned(
-              //   top: 10.0, // Adjust the position as needed
-              //   right: 10.0,
-              //   child: Image.asset(
-              //     '../assets/Ellipse.png',
-              //     width: 90.0,
-              //     height: 90.0,
-              //   ),
-              // ),
+               Positioned(
+                 top: 10.0, // Adjust the position as needed
+                 right: 10.0,
+                 child: Image.asset(
+                   '../assets/Ellipse.png',
+                   width: 90.0,
+                   height: 90.0,
+               ),
+               ),
             ],
           ),
         ),
-      ),
+
     );
   }
 }

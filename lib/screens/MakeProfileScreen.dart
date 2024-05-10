@@ -102,16 +102,16 @@ class _MakeProfileScreenState extends State<MakeProfileScreen> {
                   textAlign: TextAlign.center,
                   decoration: kTextFieldDecoration.copyWith(labelText: 'First Name', hintText: 'Enter your First Name',
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(color: customColor), // Change the border color
-                      borderRadius: BorderRadius.circular(30.0), // Adjust border radius as needed
+                      borderSide: BorderSide(color: customColor),
+                      borderRadius: BorderRadius.circular(30.0),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: customColor), // Change the border color
-                      borderRadius: BorderRadius.circular(30.0), // Adjust border radius as needed
+                      borderSide: BorderSide(color: customColor),
+                      borderRadius: BorderRadius.circular(30.0),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: customColor), // Change the border color
-                      borderRadius: BorderRadius.circular(30.0), // Adjust border radius as needed
+                      borderSide: BorderSide(color: customColor),
+                      borderRadius: BorderRadius.circular(30.0),
                     )),
                 ),
                 SizedBox(height: 16.0),
@@ -121,16 +121,16 @@ class _MakeProfileScreenState extends State<MakeProfileScreen> {
                   },
                   textAlign: TextAlign.center,
                   decoration: kTextFieldDecoration.copyWith(labelText: 'Last Name', hintText: 'Enter your Last Name',border: OutlineInputBorder(
-                    borderSide: BorderSide(color: customColor), // Change the border color
-                    borderRadius: BorderRadius.circular(30.0), // Adjust border radius as needed
+                    borderSide: BorderSide(color: customColor),
+                    borderRadius: BorderRadius.circular(30.0),
                   ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: customColor), // Change the border color
-                        borderRadius: BorderRadius.circular(30.0), // Adjust border radius as needed
+                        borderSide: BorderSide(color: customColor),
+                        borderRadius: BorderRadius.circular(30.0),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: customColor), // Change the border color
-                        borderRadius: BorderRadius.circular(30.0), // Adjust border radius as needed
+                        borderSide: BorderSide(color: customColor),
+                        borderRadius: BorderRadius.circular(30.0),
                       )),
                 ),
                 SizedBox(height: 16.0),

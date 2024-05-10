@@ -3,6 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../components/carousel.dart';
 import '../components/AuthorComponent.dart';
+import './profile.dart';
+import './loadingscreen.dart';
+import './features.dart';
+import '../main.dart';
 
 class FeedPage extends StatefulWidget {
   static String id = "feed_page";
@@ -12,11 +16,62 @@ class FeedPage extends StatefulWidget {
 
 class _FeedPageState extends State<FeedPage> {
   late String firstName = ''; // Variable to store the user's first name
+  late List<Widget> _widgetOptions;
+  late int _selectedIndex = 0;
+  Color customColor = Color.fromRGBO(32, 61, 79, 1.0);
+
 
   @override
   void initState() {
     super.initState();
     fetchUserInfo(); // Fetch user's info when the widget initializes
+    var l = ["mystery", "fantasy", "horror", "romance"];
+    _widgetOptions = <Widget>[
+      SingleChildScrollView(
+      child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+    // Display the greeting message with the user's first name
+      Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+      'Hi $firstName,',
+      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
+      ),
+    // Carousel for stories
+      Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+      "Today's Stories",
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      ),
+      ),
+      StoryCarousel(currentUserId: FirebaseAuth.instance.currentUser?.uid ?? ''), // Display the StoryCarousel component
+    // Best Authors section
+      Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+      "Best Authors",
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      ),
+      ),
+      AuthorComponent(currentUserId: FirebaseAuth.instance.currentUser?.uid ?? ''),
+      ],
+      ),
+      ),
+      ChatScreen(title: 'AI Chat'),
+      ProfilePage(),
+      loadingscreen(l: l),
+      Homepage(),
+    ];
+  }
+
+  // Method to handle tap events on bottom navigation bar items
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index  ; // Update the selected index
+    });
   }
 
   // Function to fetch the user's info
@@ -51,40 +106,40 @@ class _FeedPageState extends State<FeedPage> {
       appBar: AppBar(
         title: Text('Feed'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Display the greeting message with the user's first name
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Hi $firstName,',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+      body: _widgetOptions.elementAt(_selectedIndex),
+      bottomNavigationBar: Container(
+        color: customColor, // Set the background color here
+        child: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Feed',
             ),
-            // Carousel for stories
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Today's Stories",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat),
+              label: 'AI Chat',
             ),
-            StoryCarousel(currentUserId: FirebaseAuth.instance.currentUser?.uid ?? ''), // Display the StoryCarousel component
-            // Best Authors section
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Best Authors",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
             ),
-            // Replace AuthorComponent with your implementation
-            AuthorComponent(currentUserId: FirebaseAuth.instance.currentUser?.uid ?? ''),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.book),
+              label: 'Google Books',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.star),
+              label: 'Features',
+            ),
           ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Theme.of(context).primaryColor,
+          unselectedItemColor: customColor, // Change the color of unselected items
+          onTap: _onItemTapped,
         ),
       ),
     );
   }
+
 }
+

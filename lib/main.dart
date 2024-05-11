@@ -123,7 +123,7 @@ class _ChatScreenState extends State<ChatScreen> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(widget.title),
+                  // Text(widget.title),
                   const SizedBox(width: 16),
                   OverlappingButtons(),
                 ],

@@ -19,6 +19,8 @@ class _FeedPageState extends State<FeedPage> {
   late List<Widget> _widgetOptions;
   late int _selectedIndex = 0;
   Color customColor = Color.fromRGBO(32, 61, 79, 1.0);
+  List<String> _pageTitles = ['Feed', 'AI Chat', 'Profile', 'Google Books', 'Features'];
+
 
 
   @override
@@ -104,7 +106,7 @@ class _FeedPageState extends State<FeedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feed'),
+        title: Text(_pageTitles[_selectedIndex]),
       ),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: Container(

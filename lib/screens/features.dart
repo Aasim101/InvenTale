@@ -76,10 +76,7 @@ class _HomepageState extends State<Homepage> {
                 //Multi-turn chat feature
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => GenerativeAISample()));
+                    Navigator.pushNamed(context, ChatScreen.id );
                   },
                   child: const FeaturelistBox(
                     textcolor: Colors.black,

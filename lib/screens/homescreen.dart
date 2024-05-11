@@ -29,6 +29,7 @@ class homescreen extends StatefulWidget {
 }
 
 class _homescreenState extends State<homescreen> {
+  Color customColor =  Color.fromRGBO(32, 61, 79, 1.0);
   TextEditingController t = TextEditingController();
 
   String st(String s) {
@@ -57,7 +58,7 @@ class _homescreenState extends State<homescreen> {
   Widget build(BuildContext context) {
     return (Scaffold(
       resizeToAvoidBottomInset : false,
-      backgroundColor: Color(0xfff012AC0),
+      backgroundColor: customColor,
       body: SafeArea(
           child: Column(
             children: [

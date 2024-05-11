@@ -7,6 +7,7 @@ import './profile.dart';
 import './loadingscreen.dart';
 import './features.dart';
 import '../main.dart';
+import './manualpage.dart';
 
 class FeedPage extends StatefulWidget {
   static String id = "feed_page";
@@ -19,7 +20,7 @@ class _FeedPageState extends State<FeedPage> {
   late List<Widget> _widgetOptions;
   late int _selectedIndex = 0;
   Color customColor = Color.fromRGBO(32, 61, 79, 1.0);
-  List<String> _pageTitles = ['Feed', 'AI Chat', 'Profile', 'Google Books', 'Features'];
+  List<String> _pageTitles = ['Feed', 'Manual Page', 'Profile', 'Google Books', 'Features'];
 
 
 
@@ -62,7 +63,7 @@ class _FeedPageState extends State<FeedPage> {
       ],
       ),
       ),
-      ChatScreen(title: 'AI Chat'),
+      ManualPage(),
       ProfilePage(),
       loadingscreen(l: l),
       Homepage(),
@@ -119,7 +120,7 @@ class _FeedPageState extends State<FeedPage> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.chat),
-              label: 'AI Chat',
+              label: 'Manual Page',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),

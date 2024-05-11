@@ -7,6 +7,7 @@ import './profile.dart';
 import './loadingscreen.dart';
 import './features.dart';
 import '../main.dart';
+import './manualpage.dart';
 
 class FeedPage extends StatefulWidget {
   static String id = "feed_page";
@@ -20,6 +21,8 @@ class _FeedPageState extends State<FeedPage> {
   late List<Widget> _widgetOptions;
   late int _selectedIndex = 0;
   Color customColor = Color.fromRGBO(32, 61, 79, 1.0);
+  List<String> _pageTitles = ['Feed', 'Manual Page', 'Profile', 'Google Books', 'Features'];
+
 
   @override
   void initState() {
@@ -63,7 +66,33 @@ class _FeedPageState extends State<FeedPage> {
           ],
         ),
       ),
+<<<<<<< HEAD
       ChatScreen(title: ''),
+=======
+      ),
+    // Carousel for stories
+      Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+      "Today's Stories",
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      ),
+      ),
+      StoryCarousel(currentUserId: FirebaseAuth.instance.currentUser?.uid ?? ''), // Display the StoryCarousel component
+    // Best Authors section
+      Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+      "Best Authors",
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      ),
+      ),
+      AuthorComponent(currentUserId: FirebaseAuth.instance.currentUser?.uid ?? ''),
+      ],
+      ),
+      ),
+      ManualPage(),
+>>>>>>> origin
       ProfilePage(),
       loadingscreen(l: l),
       Homepage(),
@@ -109,7 +138,7 @@ class _FeedPageState extends State<FeedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feed'),
+        title: Text(_pageTitles[_selectedIndex]),
       ),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: Container(
@@ -122,7 +151,7 @@ class _FeedPageState extends State<FeedPage> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.chat),
-              label: 'AI Chat',
+              label: 'Manual Page',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),

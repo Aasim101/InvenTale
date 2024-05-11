@@ -11,6 +11,7 @@ class ManualPage extends StatefulWidget {
 
 class _ManualPageState extends State<ManualPage> {
   late User loggedInUser;
+  Color customColor = Color.fromRGBO(32, 61, 79, 1.0);
   TextEditingController _titleController = TextEditingController();
   TextEditingController _contentController = TextEditingController();
   final FocusNode _titleFocusNode = FocusNode();
@@ -27,18 +28,29 @@ class _ManualPageState extends State<ManualPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Post'),
+        // title: Text('Create Post'),
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Text(
+              'Write Your Story', // Add a title for the section
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 20),
             TextField(
               controller: _titleController,
               focusNode: _titleFocusNode,
               decoration: InputDecoration(
                 labelText: "Title",
+<<<<<<< HEAD
                 suffixIcon: IconButton(
                   onPressed: () async {
                     final clipboardData =
@@ -50,6 +62,13 @@ class _ManualPageState extends State<ManualPage> {
                   },
                   icon: Icon(Icons.paste),
                 ),
+=======
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(11.0),
+                  borderSide: BorderSide(color: customColor),
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+>>>>>>> origin
               ),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -61,6 +80,7 @@ class _ManualPageState extends State<ManualPage> {
               focusNode: _contentFocusNode,
               decoration: InputDecoration(
                 labelText: "Content",
+<<<<<<< HEAD
                 suffixIcon: IconButton(
                   onPressed: () async {
                     final clipboardData =
@@ -72,15 +92,31 @@ class _ManualPageState extends State<ManualPage> {
                   },
                   icon: Icon(Icons.paste),
                 ),
+=======
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: customColor),
+                  borderRadius: BorderRadius.circular(11.0), // Set border radius here
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+>>>>>>> origin
               ),
               maxLines: null, // Allow multiline input
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                _postStory();
-              },
-              child: Text('Post'),
+              onPressed: _postStory,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: customColor,
+                minimumSize: Size(double.infinity, 45),
+              ),
+              child: Text(
+                'Post',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ],
         ),

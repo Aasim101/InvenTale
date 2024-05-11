@@ -50,7 +50,6 @@ class _ManualPageState extends State<ManualPage> {
               focusNode: _titleFocusNode,
               decoration: InputDecoration(
                 labelText: "Title",
-<<<<<<< HEAD
                 suffixIcon: IconButton(
                   onPressed: () async {
                     final clipboardData =
@@ -62,13 +61,11 @@ class _ManualPageState extends State<ManualPage> {
                   },
                   icon: Icon(Icons.paste),
                 ),
-=======
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(11.0),
                   borderSide: BorderSide(color: customColor),
                 ),
                 contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
->>>>>>> origin
               ),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -80,7 +77,6 @@ class _ManualPageState extends State<ManualPage> {
               focusNode: _contentFocusNode,
               decoration: InputDecoration(
                 labelText: "Content",
-<<<<<<< HEAD
                 suffixIcon: IconButton(
                   onPressed: () async {
                     final clipboardData =
@@ -92,13 +88,11 @@ class _ManualPageState extends State<ManualPage> {
                   },
                   icon: Icon(Icons.paste),
                 ),
-=======
                 border: OutlineInputBorder(
                   borderSide: BorderSide(color: customColor),
                   borderRadius: BorderRadius.circular(11.0), // Set border radius here
                 ),
                 contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
->>>>>>> origin
               ),
               maxLines: null, // Allow multiline input
             ),

@@ -1,56 +1,49 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
 class MyApp extends StatelessWidget {
   static String id = "main_page";
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('InvenTale'),
-        ),
         body: LayoutBuilder(
           builder: (context, constraints) {
             return Center(
               child: Stack(
                 children: [
                   Positioned(
-                    top: constraints.maxHeight / 2 - 350,
+                    top: constraints.maxHeight / 2 - 300,
                     left: constraints.maxWidth / 2 - 210,
                     child: Image(image: AssetImage('assets/c1.png')),
                   ),
                   Positioned(
-                    top: constraints.maxHeight / 2 - 320,
+                    top: constraints.maxHeight / 2 - 270,
                     left: constraints.maxWidth / 2 - 210,
                     child: Image(image: AssetImage('assets/c2.png')),
                   ),
                   Positioned(
-                    top: constraints.maxHeight / 2 - 250,
+                    top: constraints.maxHeight / 2 - 200,
                     left: constraints.maxWidth / 2 - 180,
                     child: Image(image: AssetImage('assets/women.png')),
                   ),
                   Positioned(
-                    top: constraints.maxHeight / 2 - 420,
+                    top: constraints.maxHeight / 2 - 380,
                     left: constraints.maxWidth / 2 - 50,
                     child: Image(image: AssetImage('assets/c3.png')),
                   ),
                   Positioned(
-                    top: constraints.maxHeight / 2 - 420,
+                    top: constraints.maxHeight / 2 - 380,
                     left: constraints.maxWidth / 2 - 45,
                     child: Image(image: AssetImage('assets/f1.png')),
                   ),
                   Positioned(
-                    top: constraints.maxHeight / 2 + 10,
+                    top: constraints.maxHeight / 2 + 60,
                     left: constraints.maxWidth / 2 - 205,
                     child: Image(image: AssetImage('assets/r1.png')),
                   ),
                   Positioned(
-                    top: constraints.maxHeight / 2 + 50,
+                    top: constraints.maxHeight / 2 + 110,
                     left: constraints.maxWidth / 2 - 130,
                     child: RichText(
                       text: TextSpan(
@@ -78,7 +71,7 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    top: constraints.maxHeight / 2 + 140,
+                    top: constraints.maxHeight / 2 + 200,
                     left: constraints.maxWidth / 2 - 130,
                     child: Text(
                       "Unleash Your Imagination with\n",
@@ -90,7 +83,7 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    top: constraints.maxHeight / 2 + 170,
+                    top: constraints.maxHeight / 2 + 230,
                     left: constraints.maxWidth / 2 - 130,
                     child: RichText(
                       text: TextSpan(
@@ -101,7 +94,7 @@ class MyApp extends StatelessWidget {
                         children: [
                           TextSpan(
                             text: "InvenTale",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal),
                           ),
                           TextSpan(
                             text: ": Where AI and Stories\nCollide",
@@ -112,8 +105,8 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    top: constraints.maxHeight / 2 + 220,
-                    left: constraints.maxWidth / 2 - 50,
+                    top: constraints.maxHeight / 2 + 280,
+                    left: constraints.maxWidth / 2 - 80,
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.push(
@@ -127,7 +120,7 @@ class MyApp extends StatelessWidget {
                             MaterialStateProperty.all<Color>(Colors.teal),
                       ),
                       child: Text(
-                        'Login',
+                        'Login/SignUp',
                         style: TextStyle(fontSize: 18, color: Colors.black),
                       ),
                     ),

@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart'; // Import this to use the Clipboard
 
 class ImageTextInputPage extends StatefulWidget {
+  static String id= "Image text";
   const ImageTextInputPage({super.key});
 
   @override
@@ -169,13 +170,14 @@ class _ImageTextInputPageState extends State<ImageTextInputPage> {
                       ),
                 const SizedBox(height: 30),
                 Expanded(
+                  flex: 0,
                   child: Container(
-                    // height: 50,
                     child: Card(
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
-                          side: BorderSide(color: Colors.black),
-                          borderRadius: BorderRadius.circular(10)),
+                        side: BorderSide(color: Colors.black),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
@@ -183,16 +185,18 @@ class _ImageTextInputPageState extends State<ImageTextInputPage> {
                           controller: _textController,
                           keyboardType: TextInputType.multiline,
                           decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Enter your story...',
-                              hintStyle: TextStyle(
-                                color: Colors.black,
-                              )),
+                            border: InputBorder.none,
+                            hintText: 'Enter your thoughts...',
+                            hintStyle: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 20),
                 ElevatedButton(
                   style: ButtonStyle(
@@ -207,12 +211,12 @@ class _ImageTextInputPageState extends State<ImageTextInputPage> {
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Enter your story...'),
+                          content: Text('Enter your thoughts...'),
                         ),
                       );
                     }
                   },
-                  child: const Text('Get Info',
+                  child: const Text('Analyze',
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.black,

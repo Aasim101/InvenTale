@@ -89,7 +89,6 @@ flutter:
     - assets/Animations/
     - assets/InvenTale.png
     - assets/back.png
-<<<<<<< HEAD
     - assets/c1.png
     - assets/c2.png
     - assets/c3.png
@@ -104,8 +103,6 @@ flutter:
     - assets/r1.png
     - assets/two.png
     - assets/women.png
-
-=======
     - assets/Ellipse.png
     - assets/Ellipse2.png
     - assets/overlay.png
@@ -115,7 +112,6 @@ flutter:
     - assets/c1.png
     - assets/c2.png
     - assets/c3.png
->>>>>>> origin
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

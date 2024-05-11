@@ -10,6 +10,7 @@ import '../main.dart';
 
 class FeedPage extends StatefulWidget {
   static String id = "feed_page";
+
   @override
   _FeedPageState createState() => _FeedPageState();
 }
@@ -20,7 +21,6 @@ class _FeedPageState extends State<FeedPage> {
   late int _selectedIndex = 0;
   Color customColor = Color.fromRGBO(32, 61, 79, 1.0);
 
-
   @override
   void initState() {
     super.initState();
@@ -28,39 +28,42 @@ class _FeedPageState extends State<FeedPage> {
     var l = ["mystery", "fantasy", "horror", "romance"];
     _widgetOptions = <Widget>[
       SingleChildScrollView(
-      child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-    // Display the greeting message with the user's first name
-      Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(
-      'Hi $firstName,',
-      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Display the greeting message with the user's first name
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Hi $firstName,',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // Carousel for stories
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Today's Stories",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            StoryCarousel(
+                currentUserId: FirebaseAuth.instance.currentUser?.uid ?? ''),
+            // Display the StoryCarousel component
+            // Best Authors section
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Best Authors",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            AuthorComponent(
+                currentUserId: FirebaseAuth.instance.currentUser?.uid ?? ''),
+          ],
+        ),
       ),
-      ),
-    // Carousel for stories
-      Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(
-      "Today's Stories",
-      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ),
-      ),
-      StoryCarousel(currentUserId: FirebaseAuth.instance.currentUser?.uid ?? ''), // Display the StoryCarousel component
-    // Best Authors section
-      Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(
-      "Best Authors",
-      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ),
-      ),
-      AuthorComponent(currentUserId: FirebaseAuth.instance.currentUser?.uid ?? ''),
-      ],
-      ),
-      ),
-      ChatScreen(title: 'AI Chat'),
+      ChatScreen(title: ''),
       ProfilePage(),
       loadingscreen(l: l),
       Homepage(),
@@ -70,7 +73,7 @@ class _FeedPageState extends State<FeedPage> {
   // Method to handle tap events on bottom navigation bar items
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index  ; // Update the selected index
+      _selectedIndex = index; // Update the selected index
     });
   }
 
@@ -79,7 +82,8 @@ class _FeedPageState extends State<FeedPage> {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       // Fetch the user's info from Firestore
-      Stream<QuerySnapshot<Map<String, dynamic>>> stream = FirebaseFirestore.instance
+      Stream<QuerySnapshot<Map<String, dynamic>>> stream = FirebaseFirestore
+          .instance
           .collection('users')
           .doc(user.uid)
           .collection('user_info')
@@ -89,7 +93,8 @@ class _FeedPageState extends State<FeedPage> {
           // Extract the user's first name
           Map<String, dynamic> userInfoData = snapshot.docs.first.data();
           setState(() {
-            firstName = userInfoData['first_name'] ?? ''; // Store the user's first name
+            firstName =
+                userInfoData['first_name'] ?? ''; // Store the user's first name
           });
         } else {
           setState(() {
@@ -134,12 +139,11 @@ class _FeedPageState extends State<FeedPage> {
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Theme.of(context).primaryColor,
-          unselectedItemColor: customColor, // Change the color of unselected items
+          unselectedItemColor: customColor,
+          // Change the color of unselected items
           onTap: _onItemTapped,
         ),
       ),
     );
   }
-
 }
-

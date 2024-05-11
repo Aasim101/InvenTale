@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+import 'package:flutter/services.dart';
 
 class ManualPage extends StatefulWidget {
-
   @override
   _ManualPageState createState() => _ManualPageState();
 }
@@ -12,6 +13,8 @@ class _ManualPageState extends State<ManualPage> {
   late User loggedInUser;
   TextEditingController _titleController = TextEditingController();
   TextEditingController _contentController = TextEditingController();
+  final FocusNode _titleFocusNode = FocusNode();
+  final FocusNode _contentFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -33,8 +36,20 @@ class _ManualPageState extends State<ManualPage> {
           children: [
             TextField(
               controller: _titleController,
+              focusNode: _titleFocusNode,
               decoration: InputDecoration(
                 labelText: "Title",
+                suffixIcon: IconButton(
+                  onPressed: () async {
+                    final clipboardData =
+                    await Clipboard.getData(Clipboard.kTextPlain);
+                    if (clipboardData != null && clipboardData.text != null) {
+                      _titleController.text = clipboardData.text!;
+                      _titleFocusNode.requestFocus();
+                    }
+                  },
+                  icon: Icon(Icons.paste),
+                ),
               ),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -43,9 +58,20 @@ class _ManualPageState extends State<ManualPage> {
             SizedBox(height: 20),
             TextField(
               controller: _contentController,
+              focusNode: _contentFocusNode,
               decoration: InputDecoration(
-
                 labelText: "Content",
+                suffixIcon: IconButton(
+                  onPressed: () async {
+                    final clipboardData =
+                    await Clipboard.getData(Clipboard.kTextPlain);
+                    if (clipboardData != null && clipboardData.text != null) {
+                      _contentController.text = clipboardData.text!;
+                      _contentFocusNode.requestFocus();
+                    }
+                  },
+                  icon: Icon(Icons.paste),
+                ),
               ),
               maxLines: null, // Allow multiline input
             ),
@@ -103,6 +129,8 @@ class _ManualPageState extends State<ManualPage> {
   void dispose() {
     _titleController.dispose();
     _contentController.dispose();
+    _titleFocusNode.dispose();
+    _contentFocusNode.dispose();
     super.dispose();
   }
 }

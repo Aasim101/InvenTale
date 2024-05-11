@@ -226,7 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
                  top: 10.0, // Adjust the position as needed
                  right: 10.0,
                  child: Image.asset(
-                   '../assets/Ellipse.png',
+                   'assets/Ellipse.png',
                    width: 90.0,
                    height: 90.0,
                ),

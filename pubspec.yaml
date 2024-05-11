@@ -88,6 +88,22 @@ flutter:
     - assets/
     - assets/Animations/
     - assets/InvenTale.png
+    - assets/back.png
+    - assets/c1.png
+    - assets/c2.png
+    - assets/c3.png
+    - assets/Ellipse.png
+    - assets/Ellipse2.png
+    - assets/f1.png
+    - assets/false.png
+    - assets/makeProfile.png
+    - assets/one.svg
+    - assets/overlay.png
+    - assets/profile.png
+    - assets/r1.png
+    - assets/two.png
+    - assets/women.png
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

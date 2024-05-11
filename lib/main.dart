@@ -19,6 +19,7 @@ import 'screens/history_screen.dart';
 import 'screens/MakeProfileScreen.dart';
 import 'screens/feed.dart';
 import 'screens/features.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -76,9 +77,9 @@ class GenerativeAISample extends StatelessWidget {
             loadingscreen.id: (context) => loadingscreen(l: l),
             ChatScreen.id: (context) => ChatScreen(title: 'InvenTale'),
             MyApp.id: (context) => MyApp(),
-            MakeProfileScreen.id : (context) => MakeProfileScreen(),
-            FeedPage.id : (context) => FeedPage(),
-            Homepage.id : (context) => Homepage(),
+            MakeProfileScreen.id: (context) => MakeProfileScreen(),
+            FeedPage.id: (context) => FeedPage(),
+            Homepage.id: (context) => Homepage(),
           },
         );
       },
@@ -88,6 +89,7 @@ class GenerativeAISample extends StatelessWidget {
 
 class ChatScreen extends StatefulWidget {
   static String id = 'ai_chatscreen';
+
   const ChatScreen({Key? key, required this.title}) : super(key: key);
   final String title;
 
@@ -363,17 +365,50 @@ class _ChatWidgetState extends State<ChatWidget> {
                 ),
                 const SizedBox.square(dimension: 5),
                 if (!_loading)
-                  IconButton(
-                    onPressed: () async {
-                      _sendChatMessage(
-                        _textController.text,
-                        widget.loggedInUser,
-                      );
-                    },
-                    icon: Icon(
-                      Icons.send,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () async {
+                          final clipboardData =
+                              await Clipboard.getData(Clipboard.kTextPlain);
+                          if (clipboardData != null &&
+                              clipboardData.text != null) {
+                            _textController.text = clipboardData.text!;
+                            _textFieldFocus.requestFocus();
+                          }
+                        },
+                        icon: Icon(
+                          Icons.paste,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          _sendChatMessage(
+                              _textController.text, widget.loggedInUser);
+                        },
+                        icon: Icon(
+                          Icons.send,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          await Clipboard.setData(
+                              ClipboardData(text: _textController.text));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Text copied to clipboard'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.copy,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ],
                   )
                 else
                   const CircularProgressIndicator(),

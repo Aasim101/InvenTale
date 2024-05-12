@@ -27,9 +27,9 @@ class _ManualPageState extends State<ManualPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // title: Text('Create Post'),
-      ),
+      // appBar: AppBar(
+      //   // title: Text('Create Post'),
+      // ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
         child: Column(
@@ -72,29 +72,33 @@ class _ManualPageState extends State<ManualPage> {
               ),
             ),
             SizedBox(height: 20),
-            TextField(
-              controller: _contentController,
-              focusNode: _contentFocusNode,
-              decoration: InputDecoration(
-                labelText: "Content",
-                suffixIcon: IconButton(
-                  onPressed: () async {
-                    final clipboardData =
-                    await Clipboard.getData(Clipboard.kTextPlain);
-                    if (clipboardData != null && clipboardData.text != null) {
-                      _contentController.text = clipboardData.text!;
-                      _contentFocusNode.requestFocus();
-                    }
-                  },
-                  icon: Icon(Icons.paste),
+            Expanded(
+              child: SingleChildScrollView(
+                child: TextField(
+                  controller: _contentController,
+                  focusNode: _contentFocusNode,
+                  decoration: InputDecoration(
+                    labelText: "Content",
+                    suffixIcon: IconButton(
+                      onPressed: () async {
+                        final clipboardData =
+                        await Clipboard.getData(Clipboard.kTextPlain);
+                        if (clipboardData != null && clipboardData.text != null) {
+                          _contentController.text = clipboardData.text!;
+                          _contentFocusNode.requestFocus();
+                        }
+                      },
+                      icon: Icon(Icons.paste),
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: customColor),
+                      borderRadius: BorderRadius.circular(11.0), // Set border radius here
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  ),
+                  maxLines: null, // Allow multiline input
                 ),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: customColor),
-                  borderRadius: BorderRadius.circular(11.0), // Set border radius here
-                ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               ),
-              maxLines: null, // Allow multiline input
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -127,6 +131,8 @@ class _ManualPageState extends State<ManualPage> {
         'title': title,
         'content': content,
         'user_id': loggedInUser.uid,
+        'total_ratings':0,
+        'rating':5,
         'timestamp': FieldValue.serverTimestamp(),
       }).then((value) {
         // Clear text fields after posting

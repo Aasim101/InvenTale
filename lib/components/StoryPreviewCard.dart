@@ -6,6 +6,10 @@ class StoryPreviewCard extends StatelessWidget {
   final String firstName;
   final String lastName;
   final String profilePictureUrl;
+  final int totalRatings;
+  final double rating;
+  final String storyId;
+  final String currentUserId;
 
   StoryPreviewCard({
     required this.title,
@@ -13,6 +17,10 @@ class StoryPreviewCard extends StatelessWidget {
     required this.firstName,
     required this.lastName,
     required this.profilePictureUrl,
+    required this.totalRatings,
+    required this.rating,
+    required this.storyId,
+    required this.currentUserId,
   });
 
   @override
@@ -34,24 +42,38 @@ class StoryPreviewCard extends StatelessWidget {
               Row(
                 children: [
                   CircleAvatar(
+                    radius: 30,
                     backgroundImage: NetworkImage(profilePictureUrl),
                   ),
-                  SizedBox(width: 10),
-                  Text(
-                    '$firstName $lastName',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+                  SizedBox(width: 15),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '$firstName $lastName',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        'Rated by $totalRatings people',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 15),
               Text(
                 title,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 22,
                 ),
               ),
               SizedBox(height: 10),
@@ -59,6 +81,21 @@ class StoryPreviewCard extends StatelessWidget {
                 content,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                ),
+              ),
+              SizedBox(height: 15),
+              Row(
+                children: [
+                  Icon(Icons.star, color: Colors.yellow),
+                  SizedBox(width: 5),
+                  Text(
+                    rating.toStringAsFixed(1),
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ],
               ),
             ],
           ),
@@ -67,4 +104,5 @@ class StoryPreviewCard extends StatelessWidget {
     );
   }
 }
+
 

@@ -3,7 +3,7 @@ import 'package:inventale/components/rounded_button';
 import 'package:inventale/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:inventale/screens/manualpage.dart';
-import '../main.dart';
+import "package:inventale/main.dart";
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import './feed.dart';
 import './registration.dart';

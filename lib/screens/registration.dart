@@ -51,7 +51,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 tag: 'logo',
                 child: Container(
                   height: 200.0,
-                  child: Image.asset('../assets/InvenTale.png'),
+                  child: Image.asset('assets/InvenTale.png'),
                 ),
               ),
               SizedBox(
@@ -159,7 +159,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             top: 10.0, // Adjust the position as needed
             right: 10.0,
             child: Image.asset(
-              '../assets/Ellipse2.png',
+              'assets/Ellipse2.png',
               width: 100.0,
               height: 100.0,
             ),

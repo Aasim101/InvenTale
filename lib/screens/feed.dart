@@ -38,7 +38,7 @@ class _FeedPageState extends State<FeedPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Hi $firstName,',
+                'Hi, How you are doing?,',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),
@@ -46,7 +46,7 @@ class _FeedPageState extends State<FeedPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Today's Stories",
+                "Today's Stories:",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
+import '../screens/login.dart';
+import 'package:inventale/main.dart';
 
 class MyApp extends StatelessWidget {
   static String id = "main_page";
@@ -109,11 +110,7 @@ class MyApp extends StatelessWidget {
                     left: constraints.maxWidth / 2 - 80,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginScreen()),
-                        );
+                        Navigator.pushNamed(context, LoginScreen.id);
                       },
                       style: ButtonStyle(
                         backgroundColor:

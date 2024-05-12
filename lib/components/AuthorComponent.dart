@@ -45,7 +45,6 @@ class _AuthorComponentState extends State<AuthorComponent> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -66,16 +65,12 @@ class _AuthorComponentState extends State<AuthorComponent> {
               .where((userInfo) => !followedUserIds.contains(userInfo['userId']))
               .toList();
 
-          return ListView.separated(
-            shrinkWrap: true,
-            itemCount: filteredUserInfoList.length,
-            separatorBuilder: (context, index) => Divider(),
-            itemBuilder: (context, index) {
-              final userInfo = filteredUserInfoList[index];
+          return Column(
+            children: filteredUserInfoList.map((userInfo) {
               final firstName = userInfo['first_name'] ?? '';
               final lastName = userInfo['last_name'] ?? '';
               final profilePictureUrl = userInfo['profile_picture'] ?? '';
-              final followedUserId = _userIds[index];
+              final followedUserId = userInfo['userId'];
 
               return ListTile(
                 leading: CircleAvatar(
@@ -133,14 +128,14 @@ class _AuthorComponentState extends State<AuthorComponent> {
                         .set({});
 
                     setState(() {
-                      _userInfoList.removeAt(index);
-                      _userIds.removeAt(index);
+                      _userInfoList.remove(userInfo);
+                      _userIds.remove(followedUserId);
                     });
                   },
                   child: Text('Follow'),
                 ),
               );
-            },
+            }).toList(),
           );
         },
       ),

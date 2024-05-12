@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'StoryPreviewCard.dart';
+import 'StoryModal.dart';
 
 class StoryCarousel extends StatelessWidget {
   final String currentUserId;
@@ -37,7 +38,7 @@ class StoryCarousel extends StatelessWidget {
             }
 
             final List<String> followingUserIds = followingSnapshot.data!.docs.map((doc) => doc.id).toList();
-print(followingUserIds);
+
             return CarouselSlider.builder(
               itemCount: stories.length,
               itemBuilder: (BuildContext context, int index, int realIndex) {
@@ -45,6 +46,7 @@ print(followingUserIds);
                 final userId = story['user_id'];
                 final title = story['title'];
                 final storyContent = story['content'];
+
                 if (userId == currentUserId || followingUserIds.contains(userId)) {
                   return StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
@@ -71,7 +73,7 @@ print(followingUserIds);
 
                       return GestureDetector(
                         onTap: () {
-                          _showStoryModal(context, title, storyContent);
+                          _showStoryModal(context, title, storyContent, story.id);
                         },
                         child: AbsorbPointer(
                           child: StoryPreviewCard(
@@ -80,6 +82,10 @@ print(followingUserIds);
                             profilePictureUrl: profilePictureUrl,
                             title: title,
                             content: _getStoryPreview(storyContent),
+                            totalRatings: story['total_ratings'] ?? 0,
+                            rating: story['rating']?.toDouble() ?? 0.0, // Convert to double
+                            storyId: story.id,
+                            currentUserId: currentUserId,
                           ),
                         ),
                       );
@@ -107,39 +113,23 @@ print(followingUserIds);
     );
   }
 
-  void _showStoryModal(BuildContext context, String title, String content) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          contentPadding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0),
-          title: Text(
-            title,
-            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-          ),
-          content: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.6,
-            child: SingleChildScrollView(
-              child: Text(
-                content,
-                style: TextStyle(fontSize: 16.0),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-
-
-
   String _getStoryPreview(String content) {
     List<String> words = content.split(' ');
     int length = words.length > 5 ? 5 : words.length;
     return '${words.sublist(0, length).join(' ')}...';
+  }
+
+  void _showStoryModal(BuildContext context, String title, String content, String storyId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StoryModal(
+          title: title,
+          content: content,
+          storyId: storyId,
+          currentUserId: currentUserId,
+        );
+      },
+    );
   }
 }

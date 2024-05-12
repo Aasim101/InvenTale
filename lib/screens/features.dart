@@ -32,20 +32,20 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       //backgroundColor: Color.fromRGBO(0, 0, 0, 0),
-      appBar: AppBar(
-        //backgroundColor: Color.fromRGBO(63, 75, 82, 40),
-        centerTitle: true,
-        title: const Text(
-          'InvenTale',
-          style: TextStyle(
-              color: Colors.teal,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 4,
-              fontFamily: "Cera Pro"
-          ),
-        ),
-      ),
+      // appBar: AppBar(
+      //   //backgroundColor: Color.fromRGBO(63, 75, 82, 40),
+      //   centerTitle: true,
+      //   title: const Text(
+      //     'InvenTale',
+      //     style: TextStyle(
+      //         color: Colors.teal,
+      //         fontSize: 20,
+      //         fontWeight: FontWeight.bold,
+      //         letterSpacing: 4,
+      //         fontFamily: "Cera Pro"
+      //     ),
+      //   ),
+      // ),
       body: SingleChildScrollView(
         child: Column(
           children: [

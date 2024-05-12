@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class searchfilter extends StatefulWidget {
   var d;
+
   searchfilter({@required this.d});
 
   @override
@@ -22,7 +23,7 @@ class _searchfilterState extends State<searchfilter> {
     try {
       setState(() {
         isbn = widget.d["items"][index + 1]["volumeInfo"]["industryIdentifiers"]
-        [0]["identifier"];
+            [0]["identifier"];
       });
     } catch (e) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -61,7 +62,7 @@ class _searchfilterState extends State<searchfilter> {
               color: Colors.black,
               child: Padding(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -124,8 +125,8 @@ class _searchfilterState extends State<searchfilter> {
                                   borderRadius: BorderRadius.circular(10),
                                   image: DecorationImage(
                                       image: NetworkImage(widget.d["items"]
-                                      [index + 1]["volumeInfo"]
-                                      ["imageLinks"]["thumbnail"]),
+                                              [index + 1]["volumeInfo"]
+                                          ["imageLinks"]["thumbnail"]),
                                       fit: BoxFit.cover)),
                             ),
                             SizedBox(
@@ -142,13 +143,13 @@ class _searchfilterState extends State<searchfilter> {
                                     // you can change it accordingly
 
                                     (widget.d["items"][index + 1]["volumeInfo"]
-                                    ["title"])
-                                        .length >
-                                        20
+                                                    ["title"])
+                                                .length >
+                                            20
                                         ? st(widget.d["items"][index + 1]
-                                    ["volumeInfo"]["title"])
+                                            ["volumeInfo"]["title"])
                                         : widget.d["items"][index + 1]
-                                    ["volumeInfo"]["title"],
+                                            ["volumeInfo"]["title"],
                                     overflow: TextOverflow.ellipsis,
                                     style: GoogleFonts.lato(
                                         textStyle: TextStyle(
@@ -163,15 +164,15 @@ class _searchfilterState extends State<searchfilter> {
                                 Flexible(
                                   child: Text(
                                     (widget.d["items"][index + 1]["volumeInfo"]
-                                    ["authors"][0])
-                                        .length >
-                                        20
+                                                    ["authors"][0])
+                                                .length >
+                                            20
                                         ? "by " +
-                                        st(widget.d["items"][index + 1]
-                                        ["volumeInfo"]["authors"][0])
+                                            st(widget.d["items"][index + 1]
+                                                ["volumeInfo"]["authors"][0])
                                         : "by " +
-                                        widget.d["items"][index + 1]
-                                        ["volumeInfo"]["authors"][0],
+                                            widget.d["items"][index + 1]
+                                                ["volumeInfo"]["authors"][0],
                                     overflow: TextOverflow.ellipsis,
                                     style: GoogleFonts.lato(
                                         textStyle: TextStyle(
@@ -186,7 +187,7 @@ class _searchfilterState extends State<searchfilter> {
                                 Text(
                                   "Page Count:- " +
                                       (widget.d["items"][index + 1]
-                                      ["volumeInfo"]["pageCount"]
+                                              ["volumeInfo"]["pageCount"]
                                           .toString()),
                                   style: GoogleFonts.lato(
                                       textStyle: TextStyle(
@@ -199,14 +200,14 @@ class _searchfilterState extends State<searchfilter> {
                                 ),
                                 Text(
                                   (widget.d["items"][index + 1]["volumeInfo"]
-                                  ["averageRating"]) ==
-                                      null
+                                              ["averageRating"]) ==
+                                          null
                                       ? "⭐ " + "No rating available"
                                       : "⭐ " +
-                                      (widget.d["items"][index + 1]
-                                      ["volumeInfo"]
-                                      ["averageRating"]
-                                          .toString()),
+                                          (widget.d["items"][index + 1]
+                                                  ["volumeInfo"]
+                                                  ["averageRating"]
+                                              .toString()),
                                   style: GoogleFonts.lato(
                                       textStyle: TextStyle(
                                           color: Colors.grey[400],
@@ -221,18 +222,18 @@ class _searchfilterState extends State<searchfilter> {
                                     getisbn(index);
                                     Navigator.push(context,
                                         MaterialPageRoute(builder: (context) {
-                                          return bookloading(c: isbn);
-                                        }));
+                                      return bookloading(c: isbn);
+                                    }));
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.black, // Background color
+                                    backgroundColor:
+                                        Colors.black, // Background color
                                   ),
                                   child: Text(
                                     "DETAILS",
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
-
                               ],
                             )
                           ],

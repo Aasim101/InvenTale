@@ -69,7 +69,7 @@ class GenerativeAISample extends StatelessWidget {
             ),
             useMaterial3: true,
           ),
-          initialRoute: LoginScreen.id,
+          initialRoute: MyApp.id,
           routes: {
             RegistrationScreen.id: (context) => RegistrationScreen(),
             LoginScreen.id: (context) => LoginScreen(),
@@ -80,6 +80,7 @@ class GenerativeAISample extends StatelessWidget {
             MakeProfileScreen.id: (context) => MakeProfileScreen(),
             FeedPage.id: (context) => FeedPage(),
             Homepage.id: (context) => Homepage(),
+
           },
         );
       },

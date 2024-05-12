@@ -1,4 +1,3 @@
-
 // ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, deprecated_member_use, use_full_hex_values_for_flutter_colors
 
 import 'dart:io' as i;
@@ -16,6 +15,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class bookdisplay extends StatefulWidget {
   var d;
+
   bookdisplay({@required this.d});
 
   @override
@@ -30,6 +30,7 @@ class _bookdisplayState extends State<bookdisplay> {
   var rating = "Not available";
   var url =
       "https://www.bing.com/images/search?view=detailV2&ccid=vx9%2fIUj5&id=3B7650A146D55682645F765E60E786419299154C&thid=OIP.vx9_IUj50utS7cbaiRtoZAHaE8&mediaurl=https%3a%2f%2fst3.depositphotos.com%2f1186248%2f14351%2fi%2f950%2fdepositphotos_143511907-stock-photo-not-available-rubber-stamp.jpg&exph=682&expw=1023&q=not+available&simid=608054098357136066&FORM=IRPRST&ck=BADF0353AC59677CCFAA67227357E3CB&selectedIndex=1&ajaxhist=0&ajaxserp=0";
+
   @override
   void initState() {
     // TODO: implement initState
@@ -142,6 +143,7 @@ class _bookdisplayState extends State<bookdisplay> {
       return null;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return (Scaffold(
@@ -155,12 +157,14 @@ class _bookdisplayState extends State<bookdisplay> {
             );
           },
           style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white, backgroundColor: Colors.black, // Text color
-            splashFactory: InkRipple.splashFactory, // Optional, adds splash effect
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.black,
+            // Text color
+            splashFactory:
+                InkRipple.splashFactory, // Optional, adds splash effect
           ),
           child: Text("READ BOOK"),
         ),
-
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SafeArea(
@@ -168,7 +172,7 @@ class _bookdisplayState extends State<bookdisplay> {
           children: [
             Padding(
               padding:
-              const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: Container(
                 decoration: BoxDecoration(
                     image: DecorationImage(
@@ -194,16 +198,16 @@ class _bookdisplayState extends State<bookdisplay> {
                       "DETAILS",
                       style: GoogleFonts.lato(
                           textStyle:
-                          TextStyle(color: Colors.white, fontSize: 16)),
+                              TextStyle(color: Colors.white, fontSize: 16)),
                     ),
                     GestureDetector(
                       onTap: () async {
                         try {
                           var url = widget.d["items"][0]["accessInfo"]["epub"]
-                          ["isAvailable"];
+                              ["isAvailable"];
                           if (url == true) {
                             url = widget.d["items"][0]["accessInfo"]["epub"]
-                            ["acsTokenLink"];
+                                ["acsTokenLink"];
                             await launchUrl(Uri.parse(url));
                           }
                         } catch (e) {
@@ -371,30 +375,30 @@ class _bookdisplayState extends State<bookdisplay> {
                     children: [
                       Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 28.0, vertical: 25),
-                            child: ListView(
-                              children: [
-                                Text(
-                                  "What's it about?",
-                                  style: GoogleFonts.lato(
-                                      textStyle: TextStyle(
-                                        color: Colors.grey[900],
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 25,
-                                      )),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  desc,
-                                  style: GoogleFonts.lato(
-                                      color: Colors.grey[600], fontSize: 15),
-                                )
-                              ],
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 28.0, vertical: 25),
+                        child: ListView(
+                          children: [
+                            Text(
+                              "What's it about?",
+                              style: GoogleFonts.lato(
+                                  textStyle: TextStyle(
+                                color: Colors.grey[900],
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                              )),
                             ),
-                          ))
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              desc,
+                              style: GoogleFonts.lato(
+                                  color: Colors.grey[600], fontSize: 15),
+                            )
+                          ],
+                        ),
+                      ))
                     ],
                   ),
                 )),
@@ -404,4 +408,3 @@ class _bookdisplayState extends State<bookdisplay> {
     ));
   }
 }
-

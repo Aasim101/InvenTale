@@ -20,16 +20,16 @@ class homescreen extends StatefulWidget {
 
   homescreen(
       {@required this.c1,
-        @required this.c2,
-        @required this.c3,
-        @required this.c4});
+      @required this.c2,
+      @required this.c3,
+      @required this.c4});
 
   @override
   State<homescreen> createState() => _homescreenState();
 }
 
 class _homescreenState extends State<homescreen> {
-  Color customColor =  Color.fromRGBO(32, 61, 79, 1.0);
+  Color customColor = Color.fromRGBO(32, 61, 79, 1.0);
   TextEditingController t = TextEditingController();
 
   String st(String s) {
@@ -57,210 +57,207 @@ class _homescreenState extends State<homescreen> {
   @override
   Widget build(BuildContext context) {
     return (Scaffold(
-      resizeToAvoidBottomInset : false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: customColor,
       body: SafeArea(
           child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        opacity: 0.4,
-                        image: AssetImage("../assets/overlay.png"),
-                        fit: BoxFit.cover
-
-                    )
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                          onTap: (() {
-                            Navigator.of(context)
-                              ..pop()
-                              ..pop();
-                          }),
-                          child:
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    opacity: 0.4,
+                    image: AssetImage("../assets/overlay.png"),
+                    fit: BoxFit.cover)),
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+              child: Row(
+                children: [
+                  GestureDetector(
+                      onTap: (() {
+                        Navigator.of(context)
+                          ..pop()
+                          ..pop();
+                      }),
+                      child:
                           Icon(Icons.arrow_back, size: 30, color: Colors.white))
-                    ],
-                  ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(
+                        "../assets/back.png",
+                      ),
+                      fit: BoxFit.cover)),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 80.0),
+                      child: Container(
+                        height: 40,
+                        child: TextField(
+                          controller: t,
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              contentPadding: EdgeInsets.all(10),
+                              hintText: "Search Book...",
+                              prefixIcon: Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(40))),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return searchloading(text: t.text);
+                        }));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Color(0xfff012AC0),
+                        backgroundColor: Colors.white, // Splash color
+                      ),
+                      child: Text(
+                        "SEARCH",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text("Explore the book forest!",
+                        style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 19,
+                                fontWeight: FontWeight.bold))),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Find the light you are chasing for.",
+                      style: GoogleFonts.lato(
+                          textStyle: TextStyle(
+                              fontSize: 13,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold)),
+                    )
+                  ],
                 ),
               ),
-              Expanded(
-                child: Container(
-
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(
-                            "../assets/back.png",
-                          ),
-                          fit: BoxFit.cover)),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+            ),
+          ),
+          Expanded(
+              flex: 2,
+              child: Container(
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    Expanded(
+                        child: Container(
+                            child: ListView(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 80.0),
-                          child: Container(
-                            height: 40,
-                            child: TextField(
-                              controller: t,
-                              decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  contentPadding: EdgeInsets.all(10),
-                                  hintText: "Search Book...",
-                                  prefixIcon: Icon(Icons.search),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius: BorderRadius.circular(40))),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                                  return searchloading(text: t.text);
-                                }));
-                          },
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Color(0xfff012AC0), backgroundColor: Colors.white, // Splash color
-                          ),
-                          child: Text(
-                            "SEARCH",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text("Explore the book forest!",
-                            style: GoogleFonts.lato(
-                                textStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.bold))),
                         SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          "Find the light you are chasing for.",
-                          style: GoogleFonts.lato(
-                              textStyle: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold)),
-                        )
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            // ignore: prefer_const_literals_to_create_immutables
+                            children: [
+                              Text(
+                                "Adventure",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Icon(Icons.arrow_forward)
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        adventure(c4: widget.c1),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            // ignore: prefer_const_literals_to_create_immutables
+                            children: [
+                              Text(
+                                "Fantasy",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Icon(Icons.arrow_forward)
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        fantasy(c2: widget.c2),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            // ignore: prefer_const_literals_to_create_immutables
+                            children: [
+                              Text(
+                                "Horror",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Icon(Icons.arrow_forward)
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        horror(c3: widget.c3),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            // ignore: prefer_const_literals_to_create_immutables
+                            children: [
+                              Text(
+                                "Health",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Icon(Icons.arrow_forward)
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        romance(c4: widget.c4),
                       ],
-                    ),
-                  ),
+                    )))
+                  ],
                 ),
-              ),
-              Expanded(
-                  flex: 2,
-                  child: Container(
-                    color: Colors.white,
-                    child: Column(
-                      children: [
-                        Expanded(
-                            child: Container(
-                                child: ListView(
-                                  children: [
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20.0, vertical: 10),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        // ignore: prefer_const_literals_to_create_immutables
-                                        children: [
-                                          Text(
-                                            "Adventure",
-                                            style: TextStyle(fontWeight: FontWeight.bold),
-                                          ),
-                                          Icon(Icons.arrow_forward)
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    adventure(c4: widget.c1),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20.0, vertical: 10),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        // ignore: prefer_const_literals_to_create_immutables
-                                        children: [
-                                          Text(
-                                            "Fantasy",
-                                            style: TextStyle(fontWeight: FontWeight.bold),
-                                          ),
-                                          Icon(Icons.arrow_forward)
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    fantasy(c2: widget.c2),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20.0, vertical: 10),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        // ignore: prefer_const_literals_to_create_immutables
-                                        children: [
-                                          Text(
-                                            "Horror",
-                                            style: TextStyle(fontWeight: FontWeight.bold),
-                                          ),
-                                          Icon(Icons.arrow_forward)
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    horror(c3: widget.c3),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20.0, vertical: 10),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        // ignore: prefer_const_literals_to_create_immutables
-                                        children: [
-                                          Text(
-                                            "Health",
-                                            style: TextStyle(fontWeight: FontWeight.bold),
-                                          ),
-                                          Icon(Icons.arrow_forward)
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    romance(c4: widget.c4),
-                                  ],
-                                )))
-                      ],
-                    ),
-                  ))
-            ],
-          )),
+              ))
+        ],
+      )),
     ));
   }
 }

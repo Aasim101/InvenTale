@@ -50,7 +50,8 @@ class _MakeProfileScreenState extends State<MakeProfileScreen> {
     if (_image != null) {
       try {
         final storageRef = FirebaseStorage.instance.ref(); // Get a reference
-        final profileImagesRef = storageRef.child('profile_images'); // Create subfolder
+        final profileImagesRef =
+            storageRef.child('profile_images'); // Create subfolder
         final userImageRef = profileImagesRef.child('${loggedInUser!.uid}.png');
 
         // Upload the image to Firebase Storage
@@ -85,139 +86,148 @@ class _MakeProfileScreenState extends State<MakeProfileScreen> {
       appBar: AppBar(
         title: Text('Make Your Profile'),
       ),
-
-        body: ModalProgressHUD(
-          inAsyncCall: showSpinner,
-          child: Stack (
-          children: [Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                TextField(
-                  onChanged: (value) {
-                    firstName = value;
-                  },
-                  textAlign: TextAlign.center,
-                  decoration: kTextFieldDecoration.copyWith(labelText: 'First Name', hintText: 'Enter your First Name',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: customColor),
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: customColor),
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: customColor),
-                      borderRadius: BorderRadius.circular(30.0),
-                    )),
-                ),
-                SizedBox(height: 16.0),
-                TextField(
-                  onChanged: (value) {
-                    lastName = value;
-                  },
-                  textAlign: TextAlign.center,
-                  decoration: kTextFieldDecoration.copyWith(labelText: 'Last Name', hintText: 'Enter your Last Name',border: OutlineInputBorder(
-                    borderSide: BorderSide(color: customColor),
-                    borderRadius: BorderRadius.circular(30.0),
+      body: ModalProgressHUD(
+        inAsyncCall: showSpinner,
+        child: Stack(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  TextField(
+                    onChanged: (value) {
+                      firstName = value;
+                    },
+                    textAlign: TextAlign.center,
+                    decoration: kTextFieldDecoration.copyWith(
+                        labelText: 'First Name',
+                        hintText: 'Enter your First Name',
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: customColor),
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: customColor),
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: customColor),
+                          borderRadius: BorderRadius.circular(30.0),
+                        )),
                   ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: customColor),
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: customColor),
-                        borderRadius: BorderRadius.circular(30.0),
-                      )),
-                ),
-                SizedBox(height: 16.0),
-
-                GestureDetector(
-                  onTap: getImage,
-                  child: CircleAvatar(
-                    radius: 75.0,
-                    backgroundColor: customColor,
-                    backgroundImage: _image != null ? FileImage(_image!) : null,
-                    child: _image == null
-                        ? Icon(
-                      Icons.add_a_photo,
-                      size: 50.0,
-                      color: customColor2,
-                    )
-                        : null,
+                  SizedBox(height: 16.0),
+                  TextField(
+                    onChanged: (value) {
+                      lastName = value;
+                    },
+                    textAlign: TextAlign.center,
+                    decoration: kTextFieldDecoration.copyWith(
+                        labelText: 'Last Name',
+                        hintText: 'Enter your Last Name',
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: customColor),
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: customColor),
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: customColor),
+                          borderRadius: BorderRadius.circular(30.0),
+                        )),
                   ),
-                ),
+                  SizedBox(height: 16.0),
+                  GestureDetector(
+                    onTap: getImage,
+                    child: CircleAvatar(
+                      radius: 75.0,
+                      backgroundColor: customColor,
+                      backgroundImage:
+                          _image != null ? FileImage(_image!) : null,
+                      child: _image == null
+                          ? Icon(
+                              Icons.add_a_photo,
+                              size: 50.0,
+                              color: customColor2,
+                            )
+                          : null,
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        showSpinner = true;
+                      });
 
-                SizedBox(height: 16.0),
-                ElevatedButton(
+                      if (firstName.isEmpty || lastName.isEmpty) {
+                        // Check if mandatory fields are empty
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text('Missing Information'),
+                              content: Text(
+                                  'Please provide both first name and last name.'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                        setState(() {
+                          showSpinner = false;
+                        });
+                        return;
+                      }
 
-                  onPressed: () async {
-                    setState(() {
-                      showSpinner = true;
-                    });
+                      final imageUrl = await _uploadImage();
+                      if (imageUrl != null) {
+                        // Create a subcollection for user data within the user's document
+                        _firestore
+                            .collection('user')
+                            .doc(loggedInUser!.uid)
+                            .set({});
+                        final userRef = _firestore
+                            .collection('users')
+                            .doc(loggedInUser!.uid);
+                        final userInfoRef = userRef.collection('user_info');
 
-                    if (firstName.isEmpty || lastName.isEmpty) {
-                      // Check if mandatory fields are empty
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text('Missing Information'),
-                            content: Text('Please provide both first name and last name.'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text('OK'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                        await userInfoRef.add({
+                          'first_name': firstName,
+                          'last_name': lastName,
+                          'profile_picture': imageUrl,
+                          'followers': followers,
+                          'following': following,
+                        });
+
+                        Navigator.pushNamed(context, ChatScreen.id);
+                      } else {
+                        print('Image upload failed.');
+                      }
                       setState(() {
                         showSpinner = false;
                       });
-                      return;
-                    }
-
-                    final imageUrl = await _uploadImage();
-                    if (imageUrl != null) {
-                      // Create a subcollection for user data within the user's document
-                      _firestore.collection('user').doc(loggedInUser!.uid).set({});
-                      final userRef = _firestore.collection('users').doc(loggedInUser!.uid);
-                      final userInfoRef = userRef.collection('user_info');
-
-                      await userInfoRef.add({
-                        'first_name': firstName,
-                        'last_name': lastName,
-                        'profile_picture': imageUrl,
-                        'followers': followers,
-                        'following': following,
-                      });
-
-                      Navigator.pushNamed(context, ChatScreen.id);
-                    } else {
-                      print('Image upload failed.');
-                    }
-                    setState(() {
-                      showSpinner = false;
-
-                    });
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(customColor), // Change button background color
-                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white), // Change text color
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          customColor), // Change button background color
+                      foregroundColor: MaterialStateProperty.all<Color>(
+                          Colors.white), // Change text color
+                    ),
+                    child: Text('Save'),
                   ),
-                  child: Text('Save'),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-
             Positioned(
               top: 30.0, // Adjust the position as needed
               right: 180.0,
@@ -227,11 +237,9 @@ class _MakeProfileScreenState extends State<MakeProfileScreen> {
                 height: 120.0,
               ),
             ),
-        ],
+          ],
         ),
       ),
-
     );
   }
 }
-

@@ -5,7 +5,6 @@ import 'package:lottie/lottie.dart';
 import 'package:inventale/main.dart';
 import 'package:provider/provider.dart';
 
-
 class inventa extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,6 +20,7 @@ class inventa extends StatelessWidget {
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
+
   static String id = 'feature_screen';
 
   @override
@@ -42,8 +42,7 @@ class _HomepageState extends State<Homepage> {
               fontSize: 20,
               fontWeight: FontWeight.bold,
               letterSpacing: 4,
-              fontFamily: "Cera Pro"
-          ),
+              fontFamily: "Cera Pro"),
         ),
       ),
       body: SingleChildScrollView(
@@ -59,7 +58,6 @@ class _HomepageState extends State<Homepage> {
               padding: const EdgeInsets.all(10),
               margin: const EdgeInsets.only(top: 10, left: 20),
               alignment: Alignment.centerLeft,
-
               child: const Text(
                 'What do you want?',
                 style: TextStyle(
@@ -76,14 +74,14 @@ class _HomepageState extends State<Homepage> {
                 //Multi-turn chat feature
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, ChatScreen.id );
+                    Navigator.pushNamed(context, ChatScreen.id);
                   },
                   child: const FeaturelistBox(
                     textcolor: Colors.black,
                     color: Color.fromRGBO(51, 187, 187, 100),
                     headertext: "Turn your thoughts into a story!",
                     descriptiontext:
-                    "Aids users by generating text, enhancing their writing skills.",
+                        "Aids users by generating text, enhancing their writing skills.",
                   ),
                 ),
 
@@ -99,7 +97,7 @@ class _HomepageState extends State<Homepage> {
                     color: Color.fromRGBO(51, 187, 187, 100),
                     headertext: "Get your images turn into a story's context!",
                     descriptiontext:
-                    "Helps you to turn your favourite images the into a story's theme.",
+                        "Helps you to turn your favourite images the into a story's theme.",
                   ),
                 ),
               ],

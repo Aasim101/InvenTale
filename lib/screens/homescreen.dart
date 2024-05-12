@@ -66,7 +66,7 @@ class _homescreenState extends State<homescreen> {
             decoration: BoxDecoration(
                 image: DecorationImage(
                     opacity: 0.4,
-                    image: AssetImage("../assets/overlay.png"),
+                    image: AssetImage("assets/overlay.png"),
                     fit: BoxFit.cover)),
             child: Padding(
               padding:
@@ -90,7 +90,7 @@ class _homescreenState extends State<homescreen> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage(
-                        "../assets/back.png",
+                        "assets/back.png",
                       ),
                       fit: BoxFit.cover)),
               child: Center(
@@ -126,7 +126,7 @@ class _homescreenState extends State<homescreen> {
                         }));
                       },
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: Color(0xfff012AC0),
+                        foregroundColor: customColor,
                         backgroundColor: Colors.white, // Splash color
                       ),
                       child: Text(
@@ -180,7 +180,7 @@ class _homescreenState extends State<homescreen> {
                             // ignore: prefer_const_literals_to_create_immutables
                             children: [
                               Text(
-                                "Adventure",
+                                "Mystery",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               Icon(Icons.arrow_forward)

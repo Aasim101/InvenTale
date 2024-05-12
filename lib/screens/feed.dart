@@ -6,8 +6,8 @@ import '../components/AuthorComponent.dart';
 import './profile.dart';
 import './loadingscreen.dart';
 import './features.dart';
-import '../main.dart';
 import './manualpage.dart';
+import './splashscreen.dart';
 
 class FeedPage extends StatefulWidget {
   static String id = "feed_page";
@@ -33,7 +33,7 @@ class _FeedPageState extends State<FeedPage> {
   void initState() {
     super.initState();
     fetchUserInfo(); // Fetch user's info when the widget initializes
-    var l = ["mystery", "fantasy", "horror", "romance"];
+    var l = ["mystery", "fantasy", "horror", "health"];
     _widgetOptions = <Widget>[
       SingleChildScrollView(
         child: Column(
@@ -73,7 +73,7 @@ class _FeedPageState extends State<FeedPage> {
       ),
       ManualPage(),
       ProfilePage(),
-      loadingscreen(l: l),
+      splashscreen(),
       Homepage(),
     ];
   }

@@ -49,7 +49,7 @@ class GenerativeAISample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var l = ["mystery", "fantasy", "horror", "romance"];
+    var l = ["mystery", "fantasy", "horror", "health"];
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
         return MaterialApp(
@@ -69,7 +69,7 @@ class GenerativeAISample extends StatelessWidget {
             ),
             useMaterial3: true,
           ),
-          initialRoute: MyApp.id,
+          initialRoute: LoginScreen.id,
           routes: {
             RegistrationScreen.id: (context) => RegistrationScreen(),
             LoginScreen.id: (context) => LoginScreen(),
@@ -190,7 +190,7 @@ class _OverlappingButtonsState extends State<OverlappingButtons> {
                   MaterialPageRoute(builder: (context) => ManualPage()),
                 );
               },
-              child: Text('   Manual'),
+              child: Text('  Manual'),
               style: TextButton.styleFrom(
                 foregroundColor: Colors.grey,
               ),

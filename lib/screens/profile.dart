@@ -15,7 +15,6 @@ class _ProfilePageState extends State<ProfilePage> {
   Color customColor2 = Color.fromRGBO(28, 183, 167, 1.0);
   Color customColor3 = Color.fromRGBO(219, 225, 227, 1.0);
 
-
   @override
   void initState() {
     super.initState();
@@ -103,9 +102,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              _buildCountBox(followersCount.toString(), 'Followers', Colors.white),
+                              _buildCountBox(followersCount.toString(),
+                                  'Followers', Colors.white),
                               SizedBox(width: 20),
-                              _buildCountBox(followingCount.toString(), 'Following', Colors.white),
+                              _buildCountBox(followingCount.toString(),
+                                  'Following', Colors.white),
                             ],
                           ),
                         ],
@@ -114,7 +115,39 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
                 SizedBox(height: 20),
-                // Add Stories section here
+                // About Us section
+                Container(
+                  margin: EdgeInsets.only(top: 30, left: 20, right: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'About Us', // Heading text
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: customColor, // Custom color for the heading
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      // Spacer between heading and paragraph
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                              color: customColor2), // Greenish border color
+                        ),
+                        child: Text(
+                          "Inventale: Unleash your creativity with our innovative mobile app! Seamlessly blending user authentication, personalized profiles, and collaborative storytelling, Inventale empowers users to craft captivating narratives together. With AI-generated story starters and posters, as well as basic critique and review features, every user becomes a master storyteller. Explore a world of imagination and expression with Inventale today!",
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           );
@@ -131,13 +164,15 @@ class _ProfilePageState extends State<ProfilePage> {
         borderRadius: BorderRadius.circular(16), // border-radius: 16px
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1), // box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1)
+            color: Colors.black.withOpacity(0.1),
+            // box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1)
             offset: Offset(0, 4),
             blurRadius: 30,
           ),
         ],
         border: Border.all(
-          color: Color.fromRGBO(255, 255, 255, 0.3), // border: 1px solid rgba(255, 255, 255, 0.3)
+          color: Color.fromRGBO(
+              255, 255, 255, 0.3), // border: 1px solid rgba(255, 255, 255, 0.3)
         ),
       ),
       child: Column(

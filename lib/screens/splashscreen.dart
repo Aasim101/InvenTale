@@ -64,7 +64,7 @@ class _splashscreenState extends State<splashscreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 35.0),
                         child: Text(
                           "Discover",
-                          style: GoogleFonts.lato(
+                          style: GoogleFonts.roboto(
                               textStyle: TextStyle(
                                   color: Colors.black,
                                   fontSize: 30,
@@ -75,7 +75,7 @@ class _splashscreenState extends State<splashscreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 35.0),
                         child: Text(
                           "new worlds !",
-                          style: GoogleFonts.lato(
+                          style: GoogleFonts.roboto(
                               textStyle: TextStyle(
                                   color: Colors.black,
                                   fontSize: 30,
@@ -89,7 +89,7 @@ class _splashscreenState extends State<splashscreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 35.0),
                         child: Text(
                           "Dive into new worlds with our application,",
-                          style: GoogleFonts.lato(
+                          style: GoogleFonts.roboto(
                               textStyle: TextStyle(color: Colors.grey[600])),
                         ),
                       ),
@@ -97,7 +97,7 @@ class _splashscreenState extends State<splashscreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 35.0),
                         child: Text(
                           "explore, study, follow the arrival of books,",
-                          style: GoogleFonts.lato(
+                          style: GoogleFonts.roboto(
                               textStyle: TextStyle(color: Colors.grey[600])),
                         ),
                       ),
@@ -105,7 +105,7 @@ class _splashscreenState extends State<splashscreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 35.0),
                         child: Text(
                           "get into good habbit of reading.",
-                          style: GoogleFonts.lato(
+                          style: GoogleFonts.roboto(
                               textStyle: TextStyle(color: Colors.grey[600])),
                         ),
                       ),

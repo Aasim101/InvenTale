@@ -19,6 +19,8 @@ import 'screens/MakeProfileScreen.dart';
 import 'screens/feed.dart';
 import 'screens/features.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'screens/Collaboration.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,17 +53,27 @@ class GenerativeAISample extends StatelessWidget {
     var l = ["mystery", "fantasy", "horror", "health"];
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
+        final textTheme = GoogleFonts.robotoTextTheme();
+        final themeData = ThemeData(
+          textTheme: textTheme,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 171, 222, 244),
+          ),
+          useMaterial3: true,
+        );
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'InvenTale',
           themeMode: themeProvider.themeMode,
           theme: ThemeData(
+            textTheme: textTheme,
             colorScheme: ColorScheme.fromSeed(
               seedColor: const Color.fromARGB(255, 171, 222, 244),
             ),
             useMaterial3: true,
           ),
           darkTheme: ThemeData(
+            textTheme: textTheme,
             colorScheme: ColorScheme.fromSeed(
               seedColor: const Color.fromARGB(255, 171, 222, 244),
               brightness: Brightness.dark,
@@ -79,6 +91,7 @@ class GenerativeAISample extends StatelessWidget {
             MakeProfileScreen.id: (context) => MakeProfileScreen(),
             FeedPage.id: (context) => FeedPage(),
             Homepage.id: (context) => Homepage(),
+            CollaborativeStoryPage.id: (context) => CollaborativeStoryPage(),
 
           },
         );

@@ -177,7 +177,7 @@ class _bookdisplayState extends State<bookdisplay> {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         opacity: 0.4,
-                        image: AssetImage("../assets/overlay.png"),
+                        image: AssetImage("assets/overlay.png"),
                         fit: BoxFit.cover)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -230,7 +230,7 @@ class _bookdisplayState extends State<bookdisplay> {
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           opacity: 0.4,
-                          image: AssetImage("../assets/overlay.png"),
+                          image: AssetImage("assets/overlay.png"),
                           fit: BoxFit.cover)),
                   child: Center(
                     child: Column(

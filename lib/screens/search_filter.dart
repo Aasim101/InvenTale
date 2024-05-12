@@ -114,7 +114,7 @@ class _searchfilterState extends State<searchfilter> {
                             color: Color(0xfff012AC0),
                             image: DecorationImage(
                                 opacity: 0.4,
-                                image: AssetImage('../assets/overlay.png'),
+                                image: AssetImage('assets/overlay.png'),
                                 fit: BoxFit.cover)),
                         child: Row(
                           children: [

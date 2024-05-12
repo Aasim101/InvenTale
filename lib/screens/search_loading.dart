@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:inventale/screens/search_filter.dart';
@@ -7,9 +6,9 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart';
 
-
 class searchloading extends StatefulWidget {
   var text;
+
   searchloading({@required this.text});
 
   @override
@@ -18,6 +17,7 @@ class searchloading extends StatefulWidget {
 
 class _searchloadingState extends State<searchloading> {
   var cp;
+
   @override
   void initState() {
     // TODO: implement initState

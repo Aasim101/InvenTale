@@ -10,6 +10,7 @@ import 'package:inventale/screens/bookdisplay.dart';
 
 class bookloading extends StatefulWidget {
   var c;
+
   bookloading({@required this.c});
 
   @override

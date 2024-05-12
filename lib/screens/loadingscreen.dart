@@ -11,6 +11,7 @@ import 'package:http/http.dart';
 class loadingscreen extends StatefulWidget {
   static String id = 'loading_screen';
   var l;
+
   loadingscreen({@required this.l});
 
   @override
@@ -30,7 +31,6 @@ class _loadingscreenState extends State<loadingscreen>
     // TODO: implement initState
     super.initState();
     getcategorydata();
-
   }
 
   void getcategorydata() async {
@@ -59,10 +59,9 @@ class _loadingscreenState extends State<loadingscreen>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-                child:CircularProgressIndicator(
-                  color: Colors.black,
-                )
-            )
+                child: CircularProgressIndicator(
+              color: Colors.black,
+            ))
           ],
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:inventale/main.dart';
 
 class MyApp extends StatelessWidget {
   static String id = "main_page";
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -95,7 +96,9 @@ class MyApp extends StatelessWidget {
                         children: [
                           TextSpan(
                             text: "InvenTale",
-                            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.teal),
                           ),
                           TextSpan(
                             text: ": Where AI and Stories\nCollide",

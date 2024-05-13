@@ -33,7 +33,7 @@ class _StoryModalState extends State<StoryModal> {
       contentPadding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0),
       title: Text(
         widget.title,
-        style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.blue),
+        style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.black),
       ),
       content: SingleChildScrollView(
         child: Column(
@@ -88,6 +88,9 @@ class _StoryModalState extends State<StoryModal> {
               child: Text(
                 'Close',
                 style: TextStyle(fontSize: 18.0),
+              ),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black, // Set the text color to black
               ),
             ),
           ],

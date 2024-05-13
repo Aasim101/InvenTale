@@ -420,7 +420,9 @@ class _ChatWidgetState extends State<ChatWidget> {
                           Icons.copy,
                           color: Theme.of(context).colorScheme.primary,
                         ),
+
                       ),
+
                     ],
                   )
                 else

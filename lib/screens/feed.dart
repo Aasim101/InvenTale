@@ -8,6 +8,7 @@ import './loadingscreen.dart';
 import './features.dart';
 import './manualpage.dart';
 import './splashscreen.dart';
+import './login.dart';
 
 class FeedPage extends StatefulWidget {
   static String id = "feed_page";
@@ -115,43 +116,78 @@ class _FeedPageState extends State<FeedPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_pageTitles[_selectedIndex]),
-      ),
-      body: _widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: Container(
-        color: customColor, // Set the background color here
-        child: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Feed',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
-              label: 'Manual Page',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.book),
-              label: 'Google Books',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.star),
-              label: 'Features',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Theme.of(context).primaryColor,
-          unselectedItemColor: customColor,
-          // Change the color of unselected items
-          onTap: _onItemTapped,
+    return WillPopScope(
+      onWillPop: () async {
+        // Custom back button behavior
+        bool shouldLogout = await _showLogoutPrompt(context);
+        return shouldLogout;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(_pageTitles[_selectedIndex]),
+        ),
+        body: _widgetOptions.elementAt(_selectedIndex),
+        bottomNavigationBar: Container(
+          color: customColor, // Set the background color here
+          child: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Feed',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.chat),
+                label: 'Manual Page',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Profile',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.book),
+                label: 'Google Books',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.star),
+                label: 'Features',
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: Theme.of(context).primaryColor,
+            unselectedItemColor: customColor,
+            // Change the color of unselected items
+            onTap: _onItemTapped,
+          ),
         ),
       ),
     );
+  }
+
+  Future<bool> _showLogoutPrompt(BuildContext context) async {
+    // Show the logout prompt
+    bool shouldLogout = await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Log Out'),
+        content: Text('Do you want to log out?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text('No'),
+          ),
+          TextButton(
+            onPressed: () async {
+              // Logout the user
+              await FirebaseAuth.instance.signOut();
+              // Navigate to the login screen
+              Navigator.pushReplacementNamed(context, LoginScreen.id);
+            },
+            child: Text('Yes'),
+          ),
+        ],
+      ),
+    );
+
+    return shouldLogout ?? false;
   }
 }

@@ -132,8 +132,12 @@ class _AuthorComponentState extends State<AuthorComponent> {
                       _userIds.remove(followedUserId);
                     });
                   },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.black, // Set the text color to black
+                  ),
                   child: Text('Follow'),
                 ),
+
               );
             }).toList(),
           );

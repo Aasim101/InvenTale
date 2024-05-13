@@ -18,7 +18,7 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
-  late String firstName = ''; // Variable to store the user's first name
+  late String firstName = '';
   late List<Widget> _widgetOptions;
   late int _selectedIndex = 0;
   Color customColor = Color.fromRGBO(32, 61, 79, 1.0);
@@ -30,17 +30,53 @@ class _FeedPageState extends State<FeedPage> {
     'Features'
   ];
 
+  // Define the available themes
+  final List<ThemeData> _themes = [
+    ThemeData(
+      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue),
+      brightness: Brightness.light,
+    ),
+    ThemeData(
+      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red),
+      brightness: Brightness.light,
+    ),
+    ThemeData(
+      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green),
+      brightness: Brightness.light,
+    ),
+    ThemeData(
+      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple),
+      brightness: Brightness.light,
+    ),
+    ThemeData(
+      colorScheme: ColorScheme(
+        primary: Colors.white,
+        secondary: Colors.black,
+        surface: Colors.white,
+        background: Colors.white,
+        error: Colors.red,
+        onPrimary: Colors.black,
+        onSecondary: Colors.white,
+        onSurface: Colors.black,
+        onBackground: Colors.black,
+        onError: Colors.white,
+        brightness: Brightness.light,
+      ),
+    ),
+  ];
+
+  int _selectedThemeIndex = 0;
+
   @override
   void initState() {
     super.initState();
-    fetchUserInfo(); // Fetch user's info when the widget initializes
+    fetchUserInfo();
     var l = ["mystery", "fantasy", "horror", "health"];
     _widgetOptions = <Widget>[
       SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Display the greeting message with the user's first name
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -48,7 +84,6 @@ class _FeedPageState extends State<FeedPage> {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),
-            // Carousel for stories
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -58,8 +93,6 @@ class _FeedPageState extends State<FeedPage> {
             ),
             StoryCarousel(
                 currentUserId: FirebaseAuth.instance.currentUser?.uid ?? ''),
-            // Display the StoryCarousel component
-            // Best Authors section
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -79,56 +112,40 @@ class _FeedPageState extends State<FeedPage> {
     ];
   }
 
-  // Method to handle tap events on bottom navigation bar items
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index; // Update the selected index
-    });
-  }
-
-  // Function to fetch the user's info
-  void fetchUserInfo() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      // Fetch the user's info from Firestore
-      Stream<QuerySnapshot<Map<String, dynamic>>> stream = FirebaseFirestore
-          .instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('user_info')
-          .snapshots();
-      stream.listen((snapshot) {
-        if (snapshot.docs.isNotEmpty) {
-          // Extract the user's first name
-          Map<String, dynamic> userInfoData = snapshot.docs.first.data();
-          setState(() {
-            firstName =
-                userInfoData['first_name'] ?? ''; // Store the user's first name
-          });
-        } else {
-          setState(() {
-            firstName = ''; // Set firstName to empty if no data exists
-          });
-        }
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // Custom back button behavior
         bool shouldLogout = await _showLogoutPrompt(context);
         return shouldLogout;
       },
       child: Scaffold(
         appBar: AppBar(
           title: Text(_pageTitles[_selectedIndex]),
+          actions: [
+            PopupMenuButton<int>(
+              icon: Icon(Icons.color_lens),
+              onSelected: (index) {
+                setState(() {
+                  _selectedThemeIndex = index;
+                });
+              },
+              itemBuilder: (context) => List.generate(
+                _themes.length,
+                    (index) => PopupMenuItem<int>(
+                  value: index,
+                  child: Text(_themeNames[index]),
+                ),
+              ),
+            ),
+          ],
         ),
-        body: _widgetOptions.elementAt(_selectedIndex),
+        body: Theme(
+          data: _selectedTheme,
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
         bottomNavigationBar: Container(
-          color: customColor, // Set the background color here
+          color: customColor,
           child: BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
@@ -155,7 +172,6 @@ class _FeedPageState extends State<FeedPage> {
             currentIndex: _selectedIndex,
             selectedItemColor: Theme.of(context).primaryColor,
             unselectedItemColor: customColor,
-            // Change the color of unselected items
             onTap: _onItemTapped,
           ),
         ),
@@ -163,8 +179,47 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  List<String> get _themeNames => [
+    'Blue',
+    'Red',
+    'Green',
+    'Purple',
+    'White',
+  ];
+
+  ThemeData get _selectedTheme => _themes[_selectedThemeIndex];
+
+  void fetchUserInfo() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      Stream<QuerySnapshot<Map<String, dynamic>>> stream = FirebaseFirestore
+          .instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('user_info')
+          .snapshots();
+      stream.listen((snapshot) {
+        if (snapshot.docs.isNotEmpty) {
+          Map<String, dynamic> userInfoData = snapshot.docs.first.data();
+          setState(() {
+            firstName = userInfoData['first_name'] ?? '';
+          });
+        } else {
+          setState(() {
+            firstName = '';
+          });
+        }
+      });
+    }
+  }
+
   Future<bool> _showLogoutPrompt(BuildContext context) async {
-    // Show the logout prompt
     bool shouldLogout = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -177,9 +232,7 @@ class _FeedPageState extends State<FeedPage> {
           ),
           TextButton(
             onPressed: () async {
-              // Logout the user
               await FirebaseAuth.instance.signOut();
-              // Navigate to the login screen
               Navigator.pushReplacementNamed(context, LoginScreen.id);
             },
             child: Text('Yes'),

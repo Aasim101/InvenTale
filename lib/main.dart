@@ -166,7 +166,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 Expanded(
                   child: ChatWidget(
-                    apiKey: "AIzaSyAnhmR1EFQGoGR-IE0Iunh0VmX5q7Xjd0Q",
+                    apiKey: "YOUR_APIKEY",
                     loggedInUser: loggedInUser,
                   ),
                 ),

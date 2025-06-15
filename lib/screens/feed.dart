@@ -21,7 +21,7 @@ class _FeedPageState extends State<FeedPage> {
   late String firstName = '';
   late List<Widget> _widgetOptions;
   late int _selectedIndex = 0;
-  Color customColor = Color.fromRGBO(32, 61, 79, 1.0);
+  Color customColor = const Color(0xFF203D4F);
   List<String> _pageTitles = [
     'Feed',
     'Manual Page',
@@ -30,37 +30,15 @@ class _FeedPageState extends State<FeedPage> {
     'Features'
   ];
 
-  // Define the available themes
   final List<ThemeData> _themes = [
+    ThemeData(primarySwatch: Colors.blue),
+    ThemeData(primarySwatch: Colors.red),
+    ThemeData(primarySwatch: Colors.green),
+    ThemeData(primarySwatch: Colors.purple),
     ThemeData(
-      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue),
-      brightness: Brightness.light,
-    ),
-    ThemeData(
-      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red),
-      brightness: Brightness.light,
-    ),
-    ThemeData(
-      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green),
-      brightness: Brightness.light,
-    ),
-    ThemeData(
-      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple),
-      brightness: Brightness.light,
-    ),
-    ThemeData(
-      colorScheme: ColorScheme(
+      colorScheme: const ColorScheme.light(
         primary: Colors.white,
-        secondary: Colors.black,
-        surface: Colors.white,
-        background: Colors.white,
-        error: Colors.red,
         onPrimary: Colors.black,
-        onSecondary: Colors.white,
-        onSurface: Colors.black,
-        onBackground: Colors.black,
-        onError: Colors.white,
-        brightness: Brightness.light,
       ),
     ),
   ];
@@ -71,40 +49,8 @@ class _FeedPageState extends State<FeedPage> {
   void initState() {
     super.initState();
     fetchUserInfo();
-    var l = ["mystery", "fantasy", "horror", "health"];
     _widgetOptions = <Widget>[
-      SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Hi, How you are doing?,',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Today's Stories:",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            StoryCarousel(
-                currentUserId: FirebaseAuth.instance.currentUser?.uid ?? ''),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Best Authors",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            AuthorComponent(
-                currentUserId: FirebaseAuth.instance.currentUser?.uid ?? ''),
-          ],
-        ),
-      ),
+      _buildFeedContent(),
       ManualPage(),
       ProfilePage(),
       splashscreen(),
@@ -112,67 +58,82 @@ class _FeedPageState extends State<FeedPage> {
     ];
   }
 
+  Widget _buildFeedContent() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Hi $firstName, how are you doing?',
+            style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            "Today's Stories",
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(height: 10),
+          StoryCarousel(currentUserId: FirebaseAuth.instance.currentUser?.uid ?? ''),
+          const SizedBox(height: 20),
+          const Text(
+            "Top Authors",
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(height: 10),
+          AuthorComponent(currentUserId: FirebaseAuth.instance.currentUser?.uid ?? ''),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        bool shouldLogout = await _showLogoutPrompt(context);
-        return shouldLogout;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(_pageTitles[_selectedIndex]),
-          actions: [
-            PopupMenuButton<int>(
-              icon: Icon(Icons.color_lens),
-              onSelected: (index) {
-                setState(() {
-                  _selectedThemeIndex = index;
-                });
-              },
-              itemBuilder: (context) => List.generate(
-                _themes.length,
-                    (index) => PopupMenuItem<int>(
-                  value: index,
-                  child: Text(_themeNames[index]),
+      onWillPop: () async => await _showLogoutPrompt(context),
+      child: Theme(
+        data: _selectedTheme,
+        child: Scaffold(
+          backgroundColor: _selectedTheme.scaffoldBackgroundColor,
+          appBar: AppBar(
+            title: Text(
+              _pageTitles[_selectedIndex],
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            actions: [
+              PopupMenuButton<int>(
+                icon: const Icon(Icons.color_lens),
+                onSelected: (index) {
+                  setState(() => _selectedThemeIndex = index);
+                },
+                itemBuilder: (context) => List.generate(
+                  _themes.length,
+                      (index) => PopupMenuItem<int>(
+                    value: index,
+                    child: Text(_themeNames[index]),
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        body: Theme(
-          data: _selectedTheme,
-          child: _widgetOptions.elementAt(_selectedIndex),
-        ),
-        bottomNavigationBar: Container(
-          color: customColor,
-          child: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Feed',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.chat),
-                label: 'Manual Page',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.book),
-                label: 'Google Books',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.star),
-                label: 'Features',
-              ),
             ],
+          ),
+          body: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: _widgetOptions[_selectedIndex],
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: customColor,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.white60,
             currentIndex: _selectedIndex,
-            selectedItemColor: Theme.of(context).primaryColor,
-            unselectedItemColor: customColor,
             onTap: _onItemTapped,
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Feed'),
+              BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'Manual'),
+              BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+              BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Books'),
+              BottomNavigationBarItem(icon: Icon(Icons.auto_awesome), label: 'Features'),
+            ],
           ),
         ),
       ),
@@ -185,62 +146,52 @@ class _FeedPageState extends State<FeedPage> {
     });
   }
 
-  List<String> get _themeNames => [
-    'Blue',
-    'Red',
-    'Green',
-    'Purple',
-    'White',
-  ];
+  List<String> get _themeNames => ['Blue', 'Red', 'Green', 'Purple', 'White'];
 
   ThemeData get _selectedTheme => _themes[_selectedThemeIndex];
 
   void fetchUserInfo() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      Stream<QuerySnapshot<Map<String, dynamic>>> stream = FirebaseFirestore
-          .instance
+      FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
           .collection('user_info')
-          .snapshots();
-      stream.listen((snapshot) {
+          .snapshots()
+          .listen((snapshot) {
         if (snapshot.docs.isNotEmpty) {
           Map<String, dynamic> userInfoData = snapshot.docs.first.data();
           setState(() {
             firstName = userInfoData['first_name'] ?? '';
           });
         } else {
-          setState(() {
-            firstName = '';
-          });
+          setState(() => firstName = '');
         }
       });
     }
   }
 
   Future<bool> _showLogoutPrompt(BuildContext context) async {
-    bool shouldLogout = await showDialog(
+    return await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Log Out'),
-        content: Text('Do you want to log out?'),
+        title: const Text('Log Out'),
+        content: const Text('Do you want to log out?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: Text('No'),
+            child: const Text('No'),
           ),
           TextButton(
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
               Navigator.pushReplacementNamed(context, LoginScreen.id);
             },
-            child: Text('Yes'),
+            child: const Text('Yes'),
           ),
         ],
       ),
-    );
-
-    return shouldLogout ?? false;
+    ) ??
+        false;
   }
 }

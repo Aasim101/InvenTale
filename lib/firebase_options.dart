@@ -41,48 +41,47 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDXeLjcp_1As1lK9qWpRtjM7XvoaoZg-YE',
-    appId: '1:13037282170:web:559e82f3b4c2d237daacc3',
-    messagingSenderId: '13037282170',
-    projectId: 'invertale1',
-    authDomain: 'invertale1.firebaseapp.com',
-    storageBucket: 'invertale1.appspot.com',
-    measurementId: 'G-41H3EE480Y',
+    apiKey: 'AIzaSyCPX-fomwoK26pLowcl3NDrkyjNVy3rWtE',
+    appId: '1:276764865712:web:f835118d4f877c9e7d3775',
+    messagingSenderId: '276764865712',
+    projectId: 'inventale-bf5aa',
+    authDomain: 'inventale-bf5aa.firebaseapp.com',
+    storageBucket: 'inventale-bf5aa.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAu46O7VuFduWEGNkzW1XfsUhb8XhCT7dE',
-    appId: '1:13037282170:android:160e2c4679e47718daacc3',
-    messagingSenderId: '13037282170',
-    projectId: 'invertale1',
-    storageBucket: 'invertale1.appspot.com',
+    apiKey: 'AIzaSyAogslYMQKnEPPHgsXmYR07YjHXyp_SycI',
+    appId: '1:276764865712:android:036af1a9418570c37d3775',
+    messagingSenderId: '276764865712',
+    projectId: 'inventale-bf5aa',
+    storageBucket: 'inventale-bf5aa.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBqJbem-rdQ9xLS2uJXBF8nAhD_i-Hkuh8',
-    appId: '1:13037282170:ios:a235a4b92f795478daacc3',
-    messagingSenderId: '13037282170',
-    projectId: 'invertale1',
-    storageBucket: 'invertale1.appspot.com',
+    apiKey: 'AIzaSyDMdmAsenCLm4ehEo2z3JIO9fH403fLnYg',
+    appId: '1:276764865712:ios:18e8e2a049b89e687d3775',
+    messagingSenderId: '276764865712',
+    projectId: 'inventale-bf5aa',
+    storageBucket: 'inventale-bf5aa.firebasestorage.app',
     iosBundleId: 'com.example.seProject',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBqJbem-rdQ9xLS2uJXBF8nAhD_i-Hkuh8',
-    appId: '1:13037282170:ios:a235a4b92f795478daacc3',
-    messagingSenderId: '13037282170',
-    projectId: 'invertale1',
-    storageBucket: 'invertale1.appspot.com',
+    apiKey: 'AIzaSyDMdmAsenCLm4ehEo2z3JIO9fH403fLnYg',
+    appId: '1:276764865712:ios:18e8e2a049b89e687d3775',
+    messagingSenderId: '276764865712',
+    projectId: 'inventale-bf5aa',
+    storageBucket: 'inventale-bf5aa.firebasestorage.app',
     iosBundleId: 'com.example.seProject',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDXeLjcp_1As1lK9qWpRtjM7XvoaoZg-YE',
-    appId: '1:13037282170:web:25d621cfdddbba90daacc3',
-    messagingSenderId: '13037282170',
-    projectId: 'invertale1',
-    authDomain: 'invertale1.firebaseapp.com',
-    storageBucket: 'invertale1.appspot.com',
-    measurementId: 'G-5K48GR6L1X',
+    apiKey: 'AIzaSyCPX-fomwoK26pLowcl3NDrkyjNVy3rWtE',
+    appId: '1:276764865712:web:89f3b75cb7a7ee4a7d3775',
+    messagingSenderId: '276764865712',
+    projectId: 'inventale-bf5aa',
+    authDomain: 'inventale-bf5aa.firebaseapp.com',
+    storageBucket: 'inventale-bf5aa.firebasestorage.app',
   );
+
 }

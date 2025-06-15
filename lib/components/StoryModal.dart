@@ -44,24 +44,27 @@ class _StoryModalState extends State<StoryModal> {
               style: TextStyle(fontSize: 18.0, color: Colors.black87),
             ),
             SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                5,
-                    (index) => IconButton(
-                  iconSize: 40,
-                  icon: Icon(
-                    Icons.star,
-                    color: hasRated && userRating >= index + 1 ? Colors.amber : Colors.grey,
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  5,
+                      (index) => IconButton(
+                    iconSize: 40,
+                    icon: Icon(
+                      Icons.star,
+                      color: hasRated && userRating >= index + 1 ? Colors.amber : Colors.grey,
+                    ),
+                    onPressed: hasRated
+                        ? null
+                        : () async {
+                      setState(() {
+                        userRating = index + 1;
+                      });
+                      await _updateRating();
+                    },
                   ),
-                  onPressed: hasRated
-                      ? null
-                      : () async {
-                    setState(() {
-                      userRating = index + 1;
-                    });
-                    await _updateRating();
-                  },
                 ),
               ),
             ),

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 
 class ManualPage extends StatefulWidget {
+  static String id = 'manual_page';
   @override
   _ManualPageState createState() => _ManualPageState();
 }
